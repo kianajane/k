@@ -4,5 +4,5 @@ This is our project...
 ##Members
 GK
 JK
-MCK
+Melanie Kaplan-Cohen
 KJK
