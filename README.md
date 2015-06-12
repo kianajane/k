@@ -2,7 +2,7 @@
 This is our project...
 
 ##Members
-GK
+Geula Katan
 JK
 MCK
 KJK
