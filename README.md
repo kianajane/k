@@ -5,4 +5,4 @@ This is our project...
 Geula Katan
 JK
 MCK
-KJK
+Kiana Jane K., likes coffee shops and happy puppies
