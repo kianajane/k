@@ -5,6 +5,8 @@
 
 	var final_transcript = '';
 	var recognizing = false;
+	correctCounter = 0;
+	wordCounter
 	
 	if ('webkitSpeechRecognition' in window) {
 		console.log("webkit is available!");
@@ -81,6 +83,14 @@
 	  recognition.start();
 	  final_span.innerHTML = '';
 	  interim_span.innerHTML = '';
+	}
+
+
+	function counter(correct){
+		if (correct == true) {
+			correctCounter ++;
+		}
+		wordCounter ++;
 	}
 	
   Template.welcome.events({
