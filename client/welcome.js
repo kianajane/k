@@ -6,7 +6,7 @@
 	var final_transcript = '';
 	var recognizing = false;
 	correctCounter = 0;
-	wordCounter
+	wordCounter = 0;
 	
 	if ('webkitSpeechRecognition' in window) {
 		console.log("webkit is available!");
