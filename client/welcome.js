@@ -32,17 +32,6 @@
 	      for (var i = event.resultIndex; i < event.results.length; ++i) {
 			console.log("i="+i);
 
-			//stops listening
-	      	if (event.results[i][0].transcript.includes("stop dictation")) {
-	      		recognition.stop();
-	      	}
-
-	      	//reads back
-	      	if (event.results[i][0].transcript.includes("repeat that")) {
-	      		var msg = new SpeechSynthesisUtterance(final_transcript.substring(4));
-				window.speechSynthesis.speak(msg);
-	      	}
-
 	        if (event.results[i].isFinal) {
 	        	final_transcript += 
 	        		Math.round(100*event.results[i][0].confidence)+"% -- "+
