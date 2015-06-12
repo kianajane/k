@@ -3,6 +3,6 @@ This is our project...
 
 ##Members
 GK
-JK
+Jane Kwon
 MCK
 KJK
