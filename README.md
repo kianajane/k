@@ -6,4 +6,5 @@ Geula Katan
 Melanie Kaplan-Cohen :)
 Kiana Jane K., likes coffee shops and happy puppies!
 Jane Kwon
+Tim Hickey (advisor)
 
