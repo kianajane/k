@@ -3,6 +3,6 @@ This is our project...
 
 ##Members
 Geula Katan
-JK
-MCK
+Melanie Kaplan-Cohen
 Kiana Jane K., likes coffee shops and happy puppies
+Jane Kwon
