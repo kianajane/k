@@ -4,6 +4,7 @@
 */
 
 	var final_transcript = '';
+	var confidence = '';
 	var recognizing = false;
 	correctCounter = 0;
 	wordCounter = 0;
@@ -12,7 +13,7 @@
 		console.log("webkit is available!");
 		var recognition = new webkitSpeechRecognition();
 	    recognition.continuous = true;
-	    recognition.interimResults = true;
+	    recognition.interimResults = false;
  
 	    recognition.onstart = function() {
 	      recognizing = true;
@@ -33,19 +34,16 @@
 			console.log("i="+i);
 
 	        if (event.results[i].isFinal) {
-	        	final_transcript += 
-	        		Math.round(100*event.results[i][0].confidence)+"% -- "+
-	        		capitalize(event.results[i][0].transcript.trim()) +".\n";
+	        	confidence += Math.round(100*event.results[i][0].confidence)+"%";
+	        	final_transcript +=
+	        		event.results[i][0].transcript.trim();
 					console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
-	        } else {
-	        	interim_transcript += Math.round(100*event.results[i][0].confidence)+"% -- "+event.results[i][0].transcript+"<br>";
-				console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
-	        }
+	         }
 	      }
 
 
 	      //final_transcript = capitalize(final_transcript);
-	      final_span.innerHTML = linebreak(final_transcript);
+	      final_span.innerHTML = linebreak("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence);
 	      interim_span.innerHTML = linebreak(interim_transcript);
     	  
 	    };
@@ -67,7 +65,7 @@
 	  recognition.lang = 'en-US';
 	  recognition.start();
 	  final_span.innerHTML = '';
-	  interim_span.innerHTML = '';
+	  interim_span.innerHTML = "I'm listening...";
 	}
 
 	function stopDictation(event) {
