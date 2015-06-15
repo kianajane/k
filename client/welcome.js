@@ -34,16 +34,15 @@
 			console.log("i="+i);
 
 	        if (event.results[i].isFinal) {
-	        	confidence += Math.round(100*event.results[i][0].confidence)+"%";
-	        	final_transcript +=
-	        		event.results[i][0].transcript.trim();
-					console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+	        	confidence += Math.round(100*event.results[i][0].confidence);
+	        	final_transcript += event.results[i][0].transcript.trim();
+				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
 	         }
 	      }
 
 
 	      //final_transcript = capitalize(final_transcript);
-	      final_span.innerHTML = linebreak("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence);
+	      final_span.innerHTML = linebreak("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
 	      interim_span.innerHTML = linebreak(interim_transcript);
     	  
 	    };
