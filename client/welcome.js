@@ -63,10 +63,6 @@
 	}
  
 	function startDictation(event) {
-	  if (recognizing) {
-	    recognition.stop();
-	    return;
-	  }
 	  final_transcript = '';
 	  recognition.lang = 'en-US';
 	  recognition.start();
@@ -74,6 +70,12 @@
 	  interim_span.innerHTML = '';
 	}
 
+	function stopDictation(event) {
+		if (recognizing) {
+		    recognition.stop();
+		    return;
+		}
+	}
 
 	function counter(correct){
 		if (correct == true) {
@@ -87,3 +89,11 @@
 		startDictation(event);
 	}
   });
+
+  Template.welcome.events({
+	'click #stop_button': function(event){
+		stopDictation(event);
+	}
+   });
+
+
