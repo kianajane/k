@@ -1,13 +1,34 @@
 /*
-  This code comes from this blog post by Amit Agarwal
-      http://ctrlq.org/code/19680-html5-web-speech-api
+This code comes from this blog post by Amit Agarwal
+	http://ctrlq.org/code/19680-html5-web-speech-api
+	  
+Random math function taken from the Mozilla Developer Network
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 */
 
 	var final_transcript = '';
 	var confidence = '';
 	var recognizing = false;
+	var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
+		"father","life","power","child","hour","world","game","school","line"];
 	correctCounter = 0;
 	wordCounter = 0;
+	
+	function getRandomArbitrary(min, max) {
+    	return Math.random() * (max - min) + min;
+	}
+	
+	var indexF = getRandomArbitrary(0,24);
+	console.log(indexF);
+	var index = Math.round(indexF);
+	console.log(index);
+	var theWord = words[index];
+	console.log(theWord);
+	
+	Template.getWord.helpers({
+		word: theWord
+	});
+	
 	
 	if ('webkitSpeechRecognition' in window) {
 		console.log("webkit is available!");
@@ -84,13 +105,11 @@
   Template.welcome.events({
 	'click #start_button': function(event){
 		startDictation(event);
-	}
-  });
-
-  Template.welcome.events({
+	},
 	'click #stop_button': function(event){
 		stopDictation(event);
 	}
-   });
+  });
 
+  
 

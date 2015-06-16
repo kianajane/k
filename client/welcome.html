@@ -1,5 +1,5 @@
 <template name="welcome">
-<h1>Please say something</h1>
+<h1>{{> getWord}}</h1>
   <div>
   	<button type="button" class="btn btn-success" id="start_button">Begin pronunciation</button>
     <button type="button" class="btn btn-danger" id="stop_button">Evaluate</button>
@@ -11,4 +11,8 @@
     <span id="interim_span" class="interim"></span>
   </div>
   
+</template>
+
+<template name="getWord">
+  <h1>Please say: {{word}}</h1>
 </template>
