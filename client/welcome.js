@@ -14,16 +14,6 @@ Random math function taken from the Mozilla Developer Network
 	var correctCounter = 0;
 	var wordCounter = 0;
 	
-	function getRandomArbitrary(min, max) {
-    	return Math.random() * (max - min) + min;
-	}
-	
-	function getNewWord(){
-		var theWord = words[Math.round(getRandomArbitrary(0,24))];
-		console.log(theWord);
-		return theWord;
-	}
-	
 	Template.getWord.helpers({
 		word: getNewWord()
 	});
@@ -54,7 +44,7 @@ Random math function taken from the Mozilla Developer Network
 			console.log("i="+i);
 
 	        if (event.results[i].isFinal) {
-	        	confidence += Math.round(100*event.results[i][0].confidence);
+	        	confidence = Math.round(100*event.results[i][0].confidence);
 	        	final_transcript += event.results[i][0].transcript.trim();
 				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
 	         }
@@ -101,11 +91,25 @@ Random math function taken from the Mozilla Developer Network
 		}
 	}
 
+	function getRandomArbitrary(min, max) {
+    	return Math.random() * (max - min) + min;
+	}
+	
+	function getNewWord(){
+		var theWord = words[Math.round(getRandomArbitrary(0,24))];
+		console.log(theWord);
+		return theWord;
+	}
+
 	function counter(correct){
 		if (correct == true) {
 			correctCounter ++;
 		}
 		wordCounter ++;
+	}
+	
+	function changeWord(event){
+		document.getElementById("word").innerHTML = "Please say: "+getNewWord();
 	}
 	
   Template.welcome.events({
@@ -116,7 +120,7 @@ Random math function taken from the Mozilla Developer Network
 		stopDictation(event);
 	},
 	'click #new_word': function(event){
-		getNewWord();
+		changeWord(event);
 	}
   });
 
