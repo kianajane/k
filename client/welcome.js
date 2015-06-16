@@ -11,6 +11,7 @@ Random math function taken from the Mozilla Developer Network
 	var recognizing = false;
 	var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
 		"father","life","power","child","hour","world","game","school","line"];
+	var correct=false;
 	var correctCounter = 0;
 	var wordCounter = 0;
 	
@@ -54,10 +55,14 @@ Random math function taken from the Mozilla Developer Network
 	      //final_transcript = capitalize(final_transcript);
 	      final_span.innerHTML = linebreak("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
 	      interim_span.innerHTML = linebreak(interim_transcript);
+	      if (final_transcript.includes(theWord) && confidence>80) {
+	      	correct=true;
+	      } 
+	      counter(correct);
 		  
 		  if(final_transcript.includes(theWord) && confidence>80){
-			  correctCounter++;
-			  alert("Congratulations! You said the word correctly!\n You have now said "+correctCounter+" word(s) correctly.");
+			  //correctCounter++;
+			  alert("Congratulations! You said the word correctly!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
 		  } else {
 			  alert("Sorry, I didn't quite catch that...");
 		  }
@@ -96,7 +101,7 @@ Random math function taken from the Mozilla Developer Network
 	}
 	
 	function getNewWord(){
-		var theWord = words[Math.round(getRandomArbitrary(0,24))];
+		theWord = words[Math.round(getRandomArbitrary(0,24))];
 		console.log(theWord);
 		return theWord;
 	}
@@ -110,6 +115,7 @@ Random math function taken from the Mozilla Developer Network
 	
 	function changeWord(event){
 		document.getElementById("word").innerHTML = "Please say: "+getNewWord();
+		correct=false;
 	}
 	
   Template.welcome.events({
