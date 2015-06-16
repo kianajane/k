@@ -11,9 +11,19 @@
     <span id="final_span" class="final"></span>
     <span id="interim_span" class="interim"></span>
   </div>
+
+  <div>
+    <hr>
+    {{ > correct}}
+  </div>
   
 </template>
 
 <template name="getWord">
   <h1 id="word">Please say: {{word}}</h1>
 </template>
+
+<template name="correct">
+  <p id="correct_counter"><b>Words correct:</b> {{correct}}</p>
+  <p id="word_counter"><b>Total words:</b> {{wordCounter}}</p>
+</template> 

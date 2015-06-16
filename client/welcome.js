@@ -13,10 +13,16 @@ Random math function taken from the Mozilla Developer Network
 		"father","life","power","child","hour","world","game","school","line"];
 	var correct=false;
 	var correctCounter = 0;
-	var wordCounter = 0;
+	var wordCounter = 1;
+	var attempts = 0;
 	
 	Template.getWord.helpers({
 		word: getNewWord()
+	});
+
+	Template.correct.helpers({
+		correct: correctCounter,
+		wordCounter: wordCounter,
 	});
 	
 	
@@ -55,14 +61,14 @@ Random math function taken from the Mozilla Developer Network
 	      //final_transcript = capitalize(final_transcript);
 	      final_span.innerHTML = linebreak("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
 	      interim_span.innerHTML = linebreak(interim_transcript);
-	      if (final_transcript.includes(theWord) && confidence>80) {
+	      if (final_transcript.includes(theWord) && confidence>60) {
 	      	correct=true;
 	      } 
 	      counter(correct);
 		  
-		  if(final_transcript.includes(theWord) && confidence>80){
+		  if(final_transcript.includes(theWord) && confidence>60){
 			  //correctCounter++;
-			  alert("Congratulations! You said the word correctly!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
+			  alert("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
 		  } else {
 			  alert("Sorry, I didn't quite catch that...");
 		  }
@@ -110,12 +116,16 @@ Random math function taken from the Mozilla Developer Network
 		if (correct == true) {
 			correctCounter ++;
 		}
-		wordCounter ++;
+		attempts ++;		
 	}
 	
 	function changeWord(event){
 		document.getElementById("word").innerHTML = "Please say: "+getNewWord();
 		correct=false;
+		document.getElementById("correct_counter").innerHTML = "Number correct: "+correctCounter;
+		wordCounter++;
+		document.getElementById("word_counter").innerHTML = "Total words: "+wordCounter;
+		attempts = 0;
 	}
 	
   Template.welcome.events({
