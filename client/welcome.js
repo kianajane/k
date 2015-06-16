@@ -97,6 +97,7 @@ Random math function taken from the Mozilla Developer Network
 	}
 
 	function stopDictation(event) {
+		interim_span.innerHTML = '';
 		if (recognizing) {
 		    recognition.stop();
 		    return;
