@@ -122,9 +122,9 @@ Random math function taken from the Mozilla Developer Network
 	function changeWord(event){
 		document.getElementById("word").innerHTML = "Please say: "+getNewWord();
 		correct=false;
-		document.getElementById("correct_counter").innerHTML = "Number correct: "+correctCounter;
+		document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 		wordCounter++;
-		document.getElementById("word_counter").innerHTML = "Total words: "+wordCounter;
+		document.getElementById("word_counter").innerHTML = "<b>Total words:</b> "+wordCounter;
 		attempts = 0;
 	}
 	
