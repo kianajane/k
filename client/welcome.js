@@ -11,8 +11,8 @@ Random math function taken from the Mozilla Developer Network
 	var recognizing = false;
 	var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
 		"father","life","power","child","hour","world","game","school","line"];
-	correctCounter = 0;
-	wordCounter = 0;
+	var correctCounter = 0;
+	var wordCounter = 0;
 	
 	function getRandomArbitrary(min, max) {
     	return Math.random() * (max - min) + min;
@@ -67,7 +67,8 @@ Random math function taken from the Mozilla Developer Network
 	      interim_span.innerHTML = linebreak(interim_transcript);
 		  
 		  if(final_transcript.includes(theWord) && confidence>80){
-			  alert("Congratulations! You said the word correctly!");
+			  correctCounter++;
+			  alert("Congratulations! You said the word correctly!\n You have now said "+correctCounter+" word(s) correctly.");
 		  } else {
 			  alert("Sorry, I didn't quite catch that...");
 		  }
