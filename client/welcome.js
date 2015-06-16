@@ -18,15 +18,14 @@ Random math function taken from the Mozilla Developer Network
     	return Math.random() * (max - min) + min;
 	}
 	
-	var indexF = getRandomArbitrary(0,24);
-	console.log(indexF);
-	var index = Math.round(indexF);
-	console.log(index);
-	var theWord = words[index];
-	console.log(theWord);
+	function getNewWord(){
+		var theWord = words[Math.round(getRandomArbitrary(0,24))];
+		console.log(theWord);
+		return theWord;
+	}
 	
 	Template.getWord.helpers({
-		word: theWord
+		word: getNewWord()
 	});
 	
 	
@@ -115,6 +114,9 @@ Random math function taken from the Mozilla Developer Network
 	},
 	'click #stop_button': function(event){
 		stopDictation(event);
+	},
+	'click #new_word': function(event){
+		getNewWord();
 	}
   });
 
