@@ -57,8 +57,6 @@ Random math function taken from the Mozilla Developer Network
 	         }
 	      }
 
-
-	      //final_transcript = capitalize(final_transcript);
 	      final_span.innerHTML = linebreak("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
 	      interim_span.innerHTML = linebreak(interim_transcript);
 	      if (final_transcript.includes(theWord) && confidence>60) {
@@ -67,7 +65,6 @@ Random math function taken from the Mozilla Developer Network
 	      counter(correct);
 		  
 		  if(final_transcript.includes(theWord) && confidence>60){
-			  //correctCounter++;
 			  alert("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
 		  } else {
 			  alert("Sorry, I didn't quite catch that...");
@@ -77,7 +74,6 @@ Random math function taken from the Mozilla Developer Network
 	    };
 	}
 	
- 
 	var two_line = /\n\n/g;
 	var one_line = /\n/g;
 	function linebreak(s) {
@@ -140,6 +136,3 @@ Random math function taken from the Mozilla Developer Network
 		changeWord(event);
 	}
   });
-
-  
-
