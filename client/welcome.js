@@ -24,6 +24,9 @@ Template.welcome.events({
 		stopDictation(event);
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Begin pronunciation</button>");
 	}
+	// 'click #new_word': function(event){
+	// 	changeWord(event);
+	// }
 });
 
 Template.getWord.helpers({
