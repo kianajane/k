@@ -23,6 +23,14 @@ Template.welcome.events({
 	'click #stop_button': function(event){
 		stopDictation(event);
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Begin pronunciation</button>");
+	},
+
+	'click #speak_button': function(event){
+		msg = new SpeechSynthesisUtterance(theWord);
+		//voices = window.speechSynthesis.getVoices();
+		//msg.voice = voices[3];
+		msg.rate = .5; 
+		window.speechSynthesis.speak(msg);
 	}
 	// 'click #new_word': function(event){
 	// 	changeWord(event);
