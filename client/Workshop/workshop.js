@@ -31,10 +31,10 @@ Template.workshop.events({
 		//msg.voice = voices[3];
 		msg.rate = .5; 
 		window.speechSynthesis.speak(msg);
+	},
+	'click #skip_button': function(event){
+		changeWord(event);
 	}
-	// 'click #new_word': function(event){
-	// 	changeWord(event);
-	// }
 });
 
 Template.getWord.helpers({
@@ -70,12 +70,15 @@ function startDictation(event) {
   final_transcript = '';
   recognition.lang = 'en-US';
   recognition.start();
+  $("#results_heading").html("");
   final_span.innerHTML = '';
   interim_span.innerHTML = "I'm listening...";
 }
 
 function stopDictation(event) {
-	interim_span.innerHTML = '';
+	$("#results_heading").html("Results:");
+  interim_span.innerHTML = '';
+	
 	if (recognizing) {
 	    recognition.stop();
 	    recognizing=false;
@@ -87,7 +90,10 @@ function counter(correct){
 	if (correct == true) {
 		correctCounter ++;
 	}
-	attempts ++;		
+	attempts++;
+	if (attempts >= 2){
+		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip</button>');
+	}
 }
 
 
