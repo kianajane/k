@@ -62,6 +62,7 @@ function changeWord(event){
 	correct=false;
 	wordCounter++;
 	$("#word_counter").html("<b>Total words:</b> "+wordCounter);
+	$("#skipButton").html("");
 	attempts = 0;
 }
  
