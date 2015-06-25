@@ -18,11 +18,11 @@ var attempts = 0;
 Template.workshop.events({
 	'click #start_button': function(event){
 		startDictation(event);
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Evaluate</button>");
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
 	},
 	'click #stop_button': function(event){
 		stopDictation(event);
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Begin pronunciation</button>");
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
 	},
 
 	'click #speak_button': function(event){
@@ -92,8 +92,8 @@ function counter(correct){
 		correctCounter ++;
 	}
 	attempts++;
-	if (attempts >= 2){
-		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip</button>');
+	if (attempts >= 1){
+		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip word</button>');
 	}
 }
 
