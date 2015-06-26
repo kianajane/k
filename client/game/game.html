@@ -1,3 +1,9 @@
 <template name="game">
-	This is where the game content will go.
+	<h1>the game</h1>
+	<button class="btn btn-default" type="submit" id="start">Start game</button>
+	<canvas id="gameboard" width="1885" height = "860"></canvas>
+</template>
+
+<template name="score">
+  <p id="correct_counter"><b>Number correct:</b> {{correct}}</p>
 </template>
