@@ -18,11 +18,11 @@ var attempts = 0;
 Template.workshop.events({
 	'click #start_button': function(event){
 		startDictation(event);
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Evaluate</button>");
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
 	},
 	'click #stop_button': function(event){
 		stopDictation(event);
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Begin pronunciation</button>");
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
 	},
 
 	'click #speak_button': function(event){
@@ -31,10 +31,10 @@ Template.workshop.events({
 		//msg.voice = voices[3];
 		msg.rate = .5; 
 		window.speechSynthesis.speak(msg);
+	},
+	'click #skip_button': function(event){
+		changeWord(event);
 	}
-	// 'click #new_word': function(event){
-	// 	changeWord(event);
-	// }
 });
 
 Template.getWord.helpers({
@@ -62,6 +62,7 @@ function changeWord(event){
 	correct=false;
 	wordCounter++;
 	$("#word_counter").html("<b>Total words:</b> "+wordCounter);
+	$("#skipButton").html("");
 	attempts = 0;
 }
  
@@ -70,12 +71,17 @@ function startDictation(event) {
   final_transcript = '';
   recognition.lang = 'en-US';
   recognition.start();
-  final_span.innerHTML = '';
+  $("#results_heading").html("");
+  $('#res').html("");
   interim_span.innerHTML = "I'm listening...";
 }
 
 function stopDictation(event) {
+	$("#results_heading").html("Results:");
 	interim_span.innerHTML = '';
+	if (final_transcript=='') {
+		$('#res').html("Sorry, I didn't quite catch that..")
+	}
 	if (recognizing) {
 	    recognition.stop();
 	    recognizing=false;
@@ -87,7 +93,10 @@ function counter(correct){
 	if (correct == true) {
 		correctCounter ++;
 	}
-	attempts ++;		
+	attempts++;
+	if (attempts >= 1){
+		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip word</button>');
+	}
 }
 
 
@@ -118,23 +127,24 @@ if ('webkitSpeechRecognition' in window) {
         if (event.results[i].isFinal) {
         	confidence = Math.round(100*event.results[i][0].confidence);
         	final_transcript += event.results[i][0].transcript.trim();
-			console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+			//console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
          }
       }
 
-      final_span.innerHTML = linebreak("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
+      console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
       interim_span.innerHTML = linebreak(interim_transcript);
       if (final_transcript.includes(theWord) && confidence>60) {
       	correct=true;
       } 
       counter(correct);
 	  
-	  if(final_transcript.includes(theWord) && confidence>60){
-		  alert("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
+      if(final_transcript.includes(theWord) && confidence>60){
+		  $("#res").html("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
 		  changeWord(event);
 	  } else {
-		  alert("Sorry, I didn't quite catch that...");
+		  $("#res").html("Sorry, I didn't quite catch that...");
 	  }
+
 	  document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 	  
     };
