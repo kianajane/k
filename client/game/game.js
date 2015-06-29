@@ -104,4 +104,5 @@ if(Meteor.isClient){
 	
 	theEnemy = new Enemy(50,50,5,"black",10,-5);
 	
+	
 }
