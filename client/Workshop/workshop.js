@@ -14,6 +14,7 @@ var correct=false;
 var correctCounter = 0;
 var wordCounter = 1;
 var attempts = 0;
+var messageprinted = false;
 
 Template.workshop.events({
 	'click #start_button': function(event){
@@ -79,9 +80,6 @@ function startDictation(event) {
 function stopDictation(event) {
 	$("#results_heading").html("Results:");
 	interim_span.innerHTML = '';
-	if (final_transcript=='') {
-		$('#res').html("Sorry, I didn't quite catch that..")
-	}
 	if (recognizing) {
 	    recognition.stop();
 	    recognizing=false;
@@ -108,6 +106,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
+      messageprinted=false;
     };
 
     recognition.onerror = function(event) {
@@ -115,10 +114,17 @@ if ('webkitSpeechRecognition' in window) {
     };
 
     recognition.onend = function() {
+    	console.log("end");
+    	if (messageprinted==false){
+    		console.log("no result");
+    		$('#res').html("Sorry, I didn't quite catch that..");
+    		messageprinted=true;
+    	}
       recognizing = false;
     };
 
     recognition.onresult = function(event) {
+    	messageprinted=true;
 		myevent = event;
       var interim_transcript = '';
       for (var i = event.resultIndex; i < event.results.length; ++i) {
@@ -138,11 +144,13 @@ if ('webkitSpeechRecognition' in window) {
       } 
       counter(correct);
 	  
-      if(final_transcript.includes(theWord) && confidence>60){
+	  if (final_transcript=='' || confidence<50) {
+	      $('#res').html("Sorry, I didn't quite catch that..");
+	  }else if(final_transcript.includes(theWord) && confidence>60){
 		  $("#res").html("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
 		  changeWord(event);
 	  } else {
-		  $("#res").html("Sorry, I didn't quite catch that...");
+		  $("#res").html("Try again");
 	  }
 
 	  document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
