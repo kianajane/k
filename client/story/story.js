@@ -56,16 +56,11 @@ if ('webkitSpeechRecognition' in window) {
       console.log ("say: " + sentence);
       if (interim_transcript.includes(sentence)) {
       	sentence = l1[index];
-      	//$("#senth1").html(sentence);
+      	$("#senth1").html(sentence);
 		console.log("you're awesome");
 		console.log(index + "   " + sentence);
 		index++;
 	  }
-
-      //final_transcript = capitalize(final_transcript);
-      // final_span.innerHTML = linebreak(final_transcript);
-      // interim_span.innerHTML = linebreak(interim_transcript);
-	  
     };
 }
 
@@ -88,8 +83,6 @@ function startDictation(event) {
   final_transcript = '';
   recognition.lang = 'en-US';
   recognition.start();
-  //final_span.innerHTML = '';
-  //interim_span.innerHTML = '';
 }
 
 
@@ -102,10 +95,11 @@ var click = false;
 Template.story.events({
 	'click #start_story': function(event){
 		startDictation(event);
+		$("#senth1").html(sentence);
 		//reading();
 	}
 })
 
-Template.getSentence.helpers({
-	sent: getSent()
-});
+// Template.getSentence.helpers({
+// 	sent: getSent()
+// });
