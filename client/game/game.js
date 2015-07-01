@@ -10,6 +10,21 @@ if(Meteor.isClient){
 	// var wordCounter = 1;
 	// var attempts = 0;
 	
+	Template.score.helpers({
+		
+	});
+	
+	Template.game.helpers({
+		word: getNewWord()
+	});
+	
+	Template.game.events({
+		"click #start": function(event){
+			startDictation(event);
+		}
+	});
+	
+	
 	function draw(){
 		var drawContext = gameboard.getContext("2d");
 		drawContext.fillStyle="#eee";
@@ -17,15 +32,15 @@ if(Meteor.isClient){
 		drawContext.strokeStyle="#f00";
 	}
 	
-	Template.score.helpers({
-		
-	})
+	function getNewWord(){
+		theWord = words[Math.round(getRandomArbitrary(0,24))];
+		console.log(theWord);
+		return theWord;
+	}
 	
-	Template.game.events({
-		"click #start": function(event){
-			startDictation(event);
-		}
-	});
+	function getRandomArbitrary(min, max) {
+		return Math.random() * (max - min) + min;
+	}
 	
 	function startDictation(event) {
 	  recognizing=true;
