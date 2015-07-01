@@ -1,13 +1,3 @@
-var l1 = [
-"I like cheese.",
-"April the elephant lived in Brazil.",
-"Her friends Lucy the Lizard and Lexie the Owl liked to be lazy.",
-"They would play on the log in the lake, take extra long lunches, and dig holes.",
-"Then they met Albert the Whale, near a pool of water, by the ocean.",
-"Albert told them that it is okay to laugh, be silly, and lazy sometimes, but it was dangerous to do in the jungle.",
-"Albert told them eleven ways that would help them be safer. April, Lucy, and Lexie listened and learned how to be more safe.",
-"After Albert finished talking, the three friends yelled, \"Thank you,\" to him as he swam away." ]
-
 /*
   This code comes from this blog post by Amit Agarwal
       http://ctrlq.org/code/19680-html5-web-speech-api
@@ -17,7 +7,9 @@ var final_transcript = '';
 var recognizing = false;
 var interim_transcript = '';
 var index=0;
-sentence = l1[0];
+
+story1 = Phonetics.find({sound: "R"}).fetch()[0].story;
+sentence = story1[index];
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
@@ -53,14 +45,15 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
+      //sentence changing happens here
       console.log ("say: " + sentence);
       if (interim_transcript.includes(sentence)) {
-      	sentence = l1[index];
+      	sentence = Phonetics.find({sound: "R"}).fetch()[0].story[index];
       	$("#senth1").html(sentence);
-		console.log("you're awesome");
-		console.log(index + "   " + sentence);
-		index++;
-	  }
+    		console.log("you're awesome");
+    		console.log(index + "   " + sentence);
+    		index++;
+    	  }
     };
 }
 
