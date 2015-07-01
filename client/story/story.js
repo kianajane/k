@@ -1,13 +1,3 @@
-var l1 = [
-"I like cheese.",
-"April the elephant lived in Brazil.",
-"Her friends Lucy the Lizard and Lexie the Owl liked to be lazy.",
-"They would play on the log in the lake, take extra long lunches, and dig holes.",
-"Then they met Albert the Whale, near a pool of water, by the ocean.",
-"Albert told them that it is okay to laugh, be silly, and lazy sometimes, but it was dangerous to do in the jungle.",
-"Albert told them eleven ways that would help them be safer. April, Lucy, and Lexie listened and learned how to be more safe.",
-"After Albert finished talking, the three friends yelled, \"Thank you,\" to him as he swam away." ]
-
 /*
   This code comes from this blog post by Amit Agarwal
       http://ctrlq.org/code/19680-html5-web-speech-api
