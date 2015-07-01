@@ -68,13 +68,13 @@ function changeWord(event){
 }
  
 function startDictation(event) {
-  recognizing=true;
-  final_transcript = '';
-  recognition.lang = 'en-US';
-  recognition.start();
-  $("#results_heading").html("");
-  $('#res').html("");
-  interim_span.innerHTML = "I'm listening...";
+	recognizing=true;
+	final_transcript = '';
+	recognition.lang = 'en-US';
+	recognition.start();
+	$("#results_heading").html("");
+	$('#res').html("");
+	interim_span.innerHTML = "I'm listening...";
 }
 
 function stopDictation(event) {
