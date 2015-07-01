@@ -10,16 +10,13 @@ if(Meteor.isClient){
 	// var wordCounter = 1;
 	// var attempts = 0;
 	
-	function draw(){
-		var drawContext = gameboard.getContext("2d");
-		drawContext.fillStyle="#eee";
-		drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-		drawContext.strokeStyle="#f00";
-	}
-	
 	Template.score.helpers({
 		
-	})
+	});
+	
+	Template.game.helpers({
+		word: getNewWord()
+	});
 	
 	Template.game.events({
 		"click #start": function(event){
@@ -27,13 +24,35 @@ if(Meteor.isClient){
 		}
 	});
 	
+	
+	Template.game.rendered = function draw(){
+		var drawContext = gameboard.getContext("2d");
+		drawContext.fillStyle="#eee";
+		drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+		drawContext.strokeStyle="#f00";
+	};
+
+	function getNewWord(){
+		theWord = words[Math.round(getRandomArbitrary(0,24))];
+		console.log(theWord);
+		return theWord;
+	}
+	
+	function getRandomArbitrary(min, max) {
+		return Math.random() * (max - min) + min;
+	}
+	
 	function startDictation(event) {
-	  recognizing=true;
-	  final_transcript = '';
-	  recognition.lang = 'en-US';
-	  recognition.start();
-	  //final_span.innerHTML = '';
-	  //interim_span.innerHTML = "I'm listening...";
+		if (!recognizing) {
+	  		recognizing=true;
+	 		final_transcript = '';
+			recognition.lang = 'en-US';
+			recognition.start();
+		} else {
+			recognizing=false;
+			recognition.stop();
+	       	return;
+		}
 	}
 	
 	if ('webkitSpeechRecognition' in window) {
