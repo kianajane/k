@@ -20,16 +20,25 @@ if(Meteor.isClient){
 	
 	Template.game.events({
 		"click #start": function(event){
-			startDictation(event);
+			start(event);
 		}
 	});
 	
+	var running=false;
+	var enemyDrawn = false;
 	
-	Template.game.rendered = function draw(){
+	function draw(){
+		console.log("drawing board");
 		var drawContext = gameboard.getContext("2d");
 		drawContext.fillStyle="#eee";
 		drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 		drawContext.strokeStyle="#f00";
+		drawEnemy();
+		console.log("drawing enemy");
+		drawContext.strokeStyle=enemy.c;
+		drawContext.beginPath();
+		drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
+		drawContext.stroke();
 	};
 
 	function getNewWord(){
@@ -42,13 +51,17 @@ if(Meteor.isClient){
 		return Math.random() * (max - min) + min;
 	}
 	
-	function startDictation(event) {
-		if (!recognizing) {
+	function start(event) {
+		if (!running) {
+			running=true;
 	  		recognizing=true;
 	 		final_transcript = '';
 			recognition.lang = 'en-US';
 			recognition.start();
+			drawEnemy();
+			gameLoop();
 		} else {
+			running=false;
 			recognizing=false;
 			recognition.stop();
 	       	return;
@@ -104,24 +117,36 @@ if(Meteor.isClient){
 	    };
 	}
 	
-	function Enemy(x,y,r,c,vx,vy){
+	function Enemy(x,y,r,c){
 		this.x=x;
 		this.y=y;
 		this.r=r;
 		this.c=c;
-		this.vx=vx;
-		this.vy=vy;
 		this.alive = true;
 	}
+
+	var drawEnemy = function() {
+		if (!enemyDrawn) {
+			this.enemy = new Enemy(gameboard.width/2,20,20,"black");
+			enemyDrawn=true;
+		} else {
+			this.enemy.update();
+		}
+	}
 	
-	Enemy.prototype.update = function(dt){
-		if ((this.y + this.r >= 100) || (this.y - this.r <= 0)) this.vy *= -1;
-		if ((this.x + this.r >= 100 )|| (this.x - this.r <= 0)) this.vx *= -1;
-		this.x += this.vx*dt;
-		this.y += this.vy*dt;
+	Enemy.prototype.update = function(){
+		console.log("update");
+		// if (this.y - this.r >= gameboard.height) {
+		// 	running=false;
+		// 	this.alive=false;
+		// } else {
+			this.y += 20;
+		// }
 	};
-	
-	theEnemy = new Enemy(50,50,5,"black",10,-5);
-	
-	
+
+	function gameLoop(){
+		console.log("game loop");
+		draw();
+		if (running) window.requestAnimationFrame(gameLoop);
+	}
 }
