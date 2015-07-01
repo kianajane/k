@@ -7,5 +7,4 @@ Meteor.startup(function(){
 		Words.insert({theWord:"the"});
 		Words.insert({theWord:"cat"});
 	}
-
 });
