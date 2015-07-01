@@ -24,6 +24,7 @@ if(Meteor.isClient){
 	Template.game.events({
 		"click #start": function(event){
 			startDictation(event);
+			draw();
 		}
 	});
 	
