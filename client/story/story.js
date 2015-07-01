@@ -17,7 +17,9 @@ var final_transcript = '';
 var recognizing = false;
 var interim_transcript = '';
 var index=0;
-sentence = l1[0];
+
+story1 = Phonetics.find({sound: "R"}).fetch()[0].story;
+sentence = story1[index];
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
@@ -53,14 +55,15 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
+      //sentence changing happens here
       console.log ("say: " + sentence);
       if (interim_transcript.includes(sentence)) {
-      	sentence = l1[index];
+      	sentence = Phonetics.find({sound: "R"}).fetch()[0].story[index];
       	$("#senth1").html(sentence);
-		console.log("you're awesome");
-		console.log(index + "   " + sentence);
-		index++;
-	  }
+    		console.log("you're awesome");
+    		console.log(index + "   " + sentence);
+    		index++;
+    	  }
     };
 }
 
