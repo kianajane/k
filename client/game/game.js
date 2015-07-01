@@ -21,18 +21,17 @@ if(Meteor.isClient){
 	Template.game.events({
 		"click #start": function(event){
 			startDictation(event);
-			draw();
 		}
 	});
 	
 	
-	function draw(){
+	Template.game.rendered = function draw(){
 		var drawContext = gameboard.getContext("2d");
 		drawContext.fillStyle="#eee";
 		drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 		drawContext.strokeStyle="#f00";
-	}
-	
+	};
+
 	function getNewWord(){
 		theWord = words[Math.round(getRandomArbitrary(0,24))];
 		console.log(theWord);
@@ -44,12 +43,16 @@ if(Meteor.isClient){
 	}
 	
 	function startDictation(event) {
-	  recognizing=true;
-	  final_transcript = '';
-	  recognition.lang = 'en-US';
-	  recognition.start();
-	  //final_span.innerHTML = '';
-	  //interim_span.innerHTML = "I'm listening...";
+		if (!recognizing) {
+	  		recognizing=true;
+	 		final_transcript = '';
+			recognition.lang = 'en-US';
+			recognition.start();
+		} else {
+			recognizing=false;
+			recognition.stop();
+	       	return;
+		}
 	}
 	
 	if ('webkitSpeechRecognition' in window) {
