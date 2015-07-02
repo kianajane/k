@@ -20,7 +20,28 @@ Meteor.startup(function(){
 														"\"Fish can hear a leaf fall off of a tree,\" he said.", 
 														"The little girl playing the saxophone said, \"I'm Fay, and the fish like my music.\"", 
 														"Philip looked into the water and saw five fish swimming.", 
-														"He began to laugh and said, \"Will you meet me here every Friday?\"")})
+														"He began to laugh and said, \"Will you meet me here every Friday?\"")}),
+		Phonetics.insert({sound: "K", words: "", story: new Array ("Katie is careful with her candy.", "She loves it.", 
+														"She doesn't like cookies, crackers, or cupcakes - just candy.", 
+														"She likes her candy so much, she puts a lock on her candy box whenever she goes to sleep.", 
+														"She wears the key around her neck.",
+														"All of that changed after Katie got a sick stomach from eating too much candy.", 
+														"Now she eats healthy food like carrots, corn, and turkey.", "She hopes she won't get sick like that again.")}),
+		Phonetics.insert({sound: "B", words: "", story: new Array ("When it was bedtime I put my book back on the shelf.", "I went into the kitchen and made myself a banana and bologna sandwich for school.", 
+														"Then I helped take the bib off of my baby sister.", "I would need my energy for the kickball game in the morning.",
+														"I was about to fall asleep when I remembered that I still needed to rub my lucky rabbit foot.", "I laid in bed wishing that kickball could be my job.", "\"Until somebody makes it popular, nobody will be able to make kickball their job,\" I thought.",
+														"I was so busy thinking that I fell asleep.")}),
+		Phonetics.insert({sound: "H", words: "", story: new Array ("Homer was a happy hamster who lived in a heart shaped house.", "His owner, Hazel, was a redhead. Homer had the best cage.", 
+														"It was almost the size of a doghouse.", "His favorite toy was his hamster wheel.",
+														"It was behind his water dish.", "Homer always wore his hamster helmet when he ran on his hamster wheel.", 
+														"After running he would eat a hot dog and honey.", "He was happy with his life and hoped it would never change.")}),
+		Phonetics.insert({sound: "M", words: "", story: new Array ("Mindy wanted to travel more.", "She watched a movie about someone who traveled the world and that is what she was going to do.",
+														"She told her family and left home with her camera, comb, a map, and some other belongings.", 
+														"There were so many things she wanted to do and see.",
+														"She wanted to see a flamingo, a moose, masks from other countries, a camel, and a tomato the size of a watermelon.", 
+														"She wanted to climb the highest mountain, swim in the ocean, and see the bathroom in a king's palace.", "She would have so many stories to tell.",
+														"When she got to the bus station and was ready to buy a ticket, she realized...she didn't have any money.",
+														 "\"They didn't show that in the movie,\" she thought as she walked home, \"I'm sure I can solve this problem.\"")})
 
 	}
 });
