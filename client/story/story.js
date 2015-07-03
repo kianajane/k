@@ -8,8 +8,6 @@ var recognizing = false;
 var interim_transcript = '';
 var index=0;
 
-story1 = Phonetics.find({sound: "R"}).fetch()[0].story;
-sentence = story1[index];
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
@@ -87,6 +85,10 @@ var click = false;
 
 Template.story.events({
 	'click #start_story': function(event){
+
+    story1 = Phonetics.find({sound: "R"}).fetch()[0].story;
+    sentence = story1[index];
+    
 		startDictation(event);
 		$("#senth1").html(sentence);
 		//reading();
