@@ -6,8 +6,8 @@ if(Meteor.isClient){
 	var recognizing = false;
 	var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
 		"father","life","power","child","hour","world","game","school","line"];
-	var correct=false;
 	var correctCounter = 0;
+	var alive = false;
 	// var wordCounter = 1;
 	// var attempts = 0;
 	
@@ -40,6 +40,20 @@ if(Meteor.isClient){
 		console.log(theWord);
 		return theWord;
 	}
+
+	function next(event){
+		getNewWord();
+		$("#say_word").html("say: "+theWord);
+	 	final_transcript = '';
+	 	interim_transcript = '';
+	 	if (!recognizing) {
+			recognition.lang = 'en-US';
+			recognition.start();
+		}
+		enemyDrawn=false;
+		running=true;
+		gameLoop();
+	}
 	
 	function getRandomArbitrary(min, max) {
 		return Math.random() * (max - min) + min;
@@ -65,26 +79,25 @@ if(Meteor.isClient){
 	
 	    recognition.onresult = function(event) {
 			myevent = event;
-	      var interim_transcript = '';
 	      for (var i = event.resultIndex; i < event.results.length; ++i) {
 			console.log("i="+i);
 			confidence = Math.round(100*event.results[i][0].confidence);
 
 	        if (event.results[i].isFinal) {
-	        	final_transcript += event.results[i][0].transcript.trim();
+	        	final_transcript = event.results[i][0].transcript.trim();
 				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
 	         } else {
-	        	interim_transcript += event.results[i][0].transcript.trim();
+	        	interim_transcript = event.results[i][0].transcript.trim();
 				console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
-	         	if(interim_transcript.includes(theWord) && confidence>60){
-					correct=true;
+	         	if(interim_transcript.includes(theWord) && confidence>60 && alive){
 					correctCounter++;
 					document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 					console.log("Congratulations! You said "+theWord+" correctly!\n");
 					 			// You have now said "+correctCounter+" word(s) correctly");
-					this.alive=false;
+					alive=false;
 					running=false;
-					recognition.stop();
+					// fireworks();
+					next();
 			    }
 	         }
 	      }
@@ -132,7 +145,7 @@ if(Meteor.isClient){
 		this.y=y;
 		this.r=r;
 		this.c=c;
-		this.alive = true;
+		alive=true;
 	}
 
 	var drawEnemy = function() {
@@ -149,9 +162,10 @@ if(Meteor.isClient){
 		if (this.y + this.r >= gameboard.height) {
 			this.y = gameboard.height-this.r;
 			running=false;
-			this.alive=false;
+			recognition.stop();
+			alive=false;
 		} else {
-			this.y += 0.2;
+			this.y += 0.5;
 		}
 	};
 
