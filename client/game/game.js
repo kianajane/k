@@ -21,6 +21,11 @@ if(Meteor.isClient){
 	Template.game.events({
 		"click #start": function(event){
 			start(event);
+			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
+		},
+		"click #pause": function(event){
+			stop(event);
+			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
 		}
 	});
 	
@@ -100,12 +105,14 @@ if(Meteor.isClient){
 			recognition.start();
 			drawEnemy();
 			gameLoop();
-		} else {
-			running=false;
-			recognizing=false;
-			recognition.stop();
-	       	return;
 		}
+	}
+	
+	function stop(event) {
+		running=false;
+		recognizing=false;
+		recognition.stop();
+       	return;
 	}
 	
 	function draw(){
@@ -142,12 +149,13 @@ if(Meteor.isClient){
 	
 	Enemy.prototype.update = function(){
 		console.log("update");
-		// if (this.y - this.r >= gameboard.height) {
-		// 	running=false;
-		// 	this.alive=false;
-		// } else {
-			this.y += 10;
-		// }
+		if (this.y + this.r >= gameboard.height) {
+			this.y = gameboard.height-this.r;
+			running=false;
+			this.alive=false;
+		} else {
+			this.y += 2;
+		}
 	};
 
 	function gameLoop(){
