@@ -1,6 +1,6 @@
 Meteor.startup(function(){
 	if (Phonetics.find({}).count()==0) {
-		Phonetics.insert({sound: "L", words: "", story: new Array ("I like cheese.","April the elephant lived in Brazil.",
+		Phonetics.insert({sound: "L", words: "", story: new Array ("I, like. Cheese!","April the elephant lived in Brazil.",
 														"Her friends Lucy the Lizard and Lexie the Owl liked to be lazy.",
 														"They would play on the log in the lake, take extra long lunches, and dig holes.",
 														"Then they met Albert the Whale, near a pool of water, by the ocean.",

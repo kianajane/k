@@ -44,13 +44,36 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //sentence changing happens here
-      console.log ("say: " + story1[index]);
+      trimStory = story1[index].replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
+      //console.log ("say: " + capitalize(trimStory));
       $("#senth1").html(story1[index]);
-      if (interim_transcript.includes(story1[index])) {
-    		console.log("you're awesome");
-    		console.log(index + "   " + story1[index]);
-    		index++;
-    	  }
+      interim_transcript = interim_transcript.toLowerCase()//.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"")
+     
+
+      words = trimStory.split(" ");
+
+      for (var j = 0; j < words.length; j++)
+      {
+
+        console.log ("say: " + words[j]);
+        if (interim_transcript.includes(words[j]))
+        {
+            console.log("you're awesome!!!!!");
+            console.log(index + "   " + words[j]);
+        }
+
+
+        /*// If whole sentence correct
+        if (interim_transcript.includes(trimStory)) {
+      		console.log("you're awesome");
+      		console.log(index + "   " + story1[index]);
+
+          // Can we get the interim transcript to reset somehow???
+          //interim_transcript.replace(interim_transcript, '');
+      		index++;*/
+      	  
+          //}
+      }
     };
 }
 
