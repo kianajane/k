@@ -1,6 +1,8 @@
 <template name="game">
-	<h1>say: {{word}}</h1>
-	<button class="btn btn-default" type="submit" id="start">Start game</button>
+	<h1 id="say_word">say: {{word}}</h1>
+	<div id="game_controls" class="centered">
+		<button class="btn btn-default" type="submit" id="start">Start game</button>
+	</div>
 	<canvas id="gameboard" width="1135" height = "568"></canvas>
 	{{> score}}
 </template>
