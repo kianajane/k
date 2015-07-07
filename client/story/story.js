@@ -8,8 +8,6 @@ var recognizing = false;
 var interim_transcript = '';
 var index=0;
 
-story1 = Phonetics.find({sound: "R"}).fetch()[0].story;
-sentence = story1[index];
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
@@ -46,12 +44,11 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //sentence changing happens here
-      console.log ("say: " + sentence);
-      if (interim_transcript.includes(sentence)) {
-      	sentence = Phonetics.find({sound: "R"}).fetch()[0].story[index];
-      	$("#senth1").html(sentence);
+      console.log ("say: " + story1[index]);
+      $("#senth1").html(story1[index]);
+      if (interim_transcript.includes(story1[index])) {
     		console.log("you're awesome");
-    		console.log(index + "   " + sentence);
+    		console.log(index + "   " + story1[index]);
     		index++;
     	  }
     };
@@ -78,21 +75,13 @@ function startDictation(event) {
   recognition.start();
 }
 
-
-function getSent() {
-	return sentence;
-}
-
 var click = false;
 
 Template.story.events({
 	'click #start_story': function(event){
+
+    story1 = Phonetics.find({sound: "L"}).fetch()[0].story;    
 		startDictation(event);
-		$("#senth1").html(sentence);
-		//reading();
+		$("#senth1").html(story1[index]);
 	}
 })
-
-// Template.getSentence.helpers({
-// 	sent: getSent()
-// });
