@@ -1,6 +1,7 @@
 if(Meteor.isClient){
 	
 	var final_transcript = '';
+	var interim_transcript = '';
 	var confidence = null;
 	var recognizing = false;
 	var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
@@ -43,7 +44,7 @@ if(Meteor.isClient){
 		console.log("webkit is available!");
 		var recognition = new webkitSpeechRecognition();
 	    recognition.continuous = true;
-	    recognition.interimResults = false;
+	    recognition.interimResults = true;
 	
 	    recognition.onstart = function() {
 	      recognizing = true;
@@ -62,32 +63,27 @@ if(Meteor.isClient){
 	      var interim_transcript = '';
 	      for (var i = event.resultIndex; i < event.results.length; ++i) {
 			console.log("i="+i);
-	
+			confidence = Math.round(100*event.results[i][0].confidence);
+
 	        if (event.results[i].isFinal) {
-	        	confidence = Math.round(100*event.results[i][0].confidence);
 	        	final_transcript += event.results[i][0].transcript.trim();
 				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+	         } else {
+	        	interim_transcript += event.results[i][0].transcript.trim();
+				console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+	         	if(interim_transcript.includes(theWord) && confidence>60){
+					correct=true;
+					correctCounter++;
+					document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
+					console.log("Congratulations! You said "+theWord+" correctly!\n");
+					 			// You have now said "+correctCounter+" word(s) correctly");
+					this.alive=false;
+					running=false;
+					recognition.stop();
+			    }
 	         }
 	      }
-	
-	      //final_span.innerHTML = linebreak("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
-	      //interim_span.innerHTML = linebreak(interim_transcript);
-	      if (final_transcript.includes(theWord) && confidence>60) {
-	      	correct=true;
-	      } 
-	      counter(correct);
-		  
-		  // if(final_transcript.includes(theWord) && confidence>60){
-			//   alert("Congratulations! You said the word correctly on your "+attempts+" attempt!\n
-			//			You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
-			//   changeWord(event);
-		  // } else {
-			//   alert("Sorry, I didn't quite catch that...");
-		  // }
-		  document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
-		  
-	    };
-	}
+	    }	
 	
 /* --------------------------------------------------------------------------------------------------------------------------------*/
 	
@@ -96,6 +92,7 @@ if(Meteor.isClient){
 			running=true;
 	  		recognizing=true;
 	 		final_transcript = '';
+	 		interim_transcript = '';
 			recognition.lang = 'en-US';
 			recognition.start();
 			drawEnemy();
@@ -109,13 +106,13 @@ if(Meteor.isClient){
 	}
 	
 	function draw(){
-		console.log("drawing board");
+		// console.log("drawing board");
 		var drawContext = gameboard.getContext("2d");
 		drawContext.fillStyle="#eee";
 		drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 		drawContext.strokeStyle="#f00";
 		drawEnemy();
-		console.log("drawing enemy");
+		// console.log("drawing enemy");
 		drawContext.strokeStyle=enemy.c;
 		drawContext.beginPath();
 		drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
@@ -141,18 +138,20 @@ if(Meteor.isClient){
 	};
 	
 	Enemy.prototype.update = function(){
-		console.log("update");
-		// if (this.y - this.r >= gameboard.height) {
-		// 	running=false;
-		// 	this.alive=false;
-		// } else {
-			this.y += 10;
-		// }
+		// console.log("update");
+		if (this.y + this.r >= gameboard.height) {
+			this.y = gameboard.height-this.r;
+			running=false;
+			this.alive=false;
+		} else {
+			this.y += 0.2;
+		}
 	};
 
 	function gameLoop(){
-		console.log("game loop");
+		// console.log("game loop");
 		draw();
 		if (running) window.requestAnimationFrame(gameLoop);
 	}
+}
 }
