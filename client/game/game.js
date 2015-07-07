@@ -26,21 +26,9 @@ if(Meteor.isClient){
 	
 	var running=false;
 	var enemyDrawn = false;
-	
-	function draw(){
-		console.log("drawing board");
-		var drawContext = gameboard.getContext("2d");
-		drawContext.fillStyle="#eee";
-		drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-		drawContext.strokeStyle="#f00";
-		drawEnemy();
-		console.log("drawing enemy");
-		drawContext.strokeStyle=enemy.c;
-		drawContext.beginPath();
-		drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
-		drawContext.stroke();
-	};
 
+/* -------------------------------------This is the code for getting the word to test----------------------------------------------*/
+	
 	function getNewWord(){
 		theWord = words[Math.round(getRandomArbitrary(0,24))];
 		console.log(theWord);
@@ -49,23 +37,6 @@ if(Meteor.isClient){
 	
 	function getRandomArbitrary(min, max) {
 		return Math.random() * (max - min) + min;
-	}
-	
-	function start(event) {
-		if (!running) {
-			running=true;
-	  		recognizing=true;
-	 		final_transcript = '';
-			recognition.lang = 'en-US';
-			recognition.start();
-			drawEnemy();
-			gameLoop();
-		} else {
-			running=false;
-			recognizing=false;
-			recognition.stop();
-	       	return;
-		}
 	}
 	
 	if ('webkitSpeechRecognition' in window) {
@@ -107,7 +78,8 @@ if(Meteor.isClient){
 	      counter(correct);
 		  
 		  // if(final_transcript.includes(theWord) && confidence>60){
-			//   alert("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
+			//   alert("Congratulations! You said the word correctly on your "+attempts+" attempt!\n
+			//			You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
 			//   changeWord(event);
 		  // } else {
 			//   alert("Sorry, I didn't quite catch that...");
@@ -116,6 +88,40 @@ if(Meteor.isClient){
 		  
 	    };
 	}
+	
+/* --------------------------------------------------------------------------------------------------------------------------------*/
+	
+	function start(event) {
+		if (!running) {
+			running=true;
+	  		recognizing=true;
+	 		final_transcript = '';
+			recognition.lang = 'en-US';
+			recognition.start();
+			drawEnemy();
+			gameLoop();
+		} else {
+			running=false;
+			recognizing=false;
+			recognition.stop();
+	       	return;
+		}
+	}
+	
+	function draw(){
+		console.log("drawing board");
+		var drawContext = gameboard.getContext("2d");
+		drawContext.fillStyle="#eee";
+		drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+		drawContext.strokeStyle="#f00";
+		drawEnemy();
+		console.log("drawing enemy");
+		drawContext.strokeStyle=enemy.c;
+		drawContext.beginPath();
+		drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
+		drawContext.stroke();
+	};
+
 	
 	function Enemy(x,y,r,c){
 		this.x=x;
@@ -132,7 +138,7 @@ if(Meteor.isClient){
 		} else {
 			this.enemy.update();
 		}
-	}
+	};
 	
 	Enemy.prototype.update = function(){
 		console.log("update");
@@ -140,7 +146,7 @@ if(Meteor.isClient){
 		// 	running=false;
 		// 	this.alive=false;
 		// } else {
-			this.y += 20;
+			this.y += 10;
 		// }
 	};
 
