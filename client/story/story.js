@@ -13,7 +13,7 @@ sent = "";
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
+    recognition.continuous = false;
     recognition.interimResults = true;
 
     recognition.onstart = function() {
@@ -96,6 +96,7 @@ if ('webkitSpeechRecognition' in window) {
           {
             console.log("you're awesome!!!!!");
             wordNum++;
+            recognition.start();
           }
       }
     };
