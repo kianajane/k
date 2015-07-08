@@ -4,7 +4,7 @@
 */
 
 var final_transcript = '';
-var recognizing = false;
+recognizing = false;
 var interim_transcript = '';
 index=0;
 wordNum = 0;
@@ -13,7 +13,7 @@ sent = "";
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
+    recognition.continuous = false; // 7/8 change
     recognition.interimResults = true;
 
     recognition.onstart = function() {
@@ -70,7 +70,8 @@ if ('webkitSpeechRecognition' in window) {
             index++;
 
             // Can we get the interim transcript to reset somehow??? Doesn't work.
-            //startDictation(event);
+            final_transcript = ''; interim_transcript='';
+            recognition.start();
             //startDictation(event);
 
             event.results = [];
