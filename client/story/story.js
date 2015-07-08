@@ -6,8 +6,9 @@
 var final_transcript = '';
 var recognizing = false;
 var interim_transcript = '';
-var index=0;
-
+index=0;
+wordNum = 0;
+sent = "";
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
@@ -43,14 +44,60 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
+
+      // Where the color change happens. When we're up to that word, change it green.
+      sent = story1[index];
+
+      prettyWords = sent.split(" ");
+
+      newSent = "";
+      for(var j = 0; j < prettyWords.length; j++)
+      {
+
+        if (j == wordNum)
+        {
+          newSent += " " + prettyWords[j].fontcolor("blue"); 
+        }else 
+        {
+          newSent += " " + prettyWords[j].fontcolor("black");
+        }
+      }
+      $("#senth1").html(newSent);
+
+
+
       //sentence changing happens here
-      console.log ("say: " + story1[index]);
-      $("#senth1").html(story1[index]);
-      if (interim_transcript.includes(story1[index])) {
-    		console.log("you're awesome");
-    		console.log(index + "   " + story1[index]);
-    		index++;
-    	  }
+      trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
+      interim_transcript = interim_transcript.toLowerCase()
+
+      interim_transcript = " " + interim_transcript + " ";
+
+      words = trimStory.split(" ");
+       
+      console.log ("say: " + words[wordNum]);
+
+      // Note: we are ignoring confidence. Also, should be only working for complete words. Eg. "I" is found in "something".
+      if (interim_transcript.includes(words[wordNum]))
+      {
+          if (wordNum >= words.length - 1)
+          {
+            // When sentence is over, change sentence.
+            console.log ("you've completed the sentence!");
+            index++;
+
+            // Can we get the interim transcript to reset somehow??? Doesn't work.
+            //startDictation(event);
+            //startDictation(event);
+
+            event.results = [];
+            wordNum = 0;
+            
+          } else
+          {
+            console.log("you're awesome!!!!!");
+            wordNum++;
+          }
+      }
     };
 }
 
@@ -62,12 +109,14 @@ function linebreak(s) {
 }
 
 function capitalize(s) {
-  return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
+  return s;
+  //return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
 }
 
 function startDictation(event) {
   if (recognizing) {
     recognition.stop();
+    recognizing = false;
     return;
   }
   final_transcript = '';
@@ -82,6 +131,7 @@ Template.story.events({
 
     story1 = Phonetics.find({sound: "L"}).fetch()[0].story;    
 		startDictation(event);
-		$("#senth1").html(story1[index]);
+    sent = story1[index];
+		$("#senth1").html(sent);
 	}
 })

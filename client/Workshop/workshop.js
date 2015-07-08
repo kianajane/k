@@ -8,6 +8,9 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 var final_transcript = '';
 var confidence = null;
 var recognizing = false;
+
+// Should switch to new words!
+//var words = Phonetics.find({sound: "R"}).fetch()[0].words;
 var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
 	"father","life","power","child","hour","world","game","school","line"];
 var correct=false;
