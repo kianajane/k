@@ -28,7 +28,12 @@ if(Meteor.isClient){
 		"click #pause": function(event){
 			stop(event);
 			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
-		}
+		},
+		"click #restart": function(event){
+			enemyDrawn=false;
+			start(event);
+			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");	
+		}	
 	});
 	
 	var running=false;
@@ -41,21 +46,6 @@ if(Meteor.isClient){
 		console.log(theWord);
 		return theWord;
 	}
-
-	function next(event){
-		getNewWord();
-		$("#say_word").html("say: "+theWord);
-		enemyDrawn=false;
-		radius += 5;
-		// 	final_transcript = '';
-		//  	interim_transcript = '';
-		// 	recognition.start();
-		// 	recognizing=true;
-		// 	console.log("recognition started");
-		// }
-		// gameLoop();
-		start(event);
-	}
 	
 	function getRandomArbitrary(min, max) {
 		return Math.random() * (max - min) + min;
@@ -67,7 +57,8 @@ if(Meteor.isClient){
 	    recognition.continuous = true;
 	    recognition.interimResults = true;
 	
-	    recognition.onstart = function() {
+	    recognition.onstart = function() {	 
+	      console.log("recognition started");    
 	      recognizing = true;
 	    };
 	
@@ -81,113 +72,136 @@ if(Meteor.isClient){
 	
 	    recognition.onresult = function(event) {
 			myevent = event;
+			console.log("result");
+
 	      for (var i = event.resultIndex; i < event.results.length; ++i) {
 			console.log("i="+i);
 			confidence = Math.round(100*event.results[i][0].confidence);
 
 	        if (event.results[i].isFinal) {
 	        	final_transcript = event.results[i][0].transcript.trim();
-				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+				console.log('final events.results[i][0].transcript = '+ JSON.stringify(final_transcript)
+						+ " --- " +JSON.stringify(confidence));
+				if(final_transcript.includes(theWord) && confidence>60 && alive){
+	         		correct();
+			    }
+				final_transcript='';
 	         } else {
 	        	interim_transcript = event.results[i][0].transcript.trim();
-				console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+				console.log('interim events.results[i][0].transcript = '+ JSON.stringify(interim_transcript)
+						+ " --- " +JSON.stringify(confidence));
 	         	if(interim_transcript.includes(theWord) && confidence>60 && alive){
-					// recognition.stop();
-					// recognizing=false;
-					// console.log("recognition stopped");
-					correctCounter++;
-					document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
-					console.log("Congratulations! You said "+theWord+" correctly!\n");
-					 			// You have now said "+correctCounter+" word(s) correctly");
-					alive=false;
-					running=false;
-					// fireworks();
-					stop(event);
-					console.log("recognition stopped: "+recognizing);
-					next(event);
+	         		correct();
 			    }
+			    interim_transcript='';
 	         }
 	      }
-	    }	
+	    }
+
+	    function correct() {
+			correctCounter++;
+			document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
+			console.log("Congratulations! You said "+theWord+" correctly!\n");
+			alive=false;
+			// fireworks();
+			running=false;
+			next(event);
+	    }
 	
 /* --------------------------------------------------------------------------------------------------------------------------------*/
-	Template.game.rendered=function(){
-		draw(0);
-	}
+		function start(event) {
+			if (!running) {
+				running=true;
+		  		recognizing=true;
+		 		final_transcript = '';
+		 		interim_transcript = '';
+				recognition.lang = 'en-US';
+				recognition.start();
+				lastTime = (new Date()).getTime();
+				gameLoop();
+			}
+		}
+		
+		function stop(event) {
+			running=false;
+			recognizing=false;
+			recognition.stop();
+			// console.log("now");
+	       	return;
+		}
 
-	function start(event) {
-		if (!running) {
-			running=true;
-	  		recognizing=true;
-	 		final_transcript = '';
-	 		interim_transcript = '';
-			recognition.lang = 'en-US';
-			recognition.start();
+		Template.game.rendered=function(){
+			draw(0);
+		}
+
+		function next(event){
+			getNewWord();
+			$("#say_word").html("say: "+theWord);
+			if (!recognizing){
+				start(event);
+				console.log("recognition started");
+			}
+			enemyDrawn=false;
+			radius += 5;
+			running=true;  		
 			lastTime = (new Date()).getTime();
 			gameLoop();
 		}
-	}
-	
-	function stop(event) {
-		running=false;
-		recognizing=false;
-		recognition.stop();
-       	return;
-	}
-	
-	function draw(dt){
-		// console.log("drawing board");
-		var drawContext = gameboard.getContext("2d");
-		drawContext.fillStyle="#eee";
-		drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-		drawContext.strokeStyle="#f00";
-		drawEnemy(dt);
-		// console.log("drawing enemy");
-		drawContext.strokeStyle=enemy.c;
-		drawContext.beginPath();
-		drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
-		drawContext.stroke();
-	};
+		
+		function draw(dt){
+			// console.log("drawing board");
+			var drawContext = gameboard.getContext("2d");
+			drawContext.fillStyle="#eee";
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+			drawContext.strokeStyle="#f00";
+			drawEnemy(dt);
+			// console.log("drawing enemy");
+			drawContext.strokeStyle=enemy.c;
+			drawContext.beginPath();
+			drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
+			drawContext.stroke();
+		};
 
-	
-	function Enemy(x,y,r,v,c){
-		this.x=x;
-		this.y=y;
-		this.r=r;
-		this.v=v;
-		this.c=c;
-		alive=true;
-	}
-
-	var drawEnemy = function(dt) {
-		if (!enemyDrawn) {
-			this.enemy = new Enemy(gameboard.width/2,20,20+radius,50,"black");
-			enemyDrawn=true;
-		} else {
-			this.enemy.update(dt/1000.0);
+		
+		function Enemy(x,y,r,v,c){
+			this.x=x;
+			this.y=y;
+			this.r=r;
+			this.v=v;
+			this.c=c;
+			alive=true;
 		}
-	};
-	
-	Enemy.prototype.update = function(dt){
-		// console.log("update");
-		if (this.y + this.r >= gameboard.height) {
-			this.y = gameboard.height-this.r;
-			running=false;
-			recognition.stop();
-			recognizing=false;
-			alive=false;
-		} else {
-			this.y += this.v*dt;
-		}
-	};
 
-	function gameLoop(){
-		// console.log("game loop");
-		var theTime = (new Date()).getTime();
-		var dt = theTime - lastTime;  // in milliseconds
-		lastTime = theTime;
-		draw(dt);
-		if (running) window.requestAnimationFrame(gameLoop);
+		var drawEnemy = function(dt) {
+			if (!enemyDrawn) {
+				this.enemy = new Enemy(gameboard.width/2,20+radius,20+radius,50,"black");
+				enemyDrawn=true;
+			} else {
+				this.enemy.update(dt/1000.0);
+			}
+		};
+		
+		Enemy.prototype.update = function(dt){
+			// console.log("update");
+			if (this.y + this.r >= gameboard.height) {
+				this.y = gameboard.height-this.r;
+				running=false;
+				recognition.stop();
+				recognizing=false;
+				alive=false;
+				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"restart\">Restart</button>");
+			} else {
+				this.y += this.v*dt;
+			}
+		};
+
+		function gameLoop(){
+			// console.log("game loop");
+			var theTime = (new Date()).getTime();
+			var dt = theTime - lastTime;  // in milliseconds
+			lastTime = theTime;
+			draw(dt);
+			if (running) window.requestAnimationFrame(gameLoop);
+		}
 	}
-}
 }
