@@ -1,6 +1,8 @@
 <template name="profileEdit2">
 	<form id="profileEdit">
 
+
+    <!-- We should change this to start with the current values -->
 		first name:<input type="text" name="name" id="name" value="{{firstName}}"><br/>
 		last name:<input type="text" name="name" id="name" value="{{lastName}}"><br/>
 		photo URL:<input type="text" name="photo" id="photo" value="{{photo}}"><br/>
@@ -16,7 +18,10 @@
   	<hr>
 	<div class="row">
       <!-- left column -->
-      <div class="col-md-3">
+
+     <!--  Note: Not actually using gravatar images. -->
+
+      <!-- <div class="col-md-3">
         <div>
           <img src="{{photo}}" class="avatar img-circle" id="profilePhoto" alt="avatar">
           The profile photo comes from gravatar.com
@@ -24,7 +29,7 @@
 		  Add an image to your profile by creating a gravatar for {{myEmail}} image at 
 		   <a href="http://www.gravatar.com" target="_blank">www.gravatar.com</a>
         </div>
-      </div>
+      </div> -->
       
       <!-- edit form column -->
       <div class="col-md-9 personal-info">

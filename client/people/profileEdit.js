@@ -12,12 +12,12 @@ Template.profileEdit.events({
 		var firstName = event.target.firstName.value;
 		var lastName = event.target.lastName.value;
 		var userName = event.target.userName.value;
-		Meteor.users.update(this._id,
+		Meteor.users.update(Meteor.userId(),
 			{$set:{'profile.bio':bio, 
 					'profile.firstName':firstName, 
 					'profile.lastName':lastName,
 					'profile.userName':userName}});
-		Router.go('/profile/'+this._id);
+		Router.go('/profile');//+this._id);
 		
 	}
 })

@@ -1,8 +1,4 @@
 Template.profile.helpers({
-	ownPost:function(){ // returns true if the logged in user owns the profile being viewed
-		console.log(this._id);
-		console.log(Meteor.userId());
-		return (this._id == Meteor.userId());},
 	bio: function(){
 		console.log("profile this = "+JSON.stringify(this));
 		return this.profile.bio;
