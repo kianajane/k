@@ -8,16 +8,10 @@
 var final_transcript = '';
 var recognizing = false;
 var interim_transcript = '';
-<<<<<<< HEAD
-index=0;
-wordNum = 0;
-var sent = "";
-var words = [];
-=======
 var index=0;
 var wordNum = 0;
 sent = "";
->>>>>>> jane
+var words = [];
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
