@@ -130,6 +130,6 @@ Template.story.events({
     story1 = Phonetics.find({sound: "L"}).fetch()[0].story;    
 		startDictation(event);
     sent = story1[index];
-		$("#senth1").html(coloring(sent, 0));
+		$("#senth1").html(coloring(sent, wordNum));
 	}
 })
