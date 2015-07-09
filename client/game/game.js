@@ -42,7 +42,7 @@ if(Meteor.isClient){
 /* -------------------------------------This is the code for getting the word to test----------------------------------------------*/
 	
 	function getNewWord(){
-		theWord = words[Math.round(getRandomArbitrary(0,23))];
+		theWord = words[Math.round(getRandomArbitrary(0,22))];
 		console.log(theWord);
 		return theWord;
 	}
@@ -80,21 +80,31 @@ if(Meteor.isClient){
 
 	        if (event.results[i].isFinal) {
 	        	final_transcript = event.results[i][0].transcript.trim();
-				console.log('final events.results[i][0].transcript = '+ JSON.stringify(final_transcript)
+	        	final_transcript = eachWord(final_transcript);
+				console.log('final events.results['+i+'][0].transcript = '+ JSON.stringify(final_transcript)
 						+ " --- " +JSON.stringify(confidence));
-				if(final_transcript.includes(theWord) && confidence>60 && alive){
+				if(final_transcript==theWord && confidence>60 && alive){
 	         		correct();
 			    }
-				final_transcript='';
 	         } else {
 	        	interim_transcript = event.results[i][0].transcript.trim();
-				console.log('interim events.results[i][0].transcript = '+ JSON.stringify(interim_transcript)
+	        	interim_transcript = eachWord(interim_transcript);
+				console.log('interim events.results['+i+'][0].transcript = '+ JSON.stringify(interim_transcript)
 						+ " --- " +JSON.stringify(confidence));
-	         	if(interim_transcript.includes(theWord) && confidence>60 && alive){
+	         	if(interim_transcript==theWord && confidence>30 && alive){
 	         		correct();
 			    }
-			    interim_transcript='';
 	         }
+	         function eachWord(transcript) {
+		         var current_result = transcript;
+		         var index = current_result.lastIndexOf(" ");
+		         if (index>0){
+		         	current_result = current_result.substring(index+1);
+		         	console.log('full transcript = "'+transcript+'"');
+		         }
+		         return current_result.toLowerCase();
+	         }
+	         
 	      }
 	    }
 
