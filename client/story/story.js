@@ -61,7 +61,7 @@ if ('webkitSpeechRecognition' in window) {
       console.log ("say: " + words[wordNum]);
 
       // Note: we are ignoring confidence. Also, should be only working for complete words. Eg. "I" is found in "something".
-      if (interim_transcript.includes(words[wordNum]))
+      if (interim_transcript.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" "))
       {
           if (wordNum >= words.length - 1)
           {
