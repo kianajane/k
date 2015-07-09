@@ -3,7 +3,10 @@
       http://ctrlq.org/code/19680-html5-web-speech-api
 */
 
-// comment from 7/9: FIGURE OUT A WAY TO MERGE original AND prettyWords!!
+/* comment from 7/9: 
+FIGURE OUT A WAY TO MERGE original AND prettyWords!!
+TIMEOUT SESSION FOR THE RESULTS/CORRECT & INCORRECT COLORING
+*/
 
 var final_transcript = '';
 var recognizing = false;
@@ -12,6 +15,7 @@ var index=0;
 var wordNum = 0;
 sent = "";
 var words = [];
+var original = [];
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
