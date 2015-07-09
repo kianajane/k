@@ -5,11 +5,12 @@
 
 /* comment from 7/9: 
 FIGURE OUT A WAY TO MERGE original AND prettyWords!!
-TIMEOUT SESSION FOR THE RESULTS/CORRECT & INCORRECT COLORING
+TIMEOUT SESSION FOR THE RESULTS--CORRECT & INCORRECT COLORING
+SKIP BUTTON MESSES UP CORRECT & INCORRECT COLORING
 */
 
 var final_transcript = '';
-var recognizing = false;
+recognizing = false;
 var interim_transcript = '';
 var index=0;
 var wordNum = 0;
@@ -20,7 +21,7 @@ var original = [];
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-    recognition.continuous = false;
+    recognition.continuous = true;
     recognition.interimResults = true;
 
     recognition.onstart = function() {
@@ -51,9 +52,7 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
-      sent = story1[index];
-      original = sent.split(" "); //original sentence
-      $("#senth1").html(coloring(sent, wordNum));
+      getSent();
 
       //change all char to lowercase
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
@@ -65,19 +64,19 @@ if ('webkitSpeechRecognition' in window) {
       // Note: we are ignoring confidence. Also, should be only working for complete words. Eg. "I" is found in "something".
       if (interim_transcript.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
           if (wordNum >= words.length - 1) {
-            // When sentence is over, change sentence.
             console.log ("you've completed the sentence!");
             correctWords();
-            index++;
+            index++;  //changes sentence
+            wordNum = 0;  //reset index for words[]
+
             // Can we get the interim transcript to reset somehow??? Doesn't work.
             //final_transcript = ''; interim_transcript='';
             //recognition.start();
-            //startDictation(event);
-            wordNum = 0;     
+            //startDictation(event);    
           } else {
-            console.log("you're awesome!!!!!");
+            //console.log("you're awesome!!!!!");
             wordNum++;
-            recognition.start();
+            //startDictation();
           }
       }
     };
@@ -93,18 +92,24 @@ function capitalize(s) {
   return s;
 }
 
+function getSent() {
+  sent = story1[index];
+  original = sent.split(" "); 
+  $("#senth1").html(coloring(original, wordNum));
+}
+
 //colors the word that you are on blue
-function coloring(sent, wordNum) {
-  prettyWords = sent.split(" ");
+function coloring(original, wordNum) {
+  //prettyWords = sent.split(" ");
   newSent = "";
-  for(var j = 0; j < prettyWords.length; j++)
+  for(var j = 0; j < original.length; j++)
   {
     if (j == wordNum)
     {
-      newSent += " " + prettyWords[j].fontcolor("blue"); 
+      newSent += " " + original[j].fontcolor("blue"); 
     }else 
     {
-      newSent += " " + prettyWords[j].fontcolor("black");
+      newSent += " " + original[j].fontcolor("black");
     }
   }
   return newSent;
@@ -138,7 +143,7 @@ function colorGR(correct, incorrect) {
       newSentence += " " + original[k].fontcolor("red");
     }
   }
-  //console.log(newSentence);
+  console.log(newSentence);
   $("#senth1").html(newSentence);
 }
 
@@ -157,16 +162,15 @@ Template.story.events({
 	'click #start_story': function(event){
     story1 = Phonetics.find({sound: "L"}).fetch()[0].story;    
 		startDictation(event);
-    sent = story1[index];
-		$("#senth1").html(coloring(sent, wordNum));
+    getSent();
 	},
   'click #skip': function(event) {
-    if (wordNum==words.length) {
+    if (wordNum==words.length-1) {
       index++;
       wordNum=0;
     } else {
       wordNum++;
     }
-    $("#senth1").html(coloring(sent, wordNum));
+    $("#senth1").html(coloring(original, wordNum));
   }
 })
