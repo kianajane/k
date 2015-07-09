@@ -4,16 +4,17 @@
 */
 
 var final_transcript = '';
-recognizing = false;
+var recognizing = false;
 var interim_transcript = '';
 index=0;
 wordNum = 0;
-sent = "";
+var sent = "";
+var words = [];
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true; // 7/8 change
+    recognition.continuous = true;
     recognition.interimResults = true;
 
     recognition.onstart = function() {
@@ -44,30 +45,30 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
-
-      // Where the color change happens. When we're up to that word, change it green.
+      //Where the color and sentence change happens. 
+      //When we're up to that word, change it blue.
       sent = story1[index];
       $("#senth1").html(coloring(sent, wordNum));
 
-
-      //sentence changing happens here
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
       interim_transcript = interim_transcript.toLowerCase()
-
       interim_transcript = " " + interim_transcript + " ";
-
       words = trimStory.split(" ");
-       
       console.log ("say: " + words[wordNum]);
 
+      correct = [];
+      incorrect = [];
+
       // Note: we are ignoring confidence. Also, should be only working for complete words. Eg. "I" is found in "something".
-      if (interim_transcript.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" "))
+      if (interim_transcript===words[wordNum] || interim_transcript.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" "))
       {
           if (wordNum >= words.length - 1)
           {
             // When sentence is over, change sentence.
             console.log ("you've completed the sentence!");
-            index++;
+
+            // Make correct words green, incorrect red
+
 
             // Can we get the interim transcript to reset somehow??? Doesn't work.
             final_transcript = ''; interim_transcript='';
@@ -76,7 +77,8 @@ if ('webkitSpeechRecognition' in window) {
 
             event.results = [];
             wordNum = 0;
-            
+            index++;
+
           } else
           {
             console.log("you're awesome!!!!!");
@@ -126,10 +128,18 @@ function startDictation(event) {
 
 Template.story.events({
 	'click #start_story': function(event){
-
     story1 = Phonetics.find({sound: "L"}).fetch()[0].story;    
 		startDictation(event);
     sent = story1[index];
 		$("#senth1").html(coloring(sent, wordNum));
-	}
+	},
+  'click #skip': function(event) {
+    if (wordNum==words.length) {
+      index++;
+      wordNum=0;
+    } else {
+      wordNum++;
+    }
+    $("#senth1").html(coloring(sent, wordNum));
+  }
 })
