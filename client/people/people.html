@@ -1,0 +1,31 @@
+<template name="people">
+<div id="people">
+	<h1>The Summer 2015 CS JBS Community</h1>
+	{{#if currentUser}}
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th class="col-md-1">Gravatar</th>
+					<th class="col-md-11">Profile info</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each myProfile}} <!-- This each isn't necessary, only returns the current user. Should be removed. -->
+					<tr>
+						<td> <a href="{{pathFor 'profile'}}"><img src="{{photo}}" width="100" class="profile-photo"></a></td>
+						<td class="align-left"><b>{{profile.userName}}</b> // {{profile.firstName}} {{profile.lastName}}<br/>
+							{{profile.bio}}</td>
+					</tr>
+				{{/each}}
+			
+
+			</tbody>
+		</table>
+	{{else}}
+		<h2>You must be logged in to see the user profiles</h2>
+	{{/if}}
+	
+
+</div>
+</template>
+		
