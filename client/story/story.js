@@ -126,7 +126,6 @@ function startDictation(event) {
 
 Template.story.events({
 	'click #start_story': function(event){
-
     story1 = Phonetics.find({sound: "L"}).fetch()[0].story;    
 		startDictation(event);
     sent = story1[index];
