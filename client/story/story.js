@@ -118,7 +118,7 @@ function correctWords() {
   var incorrect = [];
   for (var wordI = 0; wordI<=words.length; wordI++) {
     if (interim_transcript.includes(words[wordI])) {
-      correct.push(original[wordI]); console.log("correct: "+correct);
+      correct.push(original[wordI]);
     } else {
       incorrect.push(original[wordI]);
     }
@@ -140,7 +140,7 @@ function colorGR(correct, incorrect) {
       newSentence += " " + original[k].fontcolor("red");
     }
   }
-  console.log(newSentence);
+  //console.log(newSentence);
   $("#senth1").html(newSentence);
 }
 
