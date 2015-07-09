@@ -3,17 +3,19 @@
       http://ctrlq.org/code/19680-html5-web-speech-api
 */
 
+// comment from 7/9: FIGURE OUT A WAY TO MERGE original AND prettyWords!!
+
 var final_transcript = '';
-recognizing = false;
+var recognizing = false;
 var interim_transcript = '';
-index=0;
-wordNum = 0;
+var index=0;
+var wordNum = 0;
 sent = "";
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true; // 7/8 change
+    recognition.continuous = true;
     recognition.interimResults = true;
 
     recognition.onstart = function() {
@@ -29,56 +31,46 @@ if ('webkitSpeechRecognition' in window) {
     };
 
     recognition.onresult = function(event) {
-		myevent = event;
-       
+  		myevent = event;
+         
       for (var i = event.resultIndex; i < event.results.length; ++i) {
-		console.log("i="+i);
+  		console.log("i="+i);
         if (event.results[i].isFinal) {
         	final_transcript += 
-        		Math.round(100*event.results[i][0].confidence)+"% -- "+
-        		capitalize(event.results[i][0].transcript.trim()) +".\n";
-				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+      		Math.round(100*event.results[i][0].confidence)+"% -- "+
+      		capitalize(event.results[i][0].transcript.trim()) +".\n";
+  				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
         } else {
         	interim_transcript += Math.round(100*event.results[i][0].confidence)+"% -- "+event.results[i][0].transcript+"<br>";
-			console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+  			  console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
         }
       }
 
-
-      // Where the color change happens. When we're up to that word, change it green.
       sent = story1[index];
+      original = sent.split(" "); //original sentence
       $("#senth1").html(coloring(sent, wordNum));
 
-
-      //sentence changing happens here
+      //change all char to lowercase
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
-      interim_transcript = interim_transcript.toLowerCase()
-
+      interim_transcript = interim_transcript.toLowerCase();
       interim_transcript = " " + interim_transcript + " ";
-
       words = trimStory.split(" ");
-       
+      
       console.log ("say: " + words[wordNum]);
-
       // Note: we are ignoring confidence. Also, should be only working for complete words. Eg. "I" is found in "something".
-      if (interim_transcript.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" "))
-      {
-          if (wordNum >= words.length - 1)
-          {
+      if (interim_transcript.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
+          if (wordNum >= words.length - 1) {
             // When sentence is over, change sentence.
             console.log ("you've completed the sentence!");
-            index++;
+            correctWords();
 
+            index++;
             // Can we get the interim transcript to reset somehow??? Doesn't work.
-            final_transcript = ''; interim_transcript='';
+            //final_transcript = ''; interim_transcript='';
             //recognition.start();
             //startDictation(event);
-
-            event.results = [];
-            wordNum = 0;
-            
-          } else
-          {
+            wordNum = 0;     
+          } else {
             console.log("you're awesome!!!!!");
             wordNum++;
           }
@@ -94,9 +86,9 @@ function linebreak(s) {
 
 function capitalize(s) {
   return s;
-  //return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
 }
 
+//colors the word that you are on blue
 function coloring(sent, wordNum) {
   prettyWords = sent.split(" ");
   newSent = "";
@@ -111,6 +103,38 @@ function coloring(sent, wordNum) {
     }
   }
   return newSent;
+}
+
+//separates the correct and incorrect words
+function correctWords() {
+  var correct = [];
+  var incorrect = [];
+  for (var wordI = 0; wordI<=words.length; wordI++) {
+    if (interim_transcript.includes(words[wordI])) {
+      correct.push(original[wordI]); console.log("correct: "+correct);
+    } else {
+      incorrect.push(original[wordI]);
+    }
+  }
+  colorGR(correct, incorrect);
+}
+
+//colors the correct words green(G), incorrect words red (R)
+function colorGR(correct, incorrect) {
+  var newSentence = "";
+  for(var k = 0; k < words.length; k++) {
+    var c = k;
+    var corr = correct[c];
+    if (original[k] == corr)
+    {
+      newSentence += " " + corr.fontcolor("green");
+    }else 
+    {
+      newSentence += " " + original[k].fontcolor("red");
+    }
+  }
+  console.log(newSentence);
+  $("#senth1").html(newSentence);
 }
 
 function startDictation(event) {
@@ -130,5 +154,14 @@ Template.story.events({
 		startDictation(event);
     sent = story1[index];
 		$("#senth1").html(coloring(sent, wordNum));
-	}
+	},
+  'click #skip': function(event) {
+    if (wordNum==words.length) {
+      index++;
+      wordNum=0;
+    } else {
+      wordNum++;
+    }
+    $("#senth1").html(coloring(sent, wordNum));
+  }
 })
