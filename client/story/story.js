@@ -5,6 +5,9 @@
 
 /* comment from 7/9: 
 TIMEOUT SESSION FOR THE RESULTS--CORRECT & INCORRECT COLORING
+FIX INCLUDES (error: " they" passes for " the " due to ||s)
+WAIT TIME IF LAST WORD IN SENTENCE IS SKIPPED
+BUGS IN COLORING ARISE IF SKIPPED TOO MUCH
 */
 
 var final_transcript = '';
@@ -67,7 +70,7 @@ if ('webkitSpeechRecognition' in window) {
             correctWords();
             index++;  //changes sentence
             wordNum = 0;  //reset index for words[]
-
+            skipped = [];
             // Can we get the interim transcript to reset somehow??? Doesn't work.
             //final_transcript = ''; interim_transcript='';
             //recognition.start();
@@ -85,6 +88,18 @@ var two_line = /\n\n/g;
 var one_line = /\n/g;
 function linebreak(s) {
   return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+}
+function startDictation(event) {
+  if (recognizing) {
+    recognition.stop();
+    recognizing = false;
+    $("#start_button").html('<button type="button" class="btn btn-success" id="start_story">Begin Story</button>');
+    return;
+  }
+  final_transcript = '';
+  recognition.lang = 'en-US';
+  recognition.start();
+  $("#start_button").html('<button type="button" class="btn btn-info" id="pause_story">Pause Story</button>');
 }
 
 //sentence changing and printing happens here
@@ -140,20 +155,8 @@ function colorGR(correct, incorrect) {
            newSentence += " " + original[k].fontcolor("red");
         }
       }
-      console.log("end of skipped for loop");
     }
   }
-}
-
-function startDictation(event) {
-  if (recognizing) {
-    recognition.stop();
-    recognizing = false;
-    return;
-  }
-  final_transcript = '';
-  recognition.lang = 'en-US';
-  recognition.start();
 }
 
 Template.story.events({
@@ -162,13 +165,17 @@ Template.story.events({
 		startDictation(event);
     getSent();
 	},
+  'click #pause_story': function(event) {
+    startDictation(event);
+  },
   'click #skip': function(event) {
     if (wordNum==words.length-1) {
       index++;
+      skipped.push(wordNum);
       correctWords();
       wordNum=0;
     } else {
-      skipped.push(wordNum); console.log("skipped! - " + words[wordNum]);
+      skipped.push(wordNum);
       wordNum++;
     }
     $("#senth1").html(coloring(original, wordNum));
