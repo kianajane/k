@@ -1,3 +1,13 @@
 #senth1 {
 	font-size: 100px;
 }
+
+#prevSent {
+	font-size: 60px;
+	opacity: 0.4;
+}
+
+#mic {
+	color: #FF7373;
+	font-weight: bold;
+}

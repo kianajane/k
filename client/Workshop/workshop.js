@@ -19,14 +19,16 @@ var wordCounter = 1;
 var attempts = 0;
 var messageprinted = false;
 
+/*TO FIX: 
+errors in "speak" after a word is skipped? 
+*/
+
 Template.workshop.events({
 	'click #start_button': function(event){
 		startDictation(event);
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
 	},
 	'click #stop_button': function(event){
 		stopDictation(event);
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
 	},
 
 	'click #speak_button': function(event){
@@ -34,7 +36,7 @@ Template.workshop.events({
 		//voices = window.speechSynthesis.getVoices();
 		//msg.voice = voices[3];
 		msg.rate = .5; 
-		window.speechSynthesis.speak(msg);
+		window.speechSynthesis.speak(msg);	//"speaks" word
 	},
 	'click #skip_button': function(event){
 		changeWord(event);
@@ -50,16 +52,19 @@ Template.correct.helpers({
 	wordCounter: wordCounter,
 });
 
+//returns new word from words[]
 function getNewWord(){
 	theWord = words[Math.round(getRandomArbitrary(0,24))];
 	console.log(theWord);
 	return theWord;
 }
 
+//random # returned (called in getNewWord)
 function getRandomArbitrary(min, max) {
 	return Math.random() * (max - min) + min;
 }
 
+//called in skip, new word given for user to speak
 function changeWord(event){
 	$("#word").html(getNewWord());
 	//document.getElementById("word").innerHTML = "Please say: "+getNewWord();
@@ -104,80 +109,66 @@ function counter(correct){
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-	recognition.continuous = true;
-	recognition.interimResults = false;
+    recognition.continuous = true;
+    recognition.interimResults = false;
 
-	recognition.onstart = function() {
+    recognition.onstart = function() {
 		recognizing = true;
 		messageprinted=false;
-	};
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
+    	$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
+    };
 
-	recognition.onerror = function(event) {
-		console.log(event.error);
-	};
+    recognition.onerror = function(event) {
+    	console.log(event.error);
+    };
 
-	recognition.onend = function() {
-		console.log("end");
-		if (messageprinted==false){
-			console.log("no result");
-			$('#res').html("Sorry, I didn't quite catch that..");
-			messageprinted=true;
-		}
+    recognition.onend = function() {
+    	console.log("end");
+    	if (messageprinted==false){
+    		console.log("no result");
+    		$('#res').html("Sorry, I didn't quite catch that..");
+    		messageprinted=true;
+    	}
 		recognizing = false;
-	};
+		$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
+    };
 
-	recognition.onresult = function(event) {
-		messageprinted=true;
-		myevent = event;
-		var interim_transcript = '';
-		for (var i = event.resultIndex; i < event.results.length; ++i) {
-			console.log("i="+i);
+    recognition.onresult = function(event) {
+    	messageprinted=true;
+    	myevent = event;
+    	var interim_transcript = '';
+    	for (var i = event.resultIndex; i < event.results.length; ++i) {
+    		console.log("i="+i);
 
-			if (event.results[i].isFinal) {
-				confidence = Math.round(100*event.results[i][0].confidence);
-				final_transcript += event.results[i][0].transcript.trim();
-			//console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+    		if (event.results[i].isFinal) {
+    			confidence = Math.round(100*event.results[i][0].confidence);
+    			final_transcript += event.results[i][0].transcript.trim();
+				//console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+			}
 		}
-	}
 
-	console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
-	interim_span.innerHTML = linebreak(interim_transcript);
-	if (final_transcript.includes(theWord) && confidence>60) {
-		correct=true;
-	} 
-	counter(correct);
+		console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
+		interim_span.innerHTML = linebreak(interim_transcript);
 
-	if (final_transcript=='' || confidence<50) {
-	      $('#res').html("Sorry, I didn't quite catch that.."); // No input or low confidence
+      //Audio input evaluation, threshold: 60% confidence
+      if (final_transcript.includes(theWord) && confidence>60) {
+      	console.log ("you are correct!");
+      	correct=true;
+      } 
+      counter(correct);
 
-	  }else if(final_transcript.includes(theWord) && confidence>60){ // Correct!
+	  //Feedback - messages in result box
+	  if (final_transcript=='' || confidence<50) {
+	  	$('#res').html("Sorry, I didn't quite catch that..");
+	  }else if(correct){
 	  	$("#res").html("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
-
-		// Add to the users history: (the array is not working, I'm looking for a way to initialize history when you create an account)
-		if (Meteor.users.find({_id: Meteor.userId()}).fetch()[0].profile.history == undefined)
-		{
-			console.log ("in the if statement");
-			Meteor.users.update(Meteor.userId(),
-			{$set: {
-		  		'profile.history.workshop': new Array(),
-		  		'profile.history.story': new Array(),
-		  		'profile.history.game': new Array(),
-		  	}});	
-		}
-
-		  Meteor.users.update(Meteor.userId(),
-		  	{$set: {
-		  		'profile.history.workshop'[0].word: theWord,
-		  		'profile.history.workshop'[0].time: (new Date()).getTime()
-		  		}});
-		  		
-
-		changeWord(event);
-
-	  } else { // Something else happened...
+	  	changeWord(event);
+	  } else {
 	  	$("#res").html("Try again");
 	  }
-
+	  //Updates correct counter
 	  document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 	  
 	};
@@ -191,4 +182,5 @@ function linebreak(s) {
 
 function capitalize(s) {
 	return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
+
 }
