@@ -70,6 +70,8 @@ if ('webkitSpeechRecognition' in window) {
       if (current.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
           if (wordNum >= words.length - 1) {
             console.log ("you've completed the sentence!");
+            // add to history
+            History.insert({userId: Meteor.userId(), mode: "game", sound: "N/A", word: trimStory, time: new Date()}); // Probably want to record a different sentence
             correctWords();
             index++;  //changes sentence
             wordNum = 0;  //reset index for words[]

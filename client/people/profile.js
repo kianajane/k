@@ -4,5 +4,8 @@ Template.profile.helpers({
 		return this.profile.bio;
 		},
 	photo:function(){ // returns the URL of the gravatar photo for this email
-		return  "images/face.png"} ///Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
+		return  "images/face.png"}, ///Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
+
+	myHistory: function() {
+		return History.find({userId: Meteor.userId()}).fetch();}
 })

@@ -9,6 +9,7 @@ var final_transcript = '';
 var confidence = null;
 var recognizing = false;
 
+
 // Should switch to new words!
 //var words = Phonetics.find({sound: "R"}).fetch()[0].words;
 var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
@@ -109,42 +110,42 @@ function counter(correct){
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = false;
+	recognition.continuous = true;
+	recognition.interimResults = false;
 
-    recognition.onstart = function() {
+	recognition.onstart = function() {
 		recognizing = true;
 		messageprinted=false;
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
-    	$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
-    };
+		$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
+	};
 
-    recognition.onerror = function(event) {
-    	console.log(event.error);
-    };
+	recognition.onerror = function(event) {
+		console.log(event.error);
+	};
 
-    recognition.onend = function() {
-    	console.log("end");
-    	if (messageprinted==false){
-    		console.log("no result");
-    		$('#res').html("Sorry, I didn't quite catch that..");
-    		messageprinted=true;
-    	}
+	recognition.onend = function() {
+		console.log("end");
+		if (messageprinted==false){
+			console.log("no result");
+			$('#res').html("Sorry, I didn't quite catch that..");
+			messageprinted=true;
+		}
 		recognizing = false;
 		$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
-    };
+	};
 
-    recognition.onresult = function(event) {
-    	messageprinted=true;
-    	myevent = event;
-    	var interim_transcript = '';
-    	for (var i = event.resultIndex; i < event.results.length; ++i) {
-    		console.log("i="+i);
+	recognition.onresult = function(event) {
+		messageprinted=true;
+		myevent = event;
+		var interim_transcript = '';
+		for (var i = event.resultIndex; i < event.results.length; ++i) {
+			console.log("i="+i);
 
-    		if (event.results[i].isFinal) {
-    			confidence = Math.round(100*event.results[i][0].confidence);
-    			final_transcript += event.results[i][0].transcript.trim();
+			if (event.results[i].isFinal) {
+				confidence = Math.round(100*event.results[i][0].confidence);
+				final_transcript += event.results[i][0].transcript.trim();
 				//console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
 			}
 		}
@@ -152,22 +153,27 @@ if ('webkitSpeechRecognition' in window) {
 		console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
 		interim_span.innerHTML = linebreak(interim_transcript);
 
-      //Audio input evaluation, threshold: 60% confidence
-      if (final_transcript.includes(theWord) && confidence>60) {
-      	console.log ("you are correct!");
-      	correct=true;
-      } 
-      counter(correct);
+	//Audio input evaluation, threshold: 60% confidence
+	if (final_transcript.includes(theWord) && confidence>60) {
+		console.log ("you are correct!");
+		correct=true;
+	} 
+	counter(correct);
 
 	  //Feedback - messages in result box
 	  if (final_transcript=='' || confidence<50) {
 	  	$('#res').html("Sorry, I didn't quite catch that..");
 	  }else if(correct){
 	  	$("#res").html("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
+	  	
+	  	// Add to history
+		History.insert({userId: Meteor.userId(), mode: "workshop", sound: "N/A", word: theWord, time: new Date()});
+	  	
 	  	changeWord(event);
-	  } else {
-	  	$("#res").html("Try again");
-	  }
+		
+	} else {
+		$("#res").html("Try again");
+	}
 	  //Updates correct counter
 	  document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 	  
