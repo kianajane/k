@@ -84,8 +84,6 @@ if(Meteor.isClient){
 				console.log('final events.results['+i+'][0].transcript = '+ JSON.stringify(final_transcript)
 						+ " --- " +JSON.stringify(confidence));
 				if(final_transcript==theWord && confidence>60 && alive){
-					// add to history
-					History.insert({userId: Meteor.userId(), mode: "game", sound: "N/A", word: theWord, time: new Date()});
 	         		correct();
 			    }
 	         } else {
@@ -94,6 +92,8 @@ if(Meteor.isClient){
 				console.log('interim events.results['+i+'][0].transcript = '+ JSON.stringify(interim_transcript)
 						+ " --- " +JSON.stringify(confidence));
 	         	if(interim_transcript==theWord && confidence>30 && alive){
+	         		// add to history
+					History.insert({userId: Meteor.userId(), mode: "game", sound: "N/A", word: theWord, time: new Date()});
 	         		correct();
 			    }
 	         }
