@@ -11,5 +11,31 @@
 				<p>{{profile.bio}}</p>
 			</div>
 		</div>
+
+
+		<div class ="row">
+			<h2>  Your History </h2>
+			<table class="table table-striped table-hover ">
+				<thead>
+					<tr>
+						<th> Mode </th> <th> Sound </th> <th> Word </th> <th> Time </th> 
+					</tr>
+				</thead>
+				<tbody>
+					{{#each myHistory}}
+						{{> historyRow}}
+					{{/each}}	
+				</tbody>
+			</table>
+		</div>
 	</div>
 </template>
+
+<template name = "historyRow">
+
+<tr>
+	<td> {{mode}} </td> <td> {{sound}} </td> <td> {{word}} </td> <td> {{time}} </td>
+</tr>
+
+</template>
+

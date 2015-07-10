@@ -1,4 +1,5 @@
 Meteor.startup(function(){
+
 	if (Phonetics.find({}).count()==0) {
 		Phonetics.insert({sound: "L", words: new Array ("leaf", "lamp", "laugh", "belly", "sailing", "ball", "envelope", "toilet", "slide", "please", "flower", "blink", "glove", "cloud"), 
 												story: new Array ("I, like. Cheese!","April the elephant lived in Brazil.",
@@ -50,6 +51,6 @@ Meteor.startup(function(){
 														"She wanted to climb the highest mountain, swim in the ocean, and see the bathroom in a king's palace.", "She would have so many stories to tell.",
 														"When she got to the bus station and was ready to buy a ticket, she realized...she didn't have any money.",
 														 "\"They didn't show that in the movie,\" she thought as she walked home, \"I'm sure I can solve this problem.\"")})
-
 	}
+
 });
