@@ -4,9 +4,9 @@
 */
 
 /* comment from 7/9: 
-TIMEOUT SESSION FOR THE RESULTS--CORRECT & INCORRECT COLORING
 FIX INCLUDES (error: " they" passes for " the " due to ||s)
 WAIT TIME IF LAST WORD IN SENTENCE IS SKIPPED
+IF SKIP ENTIRE SENTENCE, NOTHING HAPPENS
 BUGS IN COLORING ARISE IF SKIPPED TOO MUCH
 */
 
@@ -105,7 +105,7 @@ function startDictation(event) {
 //sentence changing and printing happens here
 function getSent() {
   if (index>0) {
-    $("#sentencebefore").html(newSentence); //shows sentence before above (with G/R coloring)
+    $("#prevSent").html(newSentence); //shows sentence before above (with G/R coloring)
   }
   sent = story1[index];
   original = sent.split(" "); 
@@ -131,7 +131,8 @@ function correctWords() {
   var incorrect = [];
   for (var wordI = 0; wordI<=words.length; wordI++) {
     if (interim_transcript.includes(words[wordI])) {
-      correct.push(original[wordI]); console.log("correct words: "+correct);
+      correct.push(original[wordI]); 
+      console.log("correct words: "+correct);
     } else {
       incorrect.push(original[wordI]);
     }
@@ -170,14 +171,13 @@ Template.story.events({
   },
   'click #skip': function(event) {
     if (wordNum==words.length-1) {
-      index++;
       skipped.push(wordNum);
       correctWords();
-      wordNum=0;
+      index++; wordNum=0;
     } else {
       skipped.push(wordNum);
       wordNum++;
     }
-    $("#senth1").html(coloring(original, wordNum));
+    getSent();
   }
 })

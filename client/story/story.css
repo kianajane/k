@@ -1,3 +1,9 @@
 #senth1 {
 	font-size: 100px;
 }
+
+#prevSent {
+	font-size: 50px;
+	font-style: bold;
+	opacity: 0.4;
+}
