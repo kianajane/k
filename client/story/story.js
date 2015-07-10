@@ -4,9 +4,7 @@
 */
 
 /* comment from 7/9: 
-FIGURE OUT A WAY TO MERGE original AND prettyWords!!
 TIMEOUT SESSION FOR THE RESULTS--CORRECT & INCORRECT COLORING
-SKIP BUTTON MESSES UP CORRECT & INCORRECT COLORING
 */
 
 var final_transcript = '';
@@ -17,6 +15,7 @@ var wordNum = 0;
 sent = "";
 var words = [];
 var original = [];
+var skipped = []; //contains index of the word of words[] that was skipped
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
@@ -44,7 +43,7 @@ if ('webkitSpeechRecognition' in window) {
         if (event.results[i].isFinal) {
         	final_transcript += 
       		Math.round(100*event.results[i][0].confidence)+"% -- "+
-      		capitalize(event.results[i][0].transcript.trim()) +".\n";
+      		event.results[i][0].transcript.trim() +".\n";
   				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
         } else {
         	interim_transcript += Math.round(100*event.results[i][0].confidence)+"% -- "+event.results[i][0].transcript+"<br>";
@@ -88,11 +87,11 @@ function linebreak(s) {
   return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
 }
 
-function capitalize(s) {
-  return s;
-}
-
+//sentence changing and printing happens here
 function getSent() {
+  if (index>0) {
+    $("#sentencebefore").html(newSentence); //shows sentence before above (with G/R coloring)
+  }
   sent = story1[index];
   original = sent.split(" "); 
   $("#senth1").html(coloring(original, wordNum));
@@ -100,15 +99,11 @@ function getSent() {
 
 //colors the word that you are on blue
 function coloring(original, wordNum) {
-  //prettyWords = sent.split(" ");
   newSent = "";
-  for(var j = 0; j < original.length; j++)
-  {
-    if (j == wordNum)
-    {
+  for(var j = 0; j < original.length; j++) {
+    if (j == wordNum) {
       newSent += " " + original[j].fontcolor("blue"); 
-    }else 
-    {
+    } else {
       newSent += " " + original[j].fontcolor("black");
     }
   }
@@ -121,7 +116,7 @@ function correctWords() {
   var incorrect = [];
   for (var wordI = 0; wordI<=words.length; wordI++) {
     if (interim_transcript.includes(words[wordI])) {
-      correct.push(original[wordI]);
+      correct.push(original[wordI]); console.log("correct words: "+correct);
     } else {
       incorrect.push(original[wordI]);
     }
@@ -131,20 +126,23 @@ function correctWords() {
 
 //colors the correct words green(G), incorrect words red (R)
 function colorGR(correct, incorrect) {
-  var newSentence = "";
+  newSentence = ""; //colored sentence
+  var cIndex = 0;
   for(var k = 0; k < words.length; k++) {
-    var c = k;
-    var corr = correct[c];
-    if (original[k] == corr)
-    {
+    console.log(k);
+    var corr = correct[cIndex];
+    if (original[k] == corr) {
       newSentence += " " + corr.fontcolor("green");
-    }else 
-    {
-      newSentence += " " + original[k].fontcolor("red");
+      cIndex++;
+    } else {
+      for (var s = 0; s<skipped.length; s++) {
+        if (skipped[s]==k) {
+           newSentence += " " + original[k].fontcolor("red");
+        }
+      }
+      console.log("end of skipped for loop");
     }
   }
-  console.log(newSentence);
-  $("#senth1").html(newSentence);
 }
 
 function startDictation(event) {
@@ -167,8 +165,10 @@ Template.story.events({
   'click #skip': function(event) {
     if (wordNum==words.length-1) {
       index++;
+      correctWords();
       wordNum=0;
     } else {
+      skipped.push(wordNum); console.log("skipped! - " + words[wordNum]);
       wordNum++;
     }
     $("#senth1").html(coloring(original, wordNum));
