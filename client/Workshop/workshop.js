@@ -12,7 +12,7 @@ var recognizing = false;
 // Should switch to new words!
 //var words = Phonetics.find({sound: "R"}).fetch()[0].words;
 var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
-	"father","life","power","child","hour","world","game","school","line"];
+"father","life","power","child","hour","world","game","school","line"];
 var correct=false;
 var correctCounter = 0;
 var wordCounter = 1;
@@ -69,7 +69,7 @@ function changeWord(event){
 	$("#skipButton").html("");
 	attempts = 0;
 }
- 
+
 function startDictation(event) {
 	recognizing=true;
 	final_transcript = '';
@@ -84,9 +84,9 @@ function stopDictation(event) {
 	$("#results_heading").html("Results:");
 	interim_span.innerHTML = '';
 	if (recognizing) {
-	    recognition.stop();
-	    recognizing=false;
-	    return;
+		recognition.stop();
+		recognizing=false;
+		return;
 	}
 }
 
@@ -104,69 +104,91 @@ function counter(correct){
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = false;
+	recognition.continuous = true;
+	recognition.interimResults = false;
 
-    recognition.onstart = function() {
-      recognizing = true;
-      messageprinted=false;
-    };
+	recognition.onstart = function() {
+		recognizing = true;
+		messageprinted=false;
+	};
 
-    recognition.onerror = function(event) {
-      console.log(event.error);
-    };
+	recognition.onerror = function(event) {
+		console.log(event.error);
+	};
 
-    recognition.onend = function() {
-    	console.log("end");
-    	if (messageprinted==false){
-    		console.log("no result");
-    		$('#res').html("Sorry, I didn't quite catch that..");
-    		messageprinted=true;
-    	}
-      recognizing = false;
-    };
+	recognition.onend = function() {
+		console.log("end");
+		if (messageprinted==false){
+			console.log("no result");
+			$('#res').html("Sorry, I didn't quite catch that..");
+			messageprinted=true;
+		}
+		recognizing = false;
+	};
 
-    recognition.onresult = function(event) {
-    	messageprinted=true;
+	recognition.onresult = function(event) {
+		messageprinted=true;
 		myevent = event;
-      var interim_transcript = '';
-      for (var i = event.resultIndex; i < event.results.length; ++i) {
-		console.log("i="+i);
+		var interim_transcript = '';
+		for (var i = event.resultIndex; i < event.results.length; ++i) {
+			console.log("i="+i);
 
-        if (event.results[i].isFinal) {
-        	confidence = Math.round(100*event.results[i][0].confidence);
-        	final_transcript += event.results[i][0].transcript.trim();
+			if (event.results[i].isFinal) {
+				confidence = Math.round(100*event.results[i][0].confidence);
+				final_transcript += event.results[i][0].transcript.trim();
 			//console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
-         }
-      }
+		}
+	}
 
-      console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
-      interim_span.innerHTML = linebreak(interim_transcript);
-      if (final_transcript.includes(theWord) && confidence>60) {
-      	correct=true;
-      } 
-      counter(correct);
-	  
-	  if (final_transcript=='' || confidence<50) {
-	      $('#res').html("Sorry, I didn't quite catch that..");
-	  }else if(final_transcript.includes(theWord) && confidence>60){
-		  $("#res").html("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
-		  changeWord(event);
-	  } else {
-		  $("#res").html("Try again");
+	console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
+	interim_span.innerHTML = linebreak(interim_transcript);
+	if (final_transcript.includes(theWord) && confidence>60) {
+		correct=true;
+	} 
+	counter(correct);
+
+	if (final_transcript=='' || confidence<50) {
+	      $('#res').html("Sorry, I didn't quite catch that.."); // No input or low confidence
+
+	  }else if(final_transcript.includes(theWord) && confidence>60){ // Correct!
+	  	$("#res").html("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
+
+		// Add to the users history: (the array is not working, I'm looking for a way to initialize history when you create an account)
+		if (Meteor.users.find({_id: Meteor.userId()}).fetch()[0].profile.history == undefined)
+		{
+			console.log ("in the if statement");
+			Meteor.users.update(Meteor.userId(),
+			{$set: {
+		  		'profile.history.workshop': new Array(),
+		  		'profile.history.story': new Array(),
+		  		'profile.history.game': new Array(),
+		  	}});	
+		}
+
+		  Meteor.users.update(Meteor.userId(),
+		  	{$set: {
+		  		'profile.history.workshop'[0].word: theWord,
+		  		'profile.history.workshop'[0].time: (new Date()).getTime()
+		  		}});
+		  		
+
+		changeWord(event);
+
+	  } else { // Something else happened...
+	  	$("#res").html("Try again");
 	  }
 
 	  document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 	  
-    };
+	};
 }
 
 var two_line = /\n\n/g;
 var one_line = /\n/g;
 function linebreak(s) {
-  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+	return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
 }
 
 function capitalize(s) {
-  return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
+	return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
 }
