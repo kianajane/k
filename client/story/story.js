@@ -39,7 +39,7 @@ if ('webkitSpeechRecognition' in window) {
     recognition.onend = function() {
       recognizing = false;
       $("#start_button").html('<button type="button" class="btn btn-success" id="start_story">Begin Story</button>');
-      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("orange")+'</h2>');
+      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
     };
 
     recognition.onresult = function(event) {

@@ -116,6 +116,7 @@ if ('webkitSpeechRecognition' in window) {
 		recognizing = true;
 		messageprinted=false;
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
+    	$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
     };
 
     recognition.onerror = function(event) {
@@ -130,6 +131,7 @@ if ('webkitSpeechRecognition' in window) {
     		messageprinted=true;
     	}
 		recognizing = false;
+		$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
     };
 
