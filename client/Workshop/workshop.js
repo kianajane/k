@@ -19,14 +19,16 @@ var wordCounter = 1;
 var attempts = 0;
 var messageprinted = false;
 
+/*TO FIX: 
+errors in "speak" after a word is skipped? 
+*/
+
 Template.workshop.events({
 	'click #start_button': function(event){
 		startDictation(event);
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
 	},
 	'click #stop_button': function(event){
 		stopDictation(event);
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
 	},
 
 	'click #speak_button': function(event){
@@ -34,7 +36,7 @@ Template.workshop.events({
 		//voices = window.speechSynthesis.getVoices();
 		//msg.voice = voices[3];
 		msg.rate = .5; 
-		window.speechSynthesis.speak(msg);
+		window.speechSynthesis.speak(msg);	//"speaks" word
 	},
 	'click #skip_button': function(event){
 		changeWord(event);
@@ -50,16 +52,19 @@ Template.correct.helpers({
 	wordCounter: wordCounter,
 });
 
+//returns new word from words[]
 function getNewWord(){
 	theWord = words[Math.round(getRandomArbitrary(0,24))];
 	console.log(theWord);
 	return theWord;
 }
 
+//random # returned (called in getNewWord)
 function getRandomArbitrary(min, max) {
 	return Math.random() * (max - min) + min;
 }
 
+//called in skip, new word given for user to speak
 function changeWord(event){
 	$("#word").html(getNewWord());
 	//document.getElementById("word").innerHTML = "Please say: "+getNewWord();
@@ -69,7 +74,7 @@ function changeWord(event){
 	$("#skipButton").html("");
 	attempts = 0;
 }
- 
+
 function startDictation(event) {
 	recognizing=true;
 	final_transcript = '';
@@ -108,12 +113,13 @@ if ('webkitSpeechRecognition' in window) {
     recognition.interimResults = false;
 
     recognition.onstart = function() {
-      recognizing = true;
-      messageprinted=false;
+		recognizing = true;
+		messageprinted=false;
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
     };
 
     recognition.onerror = function(event) {
-      console.log(event.error);
+    	console.log(event.error);
     };
 
     recognition.onend = function() {
@@ -123,30 +129,32 @@ if ('webkitSpeechRecognition' in window) {
     		$('#res').html("Sorry, I didn't quite catch that..");
     		messageprinted=true;
     	}
-      recognizing = false;
+		recognizing = false;
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
     };
 
     recognition.onresult = function(event) {
     	messageprinted=true;
 		myevent = event;
-      var interim_transcript = '';
-      for (var i = event.resultIndex; i < event.results.length; ++i) {
-		console.log("i="+i);
-
-        if (event.results[i].isFinal) {
-        	confidence = Math.round(100*event.results[i][0].confidence);
-        	final_transcript += event.results[i][0].transcript.trim();
-			//console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
-         }
-      }
+		var interim_transcript = '';
+		for (var i = event.resultIndex; i < event.results.length; ++i) {
+			console.log("i="+i);
+			if (event.results[i].isFinal) {
+				confidence = Math.round(100*event.results[i][0].confidence);
+				final_transcript += event.results[i][0].transcript.trim();
+				//console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+			}
+		}
 
       console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
       interim_span.innerHTML = linebreak(interim_transcript);
+      //Audio input evaluation, threshold: 60% confidence
       if (final_transcript.includes(theWord) && confidence>60) {
       	correct=true;
       } 
       counter(correct);
 	  
+	  //Feedback - messages in result box
 	  if (final_transcript=='' || confidence<50) {
 	      $('#res').html("Sorry, I didn't quite catch that..");
 	  }else if(final_transcript.includes(theWord) && confidence>60){
@@ -155,7 +163,7 @@ if ('webkitSpeechRecognition' in window) {
 	  } else {
 		  $("#res").html("Try again");
 	  }
-
+	  //Updates correct counter
 	  document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 	  
     };
@@ -165,8 +173,4 @@ var two_line = /\n\n/g;
 var one_line = /\n/g;
 function linebreak(s) {
   return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
-}
-
-function capitalize(s) {
-  return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
 }
