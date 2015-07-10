@@ -3,7 +3,11 @@
 }
 
 #prevSent {
-	font-size: 50px;
-	font-style: bold;
+	font-size: 60px;
 	opacity: 0.4;
+}
+
+#mic {
+	color: orange;
+	font-weight: bold;
 }

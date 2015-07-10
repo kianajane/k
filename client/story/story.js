@@ -28,6 +28,8 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
+      $("#start_button").html('<button type="button" class="btn btn-info" id="pause_story">Pause Story</button>');
+      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
     };
 
     recognition.onerror = function(event) {
@@ -36,11 +38,13 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onend = function() {
       recognizing = false;
+      $("#start_button").html('<button type="button" class="btn btn-success" id="start_story">Begin Story</button>');
+      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("orange")+'</h2>');
     };
 
     recognition.onresult = function(event) {
   		myevent = event;
-         
+
       for (var i = event.resultIndex; i < event.results.length; ++i) {
   		console.log("i="+i);
         if (event.results[i].isFinal) {
@@ -58,27 +62,25 @@ if ('webkitSpeechRecognition' in window) {
 
       //change all char to lowercase
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
-      interim_transcript = interim_transcript.toLowerCase();
-      interim_transcript = " " + interim_transcript + " ";
+      current = " "+interim_transcript.toLowerCase() + " ";
       words = trimStory.split(" ");
       
       console.log ("say: " + words[wordNum]);
       // Note: we are ignoring confidence. Also, should be only working for complete words. Eg. "I" is found in "something".
-      if (interim_transcript.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
+      if (current.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
           if (wordNum >= words.length - 1) {
             console.log ("you've completed the sentence!");
             correctWords();
             index++;  //changes sentence
             wordNum = 0;  //reset index for words[]
             skipped = [];
+
             // Can we get the interim transcript to reset somehow??? Doesn't work.
             //final_transcript = ''; interim_transcript='';
-            //recognition.start();
             //startDictation(event);    
           } else {
             //console.log("you're awesome!!!!!");
             wordNum++;
-            //startDictation();
           }
       }
     };
@@ -93,13 +95,11 @@ function startDictation(event) {
   if (recognizing) {
     recognition.stop();
     recognizing = false;
-    $("#start_button").html('<button type="button" class="btn btn-success" id="start_story">Begin Story</button>');
     return;
   }
   final_transcript = '';
   recognition.lang = 'en-US';
   recognition.start();
-  $("#start_button").html('<button type="button" class="btn btn-info" id="pause_story">Pause Story</button>');
 }
 
 //sentence changing and printing happens here
@@ -130,7 +130,7 @@ function correctWords() {
   var correct = [];
   var incorrect = [];
   for (var wordI = 0; wordI<=words.length; wordI++) {
-    if (interim_transcript.includes(words[wordI])) {
+    if (current.includes(words[wordI])) {
       correct.push(original[wordI]); 
       console.log("correct words: "+correct);
     } else {
@@ -158,6 +158,7 @@ function colorGR(correct, incorrect) {
       }
     }
   }
+  console.log(newSentence);
 }
 
 Template.story.events({
