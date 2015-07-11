@@ -3,11 +3,9 @@
       http://ctrlq.org/code/19680-html5-web-speech-api
 */
 
-/* comment from 7/9: 
+/* comment from 7/11: 
 FIX INCLUDES (error: " they" passes for " the " due to ||s)
-WAIT TIME IF LAST WORD IN SENTENCE IS SKIPPED
-IF SKIP ENTIRE SENTENCE, NOTHING HAPPENS
-BUGS IN COLORING ARISE IF SKIPPED TOO MUCH
+IF SKIP ENTIRE SENTENCE W/ NO AUDIO INPUT, NOTHING HAPPENS
 */
 
 var final_transcript = '';
@@ -19,12 +17,13 @@ sent = "";
 var words = [];
 var original = [];
 var skipped = []; //contains index of the word of words[] that was skipped
+var coloredSent = ""; //colored sentence
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
+  recognition.continuous = true;
+  recognition.interimResults = true;
 
     recognition.onstart = function() {
       recognizing = true;
@@ -58,7 +57,7 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
-      getSent();
+      getSent(); //sentence change & print
 
       //change all char to lowercase
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
@@ -66,20 +65,17 @@ if ('webkitSpeechRecognition' in window) {
       words = trimStory.split(" ");
       
       console.log ("say: " + words[wordNum]);
-      // Note: we are ignoring confidence. Also, should be only working for complete words. Eg. "I" is found in "something".
+      // Note: we are ignoring confidence. Kind of working (if "they" is said, passes for "the")
       if (current.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
           if (wordNum >= words.length - 1) {
             console.log ("you've completed the sentence!");
-            // add to history
-            History.insert({userId: Meteor.userId(), mode: "story", sound: "N/A", word: trimStory, time: new Date()}); // Probably want to record a different sentence
             correctWords();
+            // add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
+            History.insert({userId: Meteor.userId(), mode: "story", sound: "N/A", word: sent, time: new Date()}); // Probably want to record a different sentence
             index++;  //changes sentence
             wordNum = 0;  //reset index for words[]
             skipped = [];
-
             // Can we get the interim transcript to reset somehow??? Doesn't work.
-            //final_transcript = ''; interim_transcript='';
-            //startDictation(event);    
           } else {
             //console.log("you're awesome!!!!!");
             wordNum++;
@@ -107,19 +103,19 @@ function startDictation(event) {
 //sentence changing and printing happens here
 function getSent() {
   if (index>0) {
-    $("#prevSent").html(newSentence); //shows sentence before above (with G/R coloring)
+    $("#prevSent").html(coloredSent); //shows sentence from before above (with G/R coloring)
   }
   sent = story1[index];
   original = sent.split(" "); 
   $("#senth1").html(coloring(original, wordNum));
 }
 
-//colors the word that you are on blue
+//"highlights" the word that you are on blue
 function coloring(original, wordNum) {
   newSent = "";
   for(var j = 0; j < original.length; j++) {
     if (j == wordNum) {
-      newSent += " " + original[j].fontcolor("blue"); 
+      newSent += " " + original[j].fontcolor("#00aedb"); 
     } else {
       newSent += " " + original[j].fontcolor("black");
     }
@@ -142,30 +138,32 @@ function correctWords() {
   colorGR(correct, incorrect);
 }
 
-//colors the correct words green(G), incorrect words red (R)
+//final coloring: colors the correct words green(G), incorrect words red (R)
+//Note: coloredSent accumulates
 function colorGR(correct, incorrect) {
-  newSentence = ""; //colored sentence
   var cIndex = 0;
   for(var k = 0; k < words.length; k++) {
     console.log(k);
     var corr = correct[cIndex];
     if (original[k] == corr) {
-      newSentence += " " + corr.fontcolor("green");
+      coloredSent += " " + corr.fontcolor("#00b159");
       cIndex++;
     } else {
       for (var s = 0; s<skipped.length; s++) {
         if (skipped[s]==k) {
-           newSentence += " " + original[k].fontcolor("red");
+           coloredSent += " " + original[k].fontcolor("#d11141");
         }
       }
     }
   }
-  console.log(newSentence);
+  coloredSent += "<br>";
+  console.log(coloredSent);
 }
 
 Template.story.events({
 	'click #start_story': function(event){
-    story1 = Phonetics.find({sound: "L"}).fetch()[0].story;    
+    story1 = Phonetics.find({sound: "L"}).fetch()[0].story;
+    $("#storyTitle").html('Read the following: '); $("#resTitle").html('Your progress: ');  //Is there a way to make this show up forever after one sentence is complete?
 		startDictation(event);
     getSent();
 	},
@@ -174,9 +172,10 @@ Template.story.events({
   },
   'click #skip': function(event) {
     if (wordNum==words.length-1) {
-      skipped.push(wordNum);
+      skipped.push(wordNum);  //pushes index of the word that was skipped
       correctWords();
       index++; wordNum=0;
+      getSent(); console.log("getting sent");
     } else {
       skipped.push(wordNum);
       wordNum++;
