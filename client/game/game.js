@@ -4,24 +4,32 @@ if(Meteor.isClient){
 	var interim_transcript = '';
 	var confidence = null;
 	var recognizing = false;
-	var words = ["time", "issue","year","side","people","kind","head","day","house","man","service","thing","friend","woman",
-		"father","life","power","child","hour","world","game","school","line"];
 	var correctCounter = 0;
 	var alive = false;
 	var radius = 0;
-	// var wordCounter = 1;
-	// var attempts = 0;
+	if (Session.get("sound")==undefined){
+	  Session.set("sound", "L");
+	}
+	var lastSound = Session.get("sound");
+	var wordList = [];
+	var noWord = true;
 	
 	Template.score.helpers({
 		
 	});
 	
 	Template.game.helpers({
-		word: getNewWord()
+		word: Session.get("gameWord")
 	});
 	
 	Template.game.events({
 		"click #start": function(event){
+			wordList = Phonetics.findOne({sound: lastSound}).words;
+			if (noWord){
+				getNewWord();
+				$("#say_word").html("say: "+Session.get("gameWord"));
+				noWord=false;
+			}	
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
 		},
@@ -42,9 +50,9 @@ if(Meteor.isClient){
 /* -------------------------------------This is the code for getting the word to test----------------------------------------------*/
 	
 	function getNewWord(){
-		theWord = words[Math.round(getRandomArbitrary(0,22))];
+		theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
 		console.log(theWord);
-		return theWord;
+		Session.set("gameWord",theWord);
 	}
 	
 	function getRandomArbitrary(min, max) {
@@ -60,6 +68,8 @@ if(Meteor.isClient){
 	    recognition.onstart = function() {	 
 	      console.log("recognition started");    
 	      recognizing = true;
+	      lastTime = (new Date()).getTime();
+		  gameLoop();
 	    };
 	
 	    recognition.onerror = function(event) {
@@ -129,8 +139,7 @@ if(Meteor.isClient){
 		 		interim_transcript = '';
 				recognition.lang = 'en-US';
 				recognition.start();
-				lastTime = (new Date()).getTime();
-				gameLoop();
+
 			}
 		}
 		
@@ -148,10 +157,9 @@ if(Meteor.isClient){
 
 		function next(event){
 			getNewWord();
-			$("#say_word").html("say: "+theWord);
+			$("#say_word").html("say: "+Session.get("gameWord"));
 			if (!recognizing){
 				start(event);
-				console.log("recognition started");
 			}
 			enemyDrawn=false;
 			radius += 5;
@@ -217,3 +225,20 @@ if(Meteor.isClient){
 		}
 	}
 }
+
+Template.soundselectgame.events({
+  "submit #sound-select": function(event){
+    event.preventDefault();
+
+    var soundSelected = event.target.sound.value;
+    Session.set("sound",soundSelected);
+    var newSound = Session.get("sound");
+    if (lastSound!=newSound){
+      console.log("CHANGING GAME SOUND... new sound = "+newSound);
+      wordList = Phonetics.findOne({sound: newSound}).words;
+      $("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
+      next(event);
+      lastSound=newSound;
+    }
+  } 
+})

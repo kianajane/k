@@ -24,7 +24,6 @@ if (Session.get("sound")==undefined){
 }
 var lastSound = Session.get("sound");
 var start = false;
-getNewWord();
 
 /*TO FIX: 
 errors in "speak" after a word is skipped? 
@@ -51,7 +50,7 @@ Template.workshop.events({
 });
 
 Template.getWord.helpers({
-	word: Session.get("word"),
+	word: Session.get("workshopWord"),
 	gameStarted: start
 });
 
@@ -64,7 +63,7 @@ Template.correct.helpers({
 function getNewWord(){
 
 	theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
-	Session.set("word",theWord);
+	Session.set("workshopWord",theWord);
 	console.log(theWord);
 }
 
@@ -76,7 +75,7 @@ function getRandomArbitrary(min, max) {
 //called in skip, new word given for user to speak
 function changeWord(event){
 	getNewWord();
-	$("#word").html(Session.get("word"));
+	$("#word").html(Session.get("workshopWord"));
 	//document.getElementById("word").innerHTML = "Please say: "+getNewWord();
 	correct=false;
 	if (!wordChanged || attempts>0) wordCounter++;
