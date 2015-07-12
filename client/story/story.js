@@ -222,7 +222,7 @@ Template.soundselectstory.events({
     Session.set("sound",soundSelected);
     var newSound = Session.get("sound");
     if (lastSound!=newSound){
-      console.log("CHANGING SOUND... new sound = "+newSound);
+      console.log("CHANGING STORY SOUND... new sound = "+newSound);
       story1 = Phonetics.findOne({sound: newSound}).story;
       getSent();
       lastSound=newSound;

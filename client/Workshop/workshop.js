@@ -8,17 +8,22 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 var final_transcript = '';
 var confidence = null;
 var recognizing = false;
-
-
+var wordList = [];
 // Should switch to new words!
 //var words = Phonetics.find({sound: "R"}).fetch()[0].words;
-var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
-"father","life","power","child","hour","world","game","school","line"];
+var wordChanged=false;
 var correct=false;
 var correctCounter = 0;
-var wordCounter = 1;
+var wordCounter = 0;
 var attempts = 0;
+var n = '';
 var messageprinted = false;
+var first=true;
+if (Session.get("sound")==undefined){
+  Session.set("sound", "L");
+}
+var lastSound = Session.get("sound");
+var start = false;
 
 /*TO FIX: 
 errors in "speak" after a word is skipped? 
@@ -45,7 +50,8 @@ Template.workshop.events({
 });
 
 Template.getWord.helpers({
-	word: getNewWord()
+	word: Session.get("workshopWord"),
+	gameStarted: start
 });
 
 Template.correct.helpers({
@@ -55,9 +61,10 @@ Template.correct.helpers({
 
 //returns new word from words[]
 function getNewWord(){
-	theWord = words[Math.round(getRandomArbitrary(0,24))];
+
+	theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
+	Session.set("workshopWord",theWord);
 	console.log(theWord);
-	return theWord;
 }
 
 //random # returned (called in getNewWord)
@@ -67,12 +74,14 @@ function getRandomArbitrary(min, max) {
 
 //called in skip, new word given for user to speak
 function changeWord(event){
-	$("#word").html(getNewWord());
+	getNewWord();
+	$("#word").html(Session.get("workshopWord"));
 	//document.getElementById("word").innerHTML = "Please say: "+getNewWord();
 	correct=false;
-	wordCounter++;
+	if (!wordChanged || attempts>0) wordCounter++;
 	$("#word_counter").html("<b>Total words:</b> "+wordCounter);
 	$("#skipButton").html("");
+   	$("#res").html("");
 	attempts = 0;
 }
 
@@ -83,12 +92,10 @@ function startDictation(event) {
 	recognition.start();
 	$("#results_heading").html("");
 	$('#res').html("");
-	interim_span.innerHTML = "I'm listening...";
 }
 
 function stopDictation(event) {
 	$("#results_heading").html("Results:");
-	interim_span.innerHTML = '';
 	if (recognizing) {
 		recognition.stop();
 		recognizing=false;
@@ -101,8 +108,19 @@ function counter(correct){
 		correctCounter ++;
 	}
 	attempts++;
+	n = getN(attempts);
+	console.log("attempts = "+attempts+n);
 	if (attempts >= 1){
 		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip word</button>');
+	}
+}
+
+function getN(attempts){
+	switch(attempts){
+		case 1: return 'st';
+		case 2: return 'nd';
+		case 3: return 'rd';
+		default: return 'th';
 	}
 }
 
@@ -110,10 +128,11 @@ function counter(correct){
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
-	recognition.continuous = true;
+	recognition.continuous = false;
 	recognition.interimResults = false;
 
 	recognition.onstart = function() {
+		interim_span.innerHTML = "I'm listening...";
 		recognizing = true;
 		messageprinted=false;
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
@@ -125,6 +144,7 @@ if ('webkitSpeechRecognition' in window) {
 	};
 
 	recognition.onend = function() {
+		interim_span.innerHTML = '';
 		console.log("end");
 		if (messageprinted==false){
 			console.log("no result");
@@ -146,6 +166,7 @@ if ('webkitSpeechRecognition' in window) {
 			if (event.results[i].isFinal) {
 				confidence = Math.round(100*event.results[i][0].confidence);
 				final_transcript += event.results[i][0].transcript.trim();
+				recognition.stop();
 				//console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
 			}
 		}
@@ -164,7 +185,7 @@ if ('webkitSpeechRecognition' in window) {
 	  if (final_transcript=='' || confidence<50) {
 	  	$('#res').html("Sorry, I didn't quite catch that..");
 	  }else if(correct){
-	  	$("#res").html("Congratulations! You said the word correctly on your "+attempts+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
+	  	$("#res").html("Congratulations! You said the word correctly on your "+attempts+n+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
 	  	
 	  	// Add to history
 		History.insert({userId: Meteor.userId(), mode: "workshop", sound: "N/A", word: theWord, time: new Date()});
@@ -190,3 +211,26 @@ function capitalize(s) {
 	return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
 
 }
+
+Template.soundselectworkshop.events({
+  "submit #sound-select": function(event){
+    event.preventDefault();
+
+    start=true;
+    var soundSelected = event.target.sound.value;
+    Session.set("sound",soundSelected);
+    var newSound = Session.get("sound");
+    if ((lastSound!=newSound) || first){
+      wordChanged=true;
+      if (first){
+    	wordCounter++;
+    	first=false;
+      }
+      console.log("CHANGING WORKSHOP SOUND... new sound = "+newSound);
+      wordList = Phonetics.findOne({sound: newSound}).words;
+      changeWord(event);
+      lastSound=newSound;
+    }
+    if (wordChanged) wordChanged=false;
+  } 
+})
