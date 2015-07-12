@@ -47,17 +47,7 @@ var original = [];    //accessed in .onresult, coloring, colorGR
 var correct = [];     //accessed in events
 var incorrect = [];   //accessed in events
 var coloredSent = ""; //global to make coloredSent accumulate
-
-//would use this, but creates lag time. Anyone know how to fix this?
-function feedback() {
-  if (correct.length == words.length) {
-    var perfect = new SpeechSynthesisUtterance("No mistakes. You're awesome!");
-    window.speechSynthesis.speak(perfect);
-  } else {
-    var errors = new SpeechSynthesisUtterance("You've completed the sentence.");
-    window.speechSynthesis.speak(errors);
-  }
-}
+var end = false;      //marks end of sentence, used in getSent() for timeout
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
@@ -95,14 +85,7 @@ if ('webkitSpeechRecognition' in window) {
   			  console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
         }
       }
-      //My attempt to fix lag time  
-      if (index==0) {
-        console.log("index = "+index);
-        getSent();  //word highlight change, print
-      } else {
-        console.log("index = "+index);
-        setTimeout(getSent(), 3000); console.log("timeout");
-      }
+
       getSent();
       
       //change all char to lowercase
@@ -113,20 +96,16 @@ if ('webkitSpeechRecognition' in window) {
       // Note: we are ignoring confidence. Kind of working (if "they" is said, passes for "the")
       if (current.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
         if (wordNum >= words.length-1) {
-          correct.push(wordNum);  //last word gets pushed to correct[]
+          correct.push(wordNum);        //last word gets pushed to correct[]
           console.log ("you've completed the sentence!");
           colorGR(correct, incorrect);
-          //audio feedback
-          if (correct.length == words.length) {
-            var perfect = new SpeechSynthesisUtterance("No mistakes. You're awesome!");
-            window.speechSynthesis.speak(perfect);
-          } else {
-            var errors = new SpeechSynthesisUtterance("You've completed the sentence.");
-            window.speechSynthesis.speak(errors);
-          }
+          //feedback();
           index++;
+          end = true;                   //sentence end
+
           // add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
           History.insert({userId: Meteor.userId(), mode: "story", sound: "N/A", word: sent, time: new Date()}); // Probably want to record a different sentence
+         
           // Can we get the interim transcript to reset somehow??? Doesn't work.
         } else {
           correct.push(wordNum); console.log("correct words: "+correct);
@@ -149,9 +128,11 @@ function startDictation(event) {
 
 //sentence changing and printing happens here
 function getSent() {
-  if (index>0) { //shows completed sentences on the side
-    $("#prevSent").html(coloredSent);
-    correct.length = 0; incorrect.length = 0; //reset arrays
+  if (end) {                    //if sentence completed
+    feedback();
+    setTimeout(getSent, 1500);  //creates lag time for final_transcript, array reset, .. 
+    $("#prevSent").html(coloredSent);//shows completed sentences on the side
+    end=false;
   }
   sent = story1[index];
   original = sent.split(" "); 
@@ -186,9 +167,27 @@ function colorGR(correct, incorrect) {
   wordNum=0;
 }
 
+//visual feedback after sentence completed
+function feedback() {
+  var message;
+  if (correct.length == words.length) {
+    message = "No mistakes! You're awesome!";
+    $("#storyarea").html("<h3>"+message+"</h3> <img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
+  } else {
+    message = "You've completed the sentence!";
+    $("#storyarea").html("<h3>"+message+"</h3> <img src = \"images/completedsent.png\" width = \"70%\" alt = \"completed\">");
+  }
+  correct = []; incorrect = []; //reset arrays
+  setTimeout(resetStoryarea, 2000);
+}
+
+function resetStoryarea() {
+  $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>');
+}
+
 Template.story.events({
 	'click #start_story': function(event){
-    story1 = Phonetics.find({sound: "F"}).fetch()[0].story;
+    story1 = Phonetics.find({sound: "L"}).fetch()[0].story;
     $("#storyTitle").html('Read the following: '); $("#resTitle").html('Your progress: ');  //Is there a way to make this show up forever after one sentence is complete?
 		startDictation(event);
     getSent();
@@ -198,19 +197,13 @@ Template.story.events({
   },
   'click #skip': function(event) {
     if (wordNum==words.length-1) {
-      incorrect.push(wordNum);  //pushes skipped word's index in words[]
-      console.log("incorrect: "+incorrect);
+      incorrect.push(wordNum);     //console.log("incorrect: "+incorrect);
       colorGR(correct, incorrect);
-      if (correct.length == words.length) {
-        var perfect = new SpeechSynthesisUtterance("No mistakes. You're awesome!");
-        window.speechSynthesis.speak(perfect);
-      } else {
-        var errors = new SpeechSynthesisUtterance("You've completed the sentence.");
-        window.speechSynthesis.speak(errors);
-      }
+      feedback(); //visual feedback
+      end=true;
       index++;
     } else {
-      incorrect.push(wordNum); console.log("incorrect: "+incorrect);
+      incorrect.push(wordNum);   //console.log("incorrect: "+incorrect);
       wordNum++;
     }
     getSent();
