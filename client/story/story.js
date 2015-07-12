@@ -227,5 +227,5 @@ Template.soundselectstory.events({
       getSent();
       lastSound=newSound;
     }
-  } 
+  }
 })
