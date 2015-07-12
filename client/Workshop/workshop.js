@@ -227,7 +227,7 @@ Template.soundselectworkshop.events({
     	wordCounter++;
     	first=false;
       }
-      console.log("CHANGING SOUND... new sound = "+newSound);
+      console.log("CHANGING WORKSHOP SOUND... new sound = "+newSound);
       wordList = Phonetics.findOne({sound: newSound}).words;
       changeWord(event);
       lastSound=newSound;
