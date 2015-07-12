@@ -48,6 +48,10 @@ var correct = [];     //accessed in events
 var incorrect = [];   //accessed in events
 var coloredSent = ""; //global to make coloredSent accumulate
 var end = false;      //marks end of sentence, used in getSent() for timeout
+if (Session.get("sound")==undefined){
+  Session.set("sound", "L");
+}
+var lastSound = Session.get("sound");
 
 if ('webkitSpeechRecognition' in window) {
 	console.log("webkit is available!");
@@ -187,7 +191,7 @@ function resetStoryarea() {
 
 Template.story.events({
 	'click #start_story': function(event){
-    story1 = Phonetics.find({sound: "L"}).fetch()[0].story;
+    story1 = Phonetics.findOne({sound: lastSound}).story;
     $("#storyTitle").html('Read the following: '); $("#resTitle").html('Your progress: ');  //Is there a way to make this show up forever after one sentence is complete?
 		startDictation(event);
     getSent();
@@ -208,4 +212,20 @@ Template.story.events({
     }
     getSent();
   }
+})
+
+Template.soundselectstory.events({
+  "submit #sound-select": function(event){
+    event.preventDefault();
+    
+    var soundSelected = event.target.sound.value;
+    Session.set("sound",soundSelected);
+    var newSound = Session.get("sound");
+    if (lastSound!=newSound){
+      console.log("CHANGING SOUND... new sound = "+newSound);
+      story1 = Phonetics.findOne({sound: newSound}).story;
+      getSent();
+      lastSound=newSound;
+    }
+  } 
 })
