@@ -10,7 +10,7 @@
 			<h2 class = "text-right" id = "mic">Mic OFF</h2>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" id="box">
 		<div class = "col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-4">
 			<h1 class = "text-center" id="word">{{> getWord}}</h1>
 		</div>
@@ -52,7 +52,12 @@
 </template>
 
 <template name="getWord">
-	{{word}}
+	{{#if gameStarted}}
+		{{word}}
+	{{else}}
+	<h3>Choose a sound to begin!</h3>
+	<small><small>{{> soundselectworkshop}}</small></small>
+	{{/if}}
 </template>
 
 <template name="correct">
