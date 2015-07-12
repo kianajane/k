@@ -8,17 +8,20 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 var final_transcript = '';
 var confidence = null;
 var recognizing = false;
-
+wordList = ["testing"];
 
 // Should switch to new words!
 //var words = Phonetics.find({sound: "R"}).fetch()[0].words;
-var words = ["time", "issue","year","side","people","kind","way","head","day","house","man","service","thing","friend","woman",
-"father","life","power","child","hour","world","game","school","line"];
 var correct=false;
 var correctCounter = 0;
 var wordCounter = 1;
 var attempts = 0;
 var messageprinted = false;
+if (Session.get("sound")==undefined){
+  Session.set("sound", "L");
+}
+var lastSound = Session.get("sound");
+getNewWord();
 
 /*TO FIX: 
 errors in "speak" after a word is skipped? 
@@ -45,7 +48,7 @@ Template.workshop.events({
 });
 
 Template.getWord.helpers({
-	word: getNewWord()
+	word: Session.get("word")
 });
 
 Template.correct.helpers({
@@ -55,9 +58,10 @@ Template.correct.helpers({
 
 //returns new word from words[]
 function getNewWord(){
-	theWord = words[Math.round(getRandomArbitrary(0,24))];
+	
+	theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
+	Session.set("word",theWord);
 	console.log(theWord);
-	return theWord;
 }
 
 //random # returned (called in getNewWord)
@@ -67,7 +71,8 @@ function getRandomArbitrary(min, max) {
 
 //called in skip, new word given for user to speak
 function changeWord(event){
-	$("#word").html(getNewWord());
+	getNewWord();
+	$("#word").html(Session.get("word"));
 	//document.getElementById("word").innerHTML = "Please say: "+getNewWord();
 	correct=false;
 	wordCounter++;
@@ -190,3 +195,19 @@ function capitalize(s) {
 	return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
 
 }
+
+Template.soundselectworkshop.events({
+  "submit #sound-select": function(event){
+    event.preventDefault();
+    
+    var soundSelected = event.target.sound.value;
+    Session.set("sound",soundSelected);
+    var newSound = Session.get("sound");
+    if (lastSound!=newSound){
+      console.log("CHANGING SOUND... new sound = "+newSound);
+      wordList = Phonetics.findOne({sound: newSound}).words;
+      changeWord(event);
+      lastSound=newSound;
+    }
+  } 
+})
