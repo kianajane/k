@@ -1,5 +1,7 @@
 if(Meteor.isClient){
 	
+	// var gameboard = document.getElementById("gameboard");
+	// var drawContext = null;
 	var final_transcript = '';
 	var interim_transcript = '';
 	var confidence = null;
@@ -31,7 +33,7 @@ if(Meteor.isClient){
 	});
 	
 	var running=false;
-	var enemyDrawn = false;
+	var spriteDrawn = false;
 
 /* -------------------------------------This is the code for getting the word to test----------------------------------------------*/
 	
@@ -50,7 +52,7 @@ if(Meteor.isClient){
 			recognition.lang = 'en-US';
 			recognition.start();
 		}
-		enemyDrawn=false;
+		spriteDrawn=false;
 		running=true;
 		gameLoop();
 	}
@@ -96,7 +98,6 @@ if(Meteor.isClient){
 					 			// You have now said "+correctCounter+" word(s) correctly");
 					alive=false;
 					running=false;
-					// fireworks();
 					next();
 			    }
 	         }
@@ -104,75 +105,96 @@ if(Meteor.isClient){
 	    }	
 	
 /* --------------------------------------------------------------------------------------------------------------------------------*/
-	
-	function start(event) {
-		if (!running) {
-			running=true;
-	  		recognizing=true;
-	 		final_transcript = '';
-	 		interim_transcript = '';
-			recognition.lang = 'en-US';
-			recognition.start();
-			drawEnemy();
-			gameLoop();
+		
+		function start(event) {
+			if (!running) {
+				running=true;
+		  		recognizing=true;
+		 		final_transcript = '';
+		 		interim_transcript = '';
+				recognition.lang = 'en-US';
+				recognition.start();
+				drawSprite();
+				gameLoop();
+			}
 		}
-	}
-	
-	function stop(event) {
-		running=false;
-		recognizing=false;
-		recognition.stop();
-       	return;
-	}
-	
-	function draw(){
-		// console.log("drawing board");
-		var drawContext = gameboard.getContext("2d");
-		drawContext.fillStyle="#eee";
-		drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-		drawContext.strokeStyle="#f00";
-		drawEnemy();
-		// console.log("drawing enemy");
-		drawContext.strokeStyle=enemy.c;
-		drawContext.beginPath();
-		drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
-		drawContext.stroke();
-	};
-
-	
-	function Enemy(x,y,r,c){
-		this.x=x;
-		this.y=y;
-		this.r=r;
-		this.c=c;
-		alive=true;
-	}
-
-	var drawEnemy = function() {
-		if (!enemyDrawn) {
-			this.enemy = new Enemy(gameboard.width/2,20,20,"black");
-			enemyDrawn=true;
-		} else {
-			this.enemy.update();
-		}
-	};
-	
-	Enemy.prototype.update = function(){
-		// console.log("update");
-		if (this.y + this.r >= gameboard.height) {
-			this.y = gameboard.height-this.r;
+		
+		function stop(event) {
 			running=false;
+			recognizing=false;
 			recognition.stop();
-			alive=false;
-		} else {
-			this.y += 0.5;
+	       	return;
 		}
-	};
-
-	function gameLoop(){
-		// console.log("game loop");
-		draw();
-		if (running) window.requestAnimationFrame(gameLoop);
+		
+		function draw(){
+			console.log("drawing board");
+			drawContext = gameboard.getContext("2d");
+			drawContext.fillStyle="#eee";
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+			drawContext.strokeStyle="#f00";
+			drawSprite();
+			console.log("drawing sprite");
+			// drawContext.strokeStyle=enemy.c;
+			// drawContext.beginPath();
+			// drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
+			// drawContext.stroke();
+		};
+	
+		
+		function Sprite(url, pos, size, speed, frames, dir, once){
+		    this.pos = pos;
+		    this.size = size;
+		    this.speed = typeof speed === 'number' ? speed : 0;
+		    this.frames = frames;
+		    this._index = 0;
+		    this.url = url;
+		    this.dir = dir || 'horizontal';
+		    this.once = once;
+		};
+	
+		function drawSprite() {
+			if (!spriteDrawn) {
+				var player = { 
+					sprite: new Sprite('/public/images/real_sp.png', [2,51], [50,43], 16, [0,1], 'vertical'),
+					pos: [gameboard.width/2, gameboard.height]
+				};
+				spriteDrawn = true;
+				alive = false;
+			} else {
+				console.log("updating sprite");
+				player.sprite.update();
+				console.log("redrawing sprite");
+				player.sprite.drawSp();
+			}
+		};
+		
+		Sprite.prototype = {
+			update: function(){
+				if (this.pos[1] >= gameboard.height) {
+					this.pos[1] = gameboard.height-this.pos[1];
+					running=false;
+					recognition.stop();
+					alive=false;
+				} else {
+					this.pos[1] += 0.5;
+				}
+			},
+			
+			drawSp: function(){
+				drawContext.drawImage(
+					this.url,
+					this.pos,
+					this.size,
+					this.speed,
+					this.frames,
+					this.dir
+				);
+			}
+		};
+	
+		function gameLoop(){
+			draw();
+			if (running) window.requestAnimationFrame(gameLoop);
+		}
 	}
-}
 }
