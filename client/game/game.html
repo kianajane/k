@@ -1,5 +1,12 @@
 <template name="game">
-	{{> soundselectgame}}
+	<div class= "row">
+		<div class = "col-md-2">
+			{{> soundselectgame}}
+		</div>
+		<div class = "col-md-offset-8 col-md-2" id="reco">
+	      <h2 class = "text-right" id = "mic">Mic OFF</h2>
+	    </div>
+	</div>
 	<h1 id="say_word">say: {{word}}</h1>
 	<div id="game_controls" class="centered">
 		<button class="btn btn-default" type="submit" id="start">Start game</button>
