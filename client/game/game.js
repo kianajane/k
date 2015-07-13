@@ -263,4 +263,5 @@ if(Meteor.isClient){
 			if (running) window.requestAnimationFrame(gameLoop);
 		}
 	}
+	
 }
