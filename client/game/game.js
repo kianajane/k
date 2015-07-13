@@ -65,7 +65,8 @@ if(Meteor.isClient){
 	    recognition.continuous = true;
 	    recognition.interimResults = true;
 	
-	    recognition.onstart = function() {	 
+	    recognition.onstart = function() {
+	   	  $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');	 
 	      console.log("recognition started");    
 	      recognizing = true;
 	      lastTime = (new Date()).getTime();
@@ -77,6 +78,7 @@ if(Meteor.isClient){
 	    };
 	
 	    recognition.onend = function() {
+	      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
 	      recognizing = false;
 	    };
 	
