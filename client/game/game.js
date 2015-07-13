@@ -15,7 +15,7 @@ if(Meteor.isClient){
 	var lastSound = Session.get("sound");
 	var wordList = [];
 	var noWord = true;
-	
+	var enemyDrawn;
 	Template.score.helpers({
 		
 	});
