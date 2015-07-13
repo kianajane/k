@@ -6,12 +6,12 @@
   </div>
   <div class = "row">
     <div class = "col-md-offset-1 col-md-7 col-sm-offset-1 col-sm-7" id = "storyarea">
-      <p class = "lead" id = "storyTitle">The page is separated into two areas. To check that your microphone is on, look to the upper right corner.<br>The story will appear here.</p>
-      <h1 class = "text-left" id="senth1">To begin reading the story, click "Begin Story."</h1>
+      <p class = "lead" id = "storyTitle">The page is separated into two areas. If you are having trouble, check that the microphone is on by looking at the upper right corner or press the "Skip" button.<br>The story will appear here.</p>
+      <h1 class = "text-left" id="senth1">Click "Begin Story" to start.</h1>
     </div> 
     <div class = "col-md-4 col-sm-4"> 
-      <p class = "lead" id = "resTitle"></p>
-      <p class = "lead text-left" id="prevSent"><br>Sentences read will appear here. Correct words will be in green.</p> 
+      <p class = "lead" id = "resTitle">Completed sentences will appear below with correct words in green.</p>
+      <p class = "lead text-left" id="prevSent"></p> 
     </div>
   </div>
   <div class = row>
@@ -23,14 +23,13 @@
     </div>
   </div>
   <hr/>
-  {{> soundselectstory}}
   <div class = row>
-    <span class = "see_directions">
-      <p id = "dir">This page is separated into two columns.<br>
-      The right column shows you the sentence that you are reading. The word colored blue is the word that you are expected to read.<br>
-      Once you finish the sentence, the sentence will appear on the left column, and a new sentence will appear on the right. The words that were correctly pronounced will be colored green and the words that were not, red.<br>
-      You can check the status of your microphone by looking at the tab or the right hand corner of the page. If the microphone is on, there will be a red dot on the tab where this page is loaded, and on the right hand corner, it will say "Mic ON" in green. If not, it will say "Mic OFF", and the red dot will not be on the tab.
-    </p>
-  </span>
+    <div class = "col-md-2">
+      {{> soundselectstory}}
+    </div>
+    <div class = "col-md-offset-5 col-md-5">
+      <button type = "button" class = "btn btn-default" id = "see_dir">See directions</button>
+      <p id = "dir"></p>
+    </div>
   </div>
 </template>

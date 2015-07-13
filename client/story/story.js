@@ -48,6 +48,8 @@ var correct = [];     //accessed in events
 var incorrect = [];   //accessed in events
 var coloredSent = ""; //global to make coloredSent accumulate
 var end = false;      //marks end of sentence, used in getSent() for timeout
+var pressedDir = true; 
+
 if (Session.get("sound")==undefined){
   Session.set("sound", "L");
 }
@@ -90,6 +92,13 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
+      if (end) {                    //if sentence completed
+        feedback();
+        //setTimeout(getSent, 1500);  //creates lag time for final_transcript, array reset, .. 
+        $("#prevSent").html(coloredSent);//shows completed sentences on the side
+        end=false;
+      }
+      
       getSent();
       
       //change all char to lowercase
@@ -103,7 +112,6 @@ if ('webkitSpeechRecognition' in window) {
           correct.push(wordNum);        //last word gets pushed to correct[]
           console.log ("you've completed the sentence!");
           colorGR(correct, incorrect);
-          //feedback();
           index++;
           end = true;                   //sentence end
 
@@ -132,12 +140,6 @@ function startDictation(event) {
 
 //sentence changing and printing happens here
 function getSent() {
-  if (end) {                    //if sentence completed
-    feedback();
-    setTimeout(getSent, 1500);  //creates lag time for final_transcript, array reset, .. 
-    $("#prevSent").html(coloredSent);//shows completed sentences on the side
-    end=false;
-  }
   sent = story1[index];
   original = sent.split(" "); 
   $("#senth1").html(coloring(original, wordNum));
@@ -211,6 +213,16 @@ Template.story.events({
       wordNum++;
     }
     getSent();
+  },
+  'click #see_dir': function(event) {
+    event.preventDefault();
+    if (pressedDir) {
+      $("#dir").html('To begin the story, press "Begin Story." <br> Read the highlighted word.<br> If you do not know it or want to move on, press the skip button.');
+      pressedDir = false;
+    } else {
+      $("#dir").html('');
+      pressedDir = true;
+    }
   }
 })
 
@@ -224,6 +236,7 @@ Template.soundselectstory.events({
     if (lastSound!=newSound){
       console.log("CHANGING STORY SOUND... new sound = "+newSound);
       story1 = Phonetics.findOne({sound: newSound}).story;
+      index = 0; wordNum = 0;
       getSent();
       lastSound=newSound;
     }
