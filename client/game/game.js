@@ -102,7 +102,6 @@ if(Meteor.isClient){
 	
 	    recognition.onend = function() {
 	      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
-	      console.log("recognition stopped");
 	      recognizing = false;
 	    };
 	
