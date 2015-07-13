@@ -214,6 +214,7 @@ Template.story.events({
     }
     getSent();
   },
+  //probably a better/more efficient way to do this
   'click #see_dir': function(event) {
     event.preventDefault();
     if (pressedDir) {
