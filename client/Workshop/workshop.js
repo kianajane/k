@@ -23,7 +23,6 @@ if (Session.get("sound")==undefined){
   Session.set("sound", "L");
 }
 var lastSound = Session.get("sound");
-var start = false;
 
 /*TO FIX: 
 errors in "speak" after a word is skipped? 
@@ -50,8 +49,7 @@ Template.workshop.events({
 });
 
 Template.getWord.helpers({
-	word: Session.get("workshopWord"),
-	gameStarted: start
+	word: Session.get("workshopWord")
 });
 
 Template.correct.helpers({
@@ -216,7 +214,7 @@ Template.soundselectworkshop.events({
   "submit #sound-select": function(event){
     event.preventDefault();
 
-    start=true;
+    $("#please_say").html("<h2> Please say:</h2>");
     var soundSelected = event.target.sound.value;
     Session.set("sound",soundSelected);
     var newSound = Session.get("sound");
