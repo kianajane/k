@@ -44,6 +44,23 @@ if(Meteor.isClient){
 		}	
 	});
 	
+	Template.soundselectgame.events({
+		"submit #sound-select": function(event){
+		    event.preventDefault();
+		
+		    var soundSelected = event.target.sound.value;
+		    Session.set("sound",soundSelected);
+		    var newSound = Session.get("sound");
+		    if (lastSound!=newSound){
+		      console.log("CHANGING GAME SOUND... new sound = "+newSound);
+		      wordList = Phonetics.findOne({sound: newSound}).words;
+		      $("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
+		      next(event);
+		      lastSound=newSound;
+		    }
+	  	} 
+	});
+	
 	var running=false;
 	var enemyDrawn = false;
 
@@ -128,7 +145,6 @@ if(Meteor.isClient){
 			document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
-			// fireworks();
 			running=false;
 			next(event);
 	    }
@@ -173,8 +189,12 @@ if(Meteor.isClient){
 		
 		function draw(dt){
 			// console.log("drawing board");
+			var h = 0;
+			var s = 0;
+			var l = 93;
+			
 			var drawContext = gameboard.getContext("2d");
-			drawContext.fillStyle="#eee";
+			drawContext.fillStyle='hsl('+h+','+s+'%,'+l+'%)';
 			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			drawContext.strokeStyle="#f00";
 			drawEnemy(dt);
@@ -183,8 +203,7 @@ if(Meteor.isClient){
 			drawContext.beginPath();
 			drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
 			drawContext.stroke();
-		};
-
+		}
 		
 		function Enemy(x,y,r,v,c){
 			this.x=x;
@@ -212,6 +231,7 @@ if(Meteor.isClient){
 				recognition.stop();
 				recognizing=false;
 				alive=false;
+				$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
 				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"restart\">Restart</button>");
 			} else {
 				this.y += this.v*dt;
@@ -227,98 +247,5 @@ if(Meteor.isClient){
 			if (running) window.requestAnimationFrame(gameLoop);
 		}
 	}
+
 }
-
-Template.soundselectgame.events({
-  "submit #sound-select": function(event){
-    event.preventDefault();
-
-    var soundSelected = event.target.sound.value;
-    Session.set("sound",soundSelected);
-    var newSound = Session.get("sound");
-    if (lastSound!=newSound){
-      console.log("CHANGING GAME SOUND... new sound = "+newSound);
-      wordList = Phonetics.findOne({sound: newSound}).words;
-      $("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
-      next(event);
-      lastSound=newSound;
-    }
-  } 
-})
-// =======
-// 	       	return;
-// 		}
-		
-// 		function draw(){
-// 			console.log("drawing board");
-// 			drawContext = gameboard.getContext("2d");
-// 			drawContext.fillStyle="#eee";
-// 			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-// 			drawContext.strokeStyle="#f00";
-// 			drawSprite();
-// 			console.log("drawing sprite");
-// 			// drawContext.strokeStyle=enemy.c;
-// 			// drawContext.beginPath();
-// 			// drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
-// 			// drawContext.stroke();
-// 		};
-	
-		
-// 		function Sprite(url, pos, size, speed, frames, dir, once){
-// 		    this.pos = pos;
-// 		    this.size = size;
-// 		    this.speed = typeof speed === 'number' ? speed : 0;
-// 		    this.frames = frames;
-// 		    this._index = 0;
-// 		    this.url = url;
-// 		    this.dir = dir || 'horizontal';
-// 		    this.once = once;
-// 		};
-	
-// 		function drawSprite() {
-// 			if (!spriteDrawn) {
-// 				var player = { 
-// 					sprite: new Sprite('/public/images/real_sp.png', [2,51], [50,43], 16, [0,1], 'vertical'),
-// 					pos: [gameboard.width/2, gameboard.height]
-// 				};
-// 				spriteDrawn = true;
-// 				alive = false;
-// 			} else {
-// 				console.log("updating sprite");
-// 				player.sprite.update();
-// 				console.log("redrawing sprite");
-// 				player.sprite.drawSp();
-// 			}
-// 		};
-		
-// 		Sprite.prototype = {
-// 			update: function(){
-// 				if (this.pos[1] >= gameboard.height) {
-// 					this.pos[1] = gameboard.height-this.pos[1];
-// 					running=false;
-// 					recognition.stop();
-// 					alive=false;
-// 				} else {
-// 					this.pos[1] += 0.5;
-// 				}
-// 			},
-			
-// 			drawSp: function(){
-// 				drawContext.drawImage(
-// 					this.url,
-// 					this.pos,
-// 					this.size,
-// 					this.speed,
-// 					this.frames,
-// 					this.dir
-// 				);
-// 			}
-// 		};
-	
-// 		function gameLoop(){
-// 			draw();
-// 			if (running) window.requestAnimationFrame(gameLoop);
-// 		}
-// 	}
-// }
-// >>>>>>> kiana
