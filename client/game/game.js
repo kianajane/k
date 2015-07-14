@@ -216,7 +216,7 @@ if(Meteor.isClient){
 
 		var drawEnemy = function(dt) {
 			if (!enemyDrawn) {
-				this.enemy = new Enemy(gameboard.width/2,20+radius,20+radius,50,"black");
+				this.enemy = new Enemy(gameboard.width/2,21+radius,20+radius,50,"black");
 				enemyDrawn=true;
 			} else {
 				this.enemy.update(dt/1000.0);
