@@ -44,6 +44,23 @@ if(Meteor.isClient){
 		}	
 	});
 	
+	Template.soundselectgame.events({
+		"submit #sound-select": function(event){
+		    event.preventDefault();
+		
+		    var soundSelected = event.target.sound.value;
+		    Session.set("sound",soundSelected);
+		    var newSound = Session.get("sound");
+		    if (lastSound!=newSound){
+		      console.log("CHANGING GAME SOUND... new sound = "+newSound);
+		      wordList = Phonetics.findOne({sound: newSound}).words;
+		      $("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
+		      next(event);
+		      lastSound=newSound;
+		    }
+	  	} 
+	});
+	
 	var running=false;
 	var enemyDrawn = false;
 
@@ -127,7 +144,6 @@ if(Meteor.isClient){
 			document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
-			// fireworks();
 			running=false;
 			next(event);
 	    }
@@ -172,8 +188,12 @@ if(Meteor.isClient){
 		
 		function draw(dt){
 			// console.log("drawing board");
+			var h = 0;
+			var s = 0;
+			var l = 93;
+			
 			var drawContext = gameboard.getContext("2d");
-			drawContext.fillStyle="#eee";
+			drawContext.fillStyle='hsl('+h+','+s+'%,'+l+'%)';
 			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			drawContext.strokeStyle="#f00";
 			drawEnemy(dt);
@@ -182,8 +202,7 @@ if(Meteor.isClient){
 			drawContext.beginPath();
 			drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
 			drawContext.stroke();
-		};
-
+		}
 		
 		function Enemy(x,y,r,v,c){
 			this.x=x;
@@ -211,6 +230,7 @@ if(Meteor.isClient){
 				recognition.stop();
 				recognizing=false;
 				alive=false;
+				$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
 				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"restart\">Restart</button>");
 			} else {
 				this.y += this.v*dt;
@@ -226,12 +246,8 @@ if(Meteor.isClient){
 			if (running) window.requestAnimationFrame(gameLoop);
 		}
 	}
-}
 
-Template.soundselectgame.events({
-  "submit #sound-select": function(event){
-    event.preventDefault();
-
+<<<<<<< HEAD
     var soundSelected = event.target.sound.value;
     Session.set("sound",soundSelected);
     var newSound = Session.get("sound");
@@ -313,5 +329,4 @@ Template.soundselectgame.events({
 // 				);
 // 			}
 // 		};
-	
 
