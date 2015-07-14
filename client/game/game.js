@@ -38,6 +38,7 @@ if(Meteor.isClient){
 			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
 		},
 		"click #restart": function(event){
+			$("#gamearea").html('<canvas id="gameboard" width="1135" height = "500"></canvas>');
 			enemyDrawn=false;
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");	
@@ -246,20 +247,7 @@ if(Meteor.isClient){
 			if (running) window.requestAnimationFrame(gameLoop);
 		}
 	}
-
-<<<<<<< HEAD
-    var soundSelected = event.target.sound.value;
-    Session.set("sound",soundSelected);
-    var newSound = Session.get("sound");
-    if (lastSound!=newSound){
-      console.log("CHANGING GAME SOUND... new sound = "+newSound);
-      wordList = Phonetics.findOne({sound: newSound}).words;
-      $("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
-      next(event);
-      lastSound=newSound;
-    }
-  } 
-})
+}	
 // =======
 // 	       	return;
 // 		}
