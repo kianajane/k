@@ -116,7 +116,7 @@ if ('webkitSpeechRecognition' in window) {
           end = true;                   //sentence end
 
           // add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
-          History.insert({userId: Meteor.userId(), mode: "story", sound: "N/A", word: sent, time: new Date()}); // Probably want to record a different sentence
+          History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, time: new Date()}); // Probably want to record a different sentence
          
           // Can we get the interim transcript to reset somehow??? Doesn't work.
         } else {

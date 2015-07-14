@@ -5,29 +5,38 @@ http://ctrlq.org/code/19680-html5-web-speech-api
 Random math function taken from the Mozilla Developer Network
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 */
+
+// Recognizer
 var final_transcript = '';
 var confidence = null;
 var recognizing = false;
+
+// Word list
 var wordList = [];
-// Should switch to new words!
-//var words = Phonetics.find({sound: "R"}).fetch()[0].words;
 var wordChanged=false;
+
+// Counters
 var correct=false;
 var correctCounter = 0;
 var wordCounter = 0;
 var attempts = 0;
 var n = '';
-var messageprinted = false;
-var first=true;
+
+var messageprinted = false; // For feedback
+
+// Get first sound
 if (Session.get("sound")==undefined){
-  Session.set("sound", "L");
+	Session.set("sound", "L");
 }
 var lastSound = Session.get("sound");
+var first=true;
 
 /*TO FIX: 
 errors in "speak" after a word is skipped? 
 */
 
+// ****************** Helpers **********************
+// Button event helpers
 Template.workshop.events({
 	'click #start_button': function(event){
 		startDictation(event);
@@ -48,6 +57,7 @@ Template.workshop.events({
 	}
 });
 
+// Variable helpers so they are reactive.
 Template.getWord.helpers({
 	word: Session.get("workshopWord")
 });
@@ -57,7 +67,8 @@ Template.correct.helpers({
 	wordCounter: wordCounter,
 });
 
-//returns new word from words[]
+// ********************* Functions ********************
+//returns new word from the word collection. Called whenever word needs to change.
 function getNewWord(){
 
 	theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
@@ -65,47 +76,33 @@ function getNewWord(){
 	console.log(theWord);
 }
 
-//random # returned (called in getNewWord)
+//random # returned inside given range. (called in getNewWord)
 function getRandomArbitrary(min, max) {
 	return Math.random() * (max - min) + min;
 }
 
-//called in skip, new word given for user to speak
+// Changes the word and updates the counters. Called in Begin, Skip, and when user is correct.
 function changeWord(event){
 	getNewWord();
 	$("#word").html(Session.get("workshopWord"));
-	//document.getElementById("word").innerHTML = "Please say: "+getNewWord();
 	correct=false;
+
+	// Update counters.
 	if (!wordChanged || attempts>0) wordCounter++;
 	$("#word_counter").html("<b>Total words:</b> "+wordCounter);
-	$("#skipButton").html("");
-   	$("#res").html("");
+	$("#skipButton").html(""); // Remove the skip button.
+	$("#res").html("");
 	attempts = 0;
 }
 
-function startDictation(event) {
-	recognizing=true;
-	final_transcript = '';
-	recognition.lang = 'en-US';
-	recognition.start();
-	$("#results_heading").html("");
-	$('#res').html("");
-}
 
-function stopDictation(event) {
-	$("#results_heading").html("Results:");
-	if (recognizing) {
-		recognition.stop();
-		recognizing=false;
-		return;
-	}
-}
-
+// Updates the counters when the user is correct.
 function counter(correct){
 	if (correct == true) {
 		correctCounter ++;
 	}
 	attempts++;
+	// Prints out the attempts with the correct ending (1st, 2nd, 3rd, 4th, etc.)
 	n = getN(attempts);
 	console.log("attempts = "+attempts+n);
 	if (attempts >= 1){
@@ -113,6 +110,7 @@ function counter(correct){
 	}
 }
 
+// Finds the correct ending for the number (of attempts).
 function getN(attempts){
 	switch(attempts){
 		case 1: return 'st';
@@ -122,15 +120,41 @@ function getN(attempts){
 	}
 }
 
+// **********************  The Speech Recognition Stuff ****************************
 
+
+// Start recognition. Called by Start button.
+function startDictation(event) {
+	recognizing=true;
+	final_transcript = '';
+	recognition.lang = 'en-US';
+	recognition.start();
+	$("#results_heading").html("");
+	$('#res').html("");
+}
+
+// Stop recognition. Called by the Stop button.
+function stopDictation(event) {
+	$("#results_heading").html("Results:");
+	if (recognizing) {
+		recognition.stop();
+		recognizing=false;
+		return;
+	}
+}
+
+
+// All the stuff below only runs if the WebKit loads.
 if ('webkitSpeechRecognition' in window) {
+	// Settings.
 	console.log("webkit is available!");
 	var recognition = new webkitSpeechRecognition();
 	recognition.continuous = false;
 	recognition.interimResults = false;
 
+	// Called by Start Recognition. 
 	recognition.onstart = function() {
-		interim_span.innerHTML = "I'm listening...";
+		interim_span.innerHTML = "I'm listening..."; // feedback that it's working, and removes previous message.
 		recognizing = true;
 		messageprinted=false;
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
@@ -141,12 +165,15 @@ if ('webkitSpeechRecognition' in window) {
 		console.log(event.error);
 	};
 
+	// Called by Stop Recognition. 
 	recognition.onend = function() {
 		interim_span.innerHTML = '';
 		console.log("end");
+
+		// FEEDBACK FOR NO AUDIO
 		if (messageprinted==false){
 			console.log("no result");
-			$('#res').html("Sorry, I didn't quite catch that..");
+			$('#res').html("Sorry, I didn't hear anything....");
 			messageprinted=true;
 		}
 		recognizing = false;
@@ -154,6 +181,7 @@ if ('webkitSpeechRecognition' in window) {
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
 	};
 
+	// The actual recognition.
 	recognition.onresult = function(event) {
 		messageprinted=true;
 		myevent = event;
@@ -172,63 +200,71 @@ if ('webkitSpeechRecognition' in window) {
 		console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
 		interim_span.innerHTML = linebreak(interim_transcript);
 
-	//Audio input evaluation, threshold: 60% confidence
-	if (final_transcript.includes(theWord) && confidence>60) {
-		console.log ("you are correct!");
-		correct=true;
-	} 
-	counter(correct);
 
-	  //Feedback - messages in result box
-	  if (final_transcript=='' || confidence<50) {
-	  	$('#res').html("Sorry, I didn't quite catch that..");
-	  }else if(correct){
-	  	$("#res").html("Congratulations! You said the word correctly on your "+attempts+n+" attempt!\n You have now said "+correctCounter+" word(s) correctly out of "+wordCounter+" words.");
-	  	
-	  	// Add to history
-		History.insert({userId: Meteor.userId(), mode: "workshop", sound: "N/A", word: theWord, time: new Date()});
-	  	
-	  	changeWord(event);
-		
-	} else {
-		$("#res").html("Try again");
-	}
-	  //Updates correct counter
-	  document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
-	  
+		// ******** Results ********
+		//CORRECT PARAMETERS, threshold: 60% confidence
+		if (final_transcript.includes(theWord) && confidence>=60) {
+			console.log ("you are correct!");
+			// Add to history
+	  		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date()});
+	  		changeWord(event); // Move on to new word.
+			correct=true;
+		} 
+		//Update counters.
+		counter(correct);
+		document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
+
+
+	 	//FEEDBACK
+	  	if (final_transcript=='') { // Nothing in transcript.
+	  		$('#res').html("Sorry, I didn't hear anything...");
+	  	}else if(correct){ // Correct
+	  		$("#res").html("Congratulations! You said the word correctly on your "+attempts+n+" attempt!");
+	  	} else if (final_transcript.includes(theWord) && confidence<60) { // Correct but low confidence.
+	  		$("#res").html("That didn't sound quite right, try again.");
+	  	} else { // Wrong, or other error.
+	  		$("#res").html("Try again");
+	  	}
+	  	correct = false; // Reset correct.
 	};
 }
 
+// Formatting functions.
 var two_line = /\n\n/g;
 var one_line = /\n/g;
 function linebreak(s) {
 	return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
 }
 
-function capitalize(s) {
+function capitalize(s) { // Unused???
 	return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
-
 }
 
-Template.soundselectworkshop.events({
-  "submit #sound-select": function(event){
-    event.preventDefault();
 
-    $("#please_say").html("<h2> Please say:</h2>");
-    var soundSelected = event.target.sound.value;
-    Session.set("sound",soundSelected);
-    var newSound = Session.get("sound");
-    if ((lastSound!=newSound) || first){
-      wordChanged=true;
-      if (first){
-    	wordCounter++;
-    	first=false;
-      }
-      console.log("CHANGING WORKSHOP SOUND... new sound = "+newSound);
-      wordList = Phonetics.findOne({sound: newSound}).words;
-      changeWord(event);
-      lastSound=newSound;
-    }
-    if (wordChanged) wordChanged=false;
-  } 
+// ************************* Sound Select Box ********************************
+Template.soundselectworkshop.events({
+	"submit #sound-select": function(event){
+		event.preventDefault();
+
+		// Get the results from the input box
+		$("#please_say").html("<h2> Please say:</h2>");
+		var soundSelected = event.target.sound.value;
+		Session.set("sound",soundSelected);
+		var newSound = Session.get("sound");
+		
+		// If the sound has actually been changed
+		if ((lastSound!=newSound) || first){
+			wordChanged=true;
+			if (first){
+				wordCounter++;
+				first=false;
+			}
+			console.log("CHANGING WORKSHOP SOUND... new sound = "+newSound);
+			// Reset the wordList and pick a new word
+			wordList = Phonetics.findOne({sound: newSound}).words;
+			changeWord(event);
+			lastSound=newSound;
+		}
+		if (wordChanged) wordChanged=false; // Reset wordChanged
+	} 
 })
