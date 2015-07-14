@@ -213,18 +213,18 @@ Template.story.events({
       wordNum++;
     }
     getSent();
-  },
-  //probably a better/more efficient way to do this
-  'click #see_dir': function(event) {
-    event.preventDefault();
-    if (pressedDir) {
-      $("#dir").html('To begin the story, press "Begin Story." <br> Read the highlighted word.<br> If you do not know it or want to move on, press the skip button.');
-      pressedDir = false;
-    } else {
-      $("#dir").html('');
-      pressedDir = true;
-    }
   }
+  //probably a better/more efficient way to do this
+  // 'click #see_dir': function(event) {
+  //   event.preventDefault();
+  //   if (pressedDir) {
+  //     $("#dir").html('To begin the story, press "Begin Story." <br> Read the highlighted word.<br> If you do not know it or want to move on, press the skip button.');
+  //     pressedDir = false;
+  //   } else {
+  //     $("#dir").html('');
+  //     pressedDir = true;
+  //   }
+  // }
 })
 
 Template.soundselectstory.events({
