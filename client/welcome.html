@@ -19,20 +19,17 @@
 	    <a class="btn btn-info btn-lg" href='/profile'> My Profile </a>
 	    <p>View your progress and information</p>
 	</div>
-</center>
+</center>	
 
 {{else}}
-<center>
-	<div class = 'col-md-4' id="login_register"> 
+<div class = "col-md-4"> 
 	{{#if existingUser}}
 	    {{> login}}
 	{{else}}
-    	{{> register}}
-    {{/if}}
-	</div>
-</center>
+	   	{{> register}}
+	{{/if}}
+</div>
 {{/if}}
-
 </template>
 
 <template name="login">
@@ -44,7 +41,7 @@
 		<br>
 	    Password: <input type="password" name="password"/>
 	    <br>
-	    <input type="submit" value="Sign in"/>
+	    <input type="submit" value="Login"/>
     </form>
     <p id="mssg"></p>
     <br>
@@ -53,7 +50,7 @@
 </template>
 
 <template name="register">
-	<h3> New user? </h3>
+	<center><h3> New user? </h3></center>
     <hr>
 	<h4>Join <b>Speak!</b></h4>
 	<form id="register_form">
@@ -61,9 +58,12 @@
 		<br>
 	    Create a password: <input type="password" name="password"/>
 	    <br>
-	    Confirm password: <input type="password" name="password_2"/>
+	    Confirm password: <input type="password" name="password2"/>
 	    <br>
 	    <input type="submit" value="Create an account"/>
     </form>
     <p id="mssg"></p>
+    <br>
+    I have an account
+    <button id="signin">Sign in</button>
 </template>

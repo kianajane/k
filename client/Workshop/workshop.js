@@ -8,10 +8,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 // Chooses an intial sound
 Template.workshop.rendered = function() {
-
 	wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 	changeWord(event);
-
 }
 
 // Recognizer
@@ -38,7 +36,6 @@ if (Session.get("sound")==undefined){
 }
 var lastSound = Session.get("sound");
 var first=true;
-
 /*TO FIX: 
 errors in "speak" after a word is skipped? 
 */
@@ -57,7 +54,7 @@ Template.workshop.events({
 		msg = new SpeechSynthesisUtterance(theWord);
 		//voices = window.speechSynthesis.getVoices();
 		//msg.voice = voices[3];
-		msg.rate = .5; 
+		msg.rate = .7; 
 		window.speechSynthesis.speak(msg);	//"speaks" word
 	},
 	'click #skip_button': function(event){
@@ -259,7 +256,6 @@ Template.soundselectworkshop.events({
 		event.preventDefault();
 
 		// Get the results from the input box
-		$("#please_say").html("<h2> Please say:</h2>");
 		var soundSelected = event.target.sound.value;
 		Session.set("sound",soundSelected);
 		var newSound = Session.get("sound");
