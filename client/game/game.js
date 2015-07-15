@@ -69,9 +69,8 @@ if(Meteor.isClient){
 /* -------------------------------------This is the code for getting the word to test----------------------------------------------*/
 	
 	function getNewWord(){
-		console.log("getting word");
 		theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
-		console.log(theWord);
+		console.log("getting word: "+theWord);
 		Session.set("gameWord",theWord);
 	}
 	
@@ -89,6 +88,7 @@ if(Meteor.isClient){
 	   	  $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');	 
 	      console.log("recognition started");    
 	      recognizing = true;
+	      if(!running) running=true;
 	      lastTime = (new Date()).getTime();
 		  gameLoop();
 	    };
@@ -154,8 +154,6 @@ if(Meteor.isClient){
 /* --------------------------------------------------------------------------------------------------------------------------------*/
 		function start(event) {
 			if (!running) {
-				running=true;
-		  		recognizing=true;
 		 		final_transcript = '';
 		 		interim_transcript = '';
 				recognition.lang = 'en-US';
@@ -178,8 +176,7 @@ if(Meteor.isClient){
 				start(event);
 			}
 			enemyDrawn=false;
-			radius += 5;
-			running=true;  		
+			radius += 5; 		
 			lastTime = (new Date()).getTime();
 			gameLoop();
 		}
