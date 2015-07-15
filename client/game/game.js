@@ -123,7 +123,7 @@ if(Meteor.isClient){
 						+ " --- " +JSON.stringify(confidence));
 	         	if(interim_transcript==theWord && confidence>30 && alive){
 	         		// add to history
-					History.insert({userId: Meteor.userId(), mode: "game", sound: "N/A", word: theWord, time: new Date()});
+					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date()});
 	         		correct();
 			    }
 	         }
