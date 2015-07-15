@@ -22,7 +22,7 @@
 </center>	
 
 {{else}}
-<div class = "col-md-4"> 
+<div class = "col-md-4 col-md-offset-4"> 
 	{{#if existingUser}}
 	    {{> login}}
 	{{else}}
@@ -33,20 +33,20 @@
 </template>
 
 <template name="login">
-	<h3> Please log in! </h3>
+	<center><h3> Please log in! </h3></center>
 	<hr>
 	<h4>Enter your username and password</h4>
 	<form id="login_form">
-		Email: <input type="email" name="email"/>
+		<input type="email" name="email" placeholder="Email"/>
 		<br>
-	    Password: <input type="password" name="password"/>
+	    <input type="password" name="password" placeholder="Password"/>
 	    <br>
-	    <input type="submit" value="Login"/>
+	    <input class="btn btn-material-teal" type="submit" value="Login"/>
     </form>
     <p id="mssg"></p>
-    <br>
-    New user?
-    <button id="new_user">Create an account</button>
+    <div>
+    	<h4>New user?   <button class="btn btn-material btn-raised" id="new_user">Create an account</button></h4>
+    </div>
 </template>
 
 <template name="register">
@@ -54,16 +54,16 @@
     <hr>
 	<h4>Join <b>Speak!</b></h4>
 	<form id="register_form">
-		Email: <input type="email" name="email"/>
+		<input type="email" name="email" placeholder="Email"/>
 		<br>
-	    Create a password: <input type="password" name="password"/>
+	    <input type="password" name="password" placeholder="Create a password"/>
 	    <br>
-	    Confirm password: <input type="password" name="password2"/>
+	    <input type="password" name="password2" placeholder="Confirm password"/>
 	    <br>
-	    <input type="submit" value="Create an account"/>
+	    <input class="btn btn-material-teal" type="submit" value="Create an account"/>
     </form>
     <p id="mssg"></p>
-    <br>
-    I have an account
-    <button id="signin">Sign in</button>
+    <div>
+    	<h4>I have an account   <button class="btn btn-material btn-raised" id="signin">Sign in</button></h4>
+	</div>
 </template>

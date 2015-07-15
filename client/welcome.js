@@ -10,7 +10,7 @@ Template.login.events({
 
       Meteor.loginWithPassword(email, password, function(err){
         if (err){
-          $("#mssg").html("Error... login failed")
+          $("#mssg").html("Invalid username or password");
         } else {
           Router.go('/');
         }
