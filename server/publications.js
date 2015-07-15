@@ -1,6 +1,7 @@
 Meteor.publish("theWords",function(){return Words.find();});
 Meteor.publish("theProfiles",function(){return Profiles.find();});
 Meteor.publish("thePhonetics",function(){return Phonetics.find();});
+Meteor.publish("theHistory",function(){return History.find();}); // Really should only publish that user's history
 
 
 // Do we use this collection?
