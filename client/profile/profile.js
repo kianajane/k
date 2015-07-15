@@ -11,12 +11,12 @@ Template.profile.helpers({
 		return History.find({userId: Meteor.userId()}).fetch();
         },
 
+    // This doesn't work and I don't know why!?!?!!?
     'click #clearHistory': function(event){    
         console.log ("you've pressed clear!");
         History.remove({userId: Meteor.userId()});
         return;
         }
-
 })
 
 /*Meteor.methods({
@@ -35,10 +35,21 @@ Template.profile.helpers({
 /*
  * Function to draw the column chart
  */
-function builtColumn() {
+function builtColumn() 
+{
+    
+    // Turn it into an array. WORKS
+    history = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); 
 
-// I added underscores. So adapt this:
-// var data = _.pairs(_.countBy(result, "fruit"));
+
+// All Time values: (I'm really going to want days, or weeks or something.)
+//var dates = _.pluck(history, 'time'); // Gives me all the y-values I need.
+
+    // Hits the same collection undefined problem we had before.
+    data = _.pairs(_.countBy(history, 'time')); // I think I'd then want to pluck only the numbers out....??
+    //console.log (JSON.stringify(data));
+
+
 
     $('#container-column').highcharts({
         

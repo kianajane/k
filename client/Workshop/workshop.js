@@ -6,6 +6,14 @@ Random math function taken from the Mozilla Developer Network
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 */
 
+// Chooses an intial sound
+Template.workshop.rendered = function() {
+
+	wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
+	changeWord(event);
+
+}
+
 // Recognizer
 var final_transcript = '';
 var confidence = null;
@@ -200,7 +208,6 @@ if ('webkitSpeechRecognition' in window) {
 		console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
 		interim_span.innerHTML = linebreak(interim_transcript);
 
-
 		// ******** Results ********
 		//CORRECT PARAMETERS, threshold: 60% confidence
 		if (final_transcript.includes(theWord) && confidence>=60) {
@@ -215,8 +222,13 @@ if ('webkitSpeechRecognition' in window) {
 		document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 
 
-	 	//FEEDBACK
-	  	if (final_transcript=='') { // Nothing in transcript.
+	 	//FEEDBACK, VOICE COMMANDS:
+		//skip, pause
+		if (final_transcript.includes("skip word")) {
+			changeWord(event);
+		} else if (final_transcript.includes("stop")) {
+			recognition.stop();
+		} else if (final_transcript=='') { // Nothing in transcript.
 	  		$('#res').html("Sorry, I didn't hear anything...");
 	  	}else if(correct){ // Correct
 	  		$("#res").html("Congratulations! You said the word correctly on your "+attempts+n+" attempt!");
