@@ -63,7 +63,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
-      $("#start_button").html('<button type="button" class="btn btn-info" id="pause_story">Pause Story</button>');
+      $("#start_button").html('<button type="button" class="btn btn-info" id="pause_story">Stop Story</button>');
       $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
     };
 
@@ -106,7 +106,11 @@ if ('webkitSpeechRecognition' in window) {
         }
       } else if (interim_transcript.includes("stop")) {
         recognition.stop();
-      } 
+      } else if (final_transcript.includes("workshop mode")) { //change to story
+        window.location.replace("/workshop");
+      } else if (final_transcript.includes("game mode")) {  //change to game
+        window.location.replace("/game");
+      }
 
       if (end) {                    //if sentence completed
         feedback();
