@@ -1,48 +1,43 @@
 <template name="welcome">
 
-  <h2>   Welcome to our pronunciation app! </h2>
-
-<br/>
-<br/>
-<br/>
 {{#if currentUser}}
-
-	<center>
-		<div class = "row">
-		      <a  class="btn btn-info btn-lg" href="/workshop"> Workshop Mode </a>
-		  </div>
-		<br/>
-
-		<div class = "row">
-		     <a class="btn btn-info btn-lg" href="/game"> Game Mode </a>
-		 </div>
-
-		 <br/>
-
-		<div class = "row">
-		      <a class="btn btn-info btn-lg" href="/story"> Story Mode </a>
-		    </div>
-		<br/>
-
-		<div class = "row">
-		      <a class="btn btn-info btn-lg" href='/profile'> My Profile </a>
-		    </div>
-		<br/>
-
-	</center>
+<center>
+ <h3>Welcome back, <b>{{profile.firstName}}</b>!</h3>
+	<div class = "row">
+	    <a class="btn btn-info btn-lg" href="/workshop"> Workshop Mode </a>
+	    <p>Practice learning new sounds</p>
+	</div>
+	<div class = "row">
+	    <a class="btn btn-info btn-lg" href="/game"> Game Mode </a>
+	    <p>Play a fun game with the words you learned</p>
+	</div>
+	<div class = "row">
+	    <a class="btn btn-info btn-lg" href="/story"> Story Mode </a>
+	    <p>Read a story to improve your speaking</p>
+	</div>
+	<div class = "row">
+	    <a class="btn btn-info btn-lg" href='/profile'> My Profile </a>
+	    <p>View your progress and information</p>
+	</div>
+</center>
 
 {{else}}
-<div class = 'col-md-4'> 
-     <h3> Please log in! </h3>
-     <hr>
-     {{> login}}
-</div>
-
+<center>
+	<div class = 'col-md-4' id="login_register"> 
+	{{#if existingUser}}
+	    {{> login}}
+	{{else}}
+    	{{> register}}
+    {{/if}}
+	</div>
+</center>
 {{/if}}
 
 </template>
 
 <template name="login">
+	<h3> Please log in! </h3>
+	<hr>
 	<h4>Enter your username and password</h4>
 	<form id="login_form">
 		Email: <input type="email" name="email"/>
@@ -50,6 +45,25 @@
 	    Password: <input type="password" name="password"/>
 	    <br>
 	    <input type="submit" value="Sign in"/>
+    </form>
+    <p id="mssg"></p>
+    <br>
+    New user?
+    <button id="new_user">Create an account</button>
+</template>
+
+<template name="register">
+	<h3> New user? </h3>
+    <hr>
+	<h4>Join <b>Speak!</b></h4>
+	<form id="register_form">
+		Email: <input type="email" name="email"/>
+		<br>
+	    Create a password: <input type="password" name="password"/>
+	    <br>
+	    Confirm password: <input type="password" name="password_2"/>
+	    <br>
+	    <input type="submit" value="Create an account"/>
     </form>
     <p id="mssg"></p>
 </template>
