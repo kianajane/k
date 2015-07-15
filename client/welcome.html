@@ -33,9 +33,23 @@
 
 {{else}}
 <div class = 'col-md-4'> 
-     <h2> Please log in </h2>
+     <h3> Please log in! </h3>
+     <hr>
+     {{> login}}
 </div>
 
 {{/if}}
 
+</template>
+
+<template name="login">
+	<h4>Enter your username and password</h4>
+	<form id="login_form">
+		Email: <input type="email" name="email"/>
+		<br>
+	    Password: <input type="password" name="password"/>
+	    <br>
+	    <input type="submit" value="Sign in"/>
+    </form>
+    <p id="mssg"></p>
 </template>

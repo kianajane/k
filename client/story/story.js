@@ -92,6 +92,13 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
+      //Voice commands: skip (doesnt work), pause
+      if (interim_transcript.includes("skip")) {
+        wordNum++;
+      } else if (interim_transcript.includes("stop")) {
+        recognition.stop();
+      } 
+
       if (end) {                    //if sentence completed
         feedback();
         //setTimeout(getSent, 1500);  //creates lag time for final_transcript, array reset, .. 
@@ -213,17 +220,6 @@ Template.story.events({
       wordNum++;
     }
     getSent();
-  },
-  //probably a better/more efficient way to do this
-  'click #see_dir': function(event) {
-    event.preventDefault();
-    if (pressedDir) {
-      $("#dir").html('To begin the story, press "Begin Story." <br> Read the highlighted word.<br> If you do not know it or want to move on, press the skip button.');
-      pressedDir = false;
-    } else {
-      $("#dir").html('');
-      pressedDir = true;
-    }
   }
 })
 
