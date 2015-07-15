@@ -1,6 +1,6 @@
 <template name="game">
 
-	{{#if currentUser}}
+{{#if currentUser}}
 	<div class= "row">
 		<div class = "col-md-2">
 			{{> soundselectgame}}
@@ -18,10 +18,10 @@
 	</div>
 	{{> score}}
 
-	{{else}}
+{{else}}
 	<br>
 	<center><h3>You must be <a href="{{pathFor 'welcome'}}">logged in</a> to play</h3></center>
-	{{/if}}
+{{/if}}
 </template>
 
 <template name="score">
