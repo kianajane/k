@@ -1,4 +1,6 @@
 <template name="game">
+
+	{{#if currentUser}}
 	<div class= "row">
 		<div class = "col-md-2">
 			{{> soundselectgame}}
@@ -15,6 +17,11 @@
 		<canvas id="gameboard" width="1135" height = "500"></canvas>
 	</div>
 	{{> score}}
+
+	{{else}}
+	<br>
+	<center><h3>You must be <a href="{{pathFor 'welcome'}}">logged in</a> to play</h3></center>
+	{{/if}}
 </template>
 
 <template name="score">
