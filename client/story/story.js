@@ -94,7 +94,16 @@ if ('webkitSpeechRecognition' in window) {
 
       //Voice commands: skip (doesnt work), pause
       if (interim_transcript.includes("skip")) {
-        wordNum++;
+        if (wordNum==words.length-1) {
+          incorrect.push(wordNum);     //console.log("incorrect: "+incorrect);
+          colorGR(correct, incorrect);
+          feedback(); //visual feedback
+          end=true;
+          index++;
+        } else {
+          incorrect.push(wordNum);   //console.log("incorrect: "+incorrect);
+          wordNum++;
+        }
       } else if (interim_transcript.includes("stop")) {
         recognition.stop();
       } 

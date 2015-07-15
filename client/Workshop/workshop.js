@@ -219,12 +219,15 @@ if ('webkitSpeechRecognition' in window) {
 		document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 
 
-	 	//FEEDBACK, VOICE COMMANDS:
-		//skip, pause
-		if (final_transcript.includes("skip word")) {
+	 	//FEEDBACK & VOICE COMMANDS:
+		if (final_transcript.includes("skip word")) {	//skip
 			changeWord(event);
-		} else if (final_transcript.includes("stop")) {
+		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
+		} else if (final_transcript.includes("story mode")) {	//change to story
+			window.location.replace("/story");
+		} else if (final_transcript.includes("game mode")) {	//change to game
+			window.location.replace("/game");
 		} else if (final_transcript=='') { // Nothing in transcript.
 	  		$('#res').html("Sorry, I didn't hear anything...");
 	  	}else if(correct){ // Correct
