@@ -228,7 +228,9 @@ if ('webkitSpeechRecognition' in window) {
 			window.location.replace("/story");
 		} else if (final_transcript.includes("game mode")) {	//change to game
 			window.location.replace("/game");
-		} else if (final_transcript=='') { // Nothing in transcript.
+		} else if  (final_transcript.includes("profile")) {
+        	window.location.replace("/profile");
+      	} else if (final_transcript=='') { // Nothing in transcript.
 	  		$('#res').html("Sorry, I didn't hear anything...");
 	  	}else if(correct){ // Correct
 	  		$("#res").html("Congratulations! You said the word correctly on your "+attempts+n+" attempt!");
