@@ -174,6 +174,8 @@ if(Meteor.isClient){
 			$("#say_word").html("say: "+Session.get("gameWord"));
 			if (!recognizing){
 				start(event);
+			} else {
+				running=true;
 			}
 			enemyDrawn=false;
 			radius += 5; 		
