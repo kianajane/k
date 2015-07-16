@@ -1,7 +1,6 @@
 <template name="layout">
 	<div class="container">
-		<a href = "{{pathFor 'welcome'}}"><img src = "images/speak.png" width = "100%" alt = "banner"></a>
-		<br>
+		<a href = "{{pathFor 'welcome'}}"><img src = "images/banner-speak.png" width = "100%" alt = "banner"></a>
 		<!-- Here is the standard Bootstrap code for a Navigation bar taken directly from getbootstrap.com/components -->
 		<nav class="navbar navbar-default">
 		  <div class="container-fluid">
@@ -18,7 +17,9 @@
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
 		      	<ul class="nav navbar-nav" id="navigation">
+		      		<li><a href="{{pathFor 'welcome'}}"><span class="glyphicon glyphicon-home"></span>   Home</a></li>
 		      		<li><a href="{{pathFor 'profile'}}">My Profile</a></li>
 		      		<li><a href="{{pathFor 'workshop'}}">Workshop Mode</a></li>
 					<li><a href="{{pathFor 'story'}}">Story Mode</a></li>

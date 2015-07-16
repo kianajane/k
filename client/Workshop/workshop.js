@@ -8,10 +8,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 // Chooses an intial sound
 Template.workshop.rendered = function() {
-
 	wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 	changeWord(event);
-
 }
 
 // Recognizer
@@ -38,7 +36,6 @@ if (Session.get("sound")==undefined){
 }
 var lastSound = Session.get("sound");
 var first=true;
-
 /*TO FIX: 
 errors in "speak" after a word is skipped? 
 */
@@ -57,7 +54,7 @@ Template.workshop.events({
 		msg = new SpeechSynthesisUtterance(theWord);
 		//voices = window.speechSynthesis.getVoices();
 		//msg.voice = voices[3];
-		msg.rate = .5; 
+		msg.rate = .7; 
 		window.speechSynthesis.speak(msg);	//"speaks" word
 	},
 	'click #skip_button': function(event){
@@ -222,13 +219,18 @@ if ('webkitSpeechRecognition' in window) {
 		document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 
 
-	 	//FEEDBACK, VOICE COMMANDS:
-		//skip, pause
-		if (final_transcript.includes("skip word")) {
+	 	//FEEDBACK & VOICE COMMANDS:
+		if (final_transcript.includes("skip word")) {	//skip
 			changeWord(event);
-		} else if (final_transcript.includes("stop")) {
+		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
-		} else if (final_transcript=='') { // Nothing in transcript.
+		} else if (final_transcript.includes("story mode")) {	//change to story
+			window.location.replace("/story");
+		} else if (final_transcript.includes("game mode")) {	//change to game
+			window.location.replace("/game");
+		} else if  (final_transcript.includes("profile")) {
+        	window.location.replace("/profile");
+      	} else if (final_transcript=='') { // Nothing in transcript.
 	  		$('#res').html("Sorry, I didn't hear anything...");
 	  	}else if(correct){ // Correct
 	  		$("#res").html("Congratulations! You said the word correctly on your "+attempts+n+" attempt!");
@@ -259,7 +261,6 @@ Template.soundselectworkshop.events({
 		event.preventDefault();
 
 		// Get the results from the input box
-		$("#please_say").html("<h2> Please say:</h2>");
 		var soundSelected = event.target.sound.value;
 		Session.set("sound",soundSelected);
 		var newSound = Session.get("sound");

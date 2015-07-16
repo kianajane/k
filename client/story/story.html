@@ -1,4 +1,6 @@
 <template name="story">
+
+  {{#if currentUser}}
   <div class = "row">
     <div class = "col-md-offset-10 col-md-2" id="reco">
       <h2 class = "text-right" id = "mic">Mic OFF</h2>
@@ -28,7 +30,11 @@
       {{> soundselectstory}}
     </div>
     <div class = "col-md-offset-2 col-md-5">
-      <p id = "directions">To begin the story, press "Begin Story." <br> Read the highlighted word.<br> If you do not know it or want to move on, press the skip button or say "skip word". <br> If you want to pause the story, say "pause" </p>
+      <p id = "directions">To begin the story, press "Begin Story." <br> Read the highlighted word.<br> If you do not know it or want to move on, press the skip button or say "skip word." <br> If you want to take a break, say "stop."<br>To move to another mode, say the mode while the microphone is on to be directed to that mode.</p>
     </div>
   </div>
+  {{else}}
+  <br>
+  <center><h3>You must be <a href="{{pathFor 'welcome'}}">logged in</a> to read this story</h3></center>
+  {{/if}}
 </template>

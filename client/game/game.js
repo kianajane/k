@@ -1,5 +1,14 @@
 if(Meteor.isClient){
-	
+
+	// Chooses an initial sound
+	Template.game.rendered=function(){
+		draw(0);
+		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
+		getNewWord();
+		$("#say_word").html("say: "+Session.get("gameWord"));
+	}
+
+	var wordList=[];
 	var final_transcript = '';
 	var interim_transcript = '';
 	var confidence = null;
@@ -10,9 +19,7 @@ if(Meteor.isClient){
 	if (Session.get("sound")==undefined){
 	  Session.set("sound", "L");
 	}
-	var lastSound = Session.get("sound");
-	var wordList = [];
-	var noWord = true;
+	lastSound = Session.get("sound");
 	
 	Template.score.helpers({
 		
@@ -24,12 +31,6 @@ if(Meteor.isClient){
 	
 	Template.game.events({
 		"click #start": function(event){
-			wordList = Phonetics.findOne({sound: lastSound}).words;
-			if (noWord){
-				getNewWord();
-				$("#say_word").html("say: "+Session.get("gameWord"));
-				noWord=false;
-			}	
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
 		},
@@ -69,7 +70,7 @@ if(Meteor.isClient){
 	
 	function getNewWord(){
 		theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
-		console.log(theWord);
+		console.log("getting word: "+theWord);
 		Session.set("gameWord",theWord);
 	}
 	
@@ -87,6 +88,7 @@ if(Meteor.isClient){
 	   	  $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');	 
 	      console.log("recognition started");    
 	      recognizing = true;
+	      if(!running) running=true;
 	      lastTime = (new Date()).getTime();
 		  gameLoop();
 	    };
@@ -152,13 +154,10 @@ if(Meteor.isClient){
 /* --------------------------------------------------------------------------------------------------------------------------------*/
 		function start(event) {
 			if (!running) {
-				running=true;
-		  		recognizing=true;
 		 		final_transcript = '';
 		 		interim_transcript = '';
 				recognition.lang = 'en-US';
 				recognition.start();
-
 			}
 		}
 		
@@ -170,10 +169,6 @@ if(Meteor.isClient){
 	       	return;
 		}
 
-		Template.game.rendered=function(){
-			draw(0);
-		}
-
 		function next(event){
 			getNewWord();
 			$("#say_word").html("say: "+Session.get("gameWord"));
@@ -181,8 +176,7 @@ if(Meteor.isClient){
 				start(event);
 			}
 			enemyDrawn=false;
-			radius += 5;
-			running=true;  		
+			radius += 5; 		
 			lastTime = (new Date()).getTime();
 			gameLoop();
 		}
