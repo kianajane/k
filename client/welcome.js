@@ -39,6 +39,7 @@ Template.register.events({
         if (err){
           $("#mssg").html("Account creation failed");
         } else {
+          Session.set("login",true);
           Router.go('/profileEdit');
         }
       });
