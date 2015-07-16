@@ -47,7 +47,6 @@ var correct = [];     //accessed in events
 var incorrect = [];   //accessed in events
 var coloredSent = ""; //global to make coloredSent accumulate
 var end = false;      //marks end of sentence, used in getSent() for timeout
-var pressedDir = true; 
 
 if (Session.get("sound")==undefined){
   Session.set("sound", "L");
@@ -92,20 +91,24 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //Voice commands: skip (doesnt work), pause, site nav
-      if (interim_transcript.includes("skip")) {
+      if (final_transcript.includes("skip")) {
         skip(event);
-      } else if (interim_transcript.includes("stop")) {
+      } else if (final_transcript.includes("stop")) {
         recognition.stop();
-      } else if (final_transcript.includes("workshop mode")) { //change to story
+      } else if (final_transcript.includes("workshop")) { //goes to story
         window.location.replace("/workshop");
-      } else if (final_transcript.includes("game mode")) {  //change to game
+      } else if (final_transcript.includes("game")) {  //goes to game
         window.location.replace("/game");
-      } else if  (final_transcript.includes("profile")) {
+      } else if  (final_transcript.includes("profile")) { //goes to profile
         window.location.replace("/profile");
       }
 
-      if (end) {                    //if sentence completed
+      //If sentence completed
+      if (end) {                    
+        colorGR(correct, incorrect);
         feedback();
+        wordNum=0;
+        index++;
         //setTimeout(getSent, 1500);  //creates lag time for final_transcript, array reset, .. 
         $("#prevSent").html(coloredSent);//shows completed sentences on the side
         end=false;
@@ -113,32 +116,29 @@ if ('webkitSpeechRecognition' in window) {
       
       getSent();
       
-      //change all char to lowercase
+      //Change all char to lowercase
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
       current = " "+interim_transcript.toLowerCase() + " ";
       words = trimStory.split(" ");
       console.log ("say: " + words[wordNum]);
       // Note: we are ignoring confidence. Kind of working (if "they" is said, passes for "the")
       if (current.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
+        correct.push(wordNum); //Pushes index to correct[]
+        console.log("correct words: "+correct);
         if (wordNum >= words.length-1) {
-          correct.push(wordNum);        //last word gets pushed to correct[]
           console.log ("you've completed the sentence!");
-          colorGR(correct, incorrect);
-          index++;
           end = true;                   //sentence end
 
-          // add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
+          //Add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
           History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, time: new Date()}); // Probably want to record a different sentence
-         
-          // Can we get the interim transcript to reset somehow??? Doesn't work.
         } else {
-          correct.push(wordNum); console.log("correct words: "+correct);
           wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
         }
+        
       }
     };
 }
-
+//Starts reco
 function startDictation(event) {
   if (recognizing) {
     recognition.stop();
@@ -149,15 +149,13 @@ function startDictation(event) {
   recognition.lang = 'en-US';
   recognition.start();
 }
-
-//sentence changing and printing happens here
+//Sentence changing and printing happens here
 function getSent() {
   sent = story1[index];
   original = sent.split(" "); 
   $("#senth1").html(coloring(original, wordNum));
 }
-
-//"highlights" the word that you are on blue
+//"Highlights" the word that you are on blue
 function coloring(original, wordNum) {
   newSent = "";
   for(var j = 0; j < original.length; j++) {
@@ -169,9 +167,7 @@ function coloring(original, wordNum) {
   }
   return newSent;
 }
-
-//final coloring: colors the correct words green(G), incorrect words red (R)
-//Note: coloredSent accumulates
+//Final coloring: colors the correct words green(G), incorrect words red (R)
 function colorGR(correct, incorrect) {
   for(var k = 0; k < original.length; k++) {
     var w = original[k]
@@ -182,10 +178,8 @@ function colorGR(correct, incorrect) {
     }
   }
   coloredSent+="<br>";
-  wordNum=0;
 }
-
-//visual feedback after sentence completed
+//Visual feedback after sentence completed
 function feedback() {
   if (correct.length == words.length) {
     $("#storyarea").html("<h3>Perfect!</h3> <img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
@@ -193,25 +187,22 @@ function feedback() {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
   correct = []; incorrect = []; //reset arrays
-  setTimeout(resetStoryarea, 2000);
+  setTimeout(resetStoryarea, 1500);
 }
-
+//Resets area
 function resetStoryarea() {
   $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>');
 }
-
+//When skip
 function skip(event) {
+  incorrect.push(wordNum); 
+  console.log("incorrect: "+incorrect);
   if (wordNum==words.length-1) {
-    incorrect.push(wordNum);     //console.log("incorrect: "+incorrect);
-    colorGR(correct, incorrect);
-    feedback(); //visual feedback
     end=true;
-    index++;
   } else {
-    incorrect.push(wordNum);   //console.log("incorrect: "+incorrect);
-    wordNum++;
+    wordNum++;  
   }
-  getSent();
+  return;
 }
 
 Template.story.events({
@@ -232,7 +223,6 @@ Template.story.events({
 Template.soundselectstory.events({
   "submit #sound-select": function(event){
     event.preventDefault();
-    
     var soundSelected = event.target.sound.value;
     Session.set("sound",soundSelected);
     var newSound = Session.get("sound");
