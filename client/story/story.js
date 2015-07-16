@@ -122,16 +122,14 @@ if ('webkitSpeechRecognition' in window) {
       console.log ("say: " + words[wordNum]);
       // Note: we are ignoring confidence. Kind of working (if "they" is said, passes for "the")
       if (current.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
-        correct.push(wordNum); //Pushes to correct[]
-        //console.log("correct words: "+correct);
+        correct.push(wordNum); //Pushes index to correct[]
+        console.log("correct words: "+correct);
         if (wordNum >= words.length-1) {
           console.log ("you've completed the sentence!");
           end = true;                   //sentence end
 
           // add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
           History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, time: new Date()}); // Probably want to record a different sentence
-         
-          // Can we get the interim transcript to reset somehow??? Doesn't work.
         } else {
           wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
         }
@@ -139,7 +137,7 @@ if ('webkitSpeechRecognition' in window) {
       }
     };
 }
-
+//starts reco
 function startDictation(event) {
   if (recognizing) {
     recognition.stop();
@@ -150,14 +148,12 @@ function startDictation(event) {
   recognition.lang = 'en-US';
   recognition.start();
 }
-
 //sentence changing and printing happens here
 function getSent() {
   sent = story1[index];
   original = sent.split(" "); 
   $("#senth1").html(coloring(original, wordNum));
 }
-
 //"highlights" the word that you are on blue
 function coloring(original, wordNum) {
   newSent = "";
@@ -170,9 +166,7 @@ function coloring(original, wordNum) {
   }
   return newSent;
 }
-
 //final coloring: colors the correct words green(G), incorrect words red (R)
-//Note: coloredSent accumulates
 function colorGR(correct, incorrect) {
   for(var k = 0; k < original.length; k++) {
     var w = original[k]
@@ -184,7 +178,6 @@ function colorGR(correct, incorrect) {
   }
   coloredSent+="<br>";
 }
-
 //visual feedback after sentence completed
 function feedback() {
   if (correct.length == words.length) {
@@ -195,11 +188,11 @@ function feedback() {
   correct = []; incorrect = []; //reset arrays
   setTimeout(resetStoryarea, 1500);
 }
-
+//resets area
 function resetStoryarea() {
   $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>');
 }
-
+//when skip
 function skip(event) {
   incorrect.push(wordNum); 
   console.log("incorrect: "+incorrect);
@@ -229,7 +222,6 @@ Template.story.events({
 Template.soundselectstory.events({
   "submit #sound-select": function(event){
     event.preventDefault();
-    
     var soundSelected = event.target.sound.value;
     Session.set("sound",soundSelected);
     var newSound = Session.get("sound");
