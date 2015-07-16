@@ -30,19 +30,69 @@ Template.profile.rendered = function() {
 //Function to draw the column chart
 function builtColumn() 
 {
-    
-    // Turn it into an array. WORKS
-    history = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); 
+
+    // GAME DATA
+    history = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); // Returns the array of the objects of that user's game history.
+
+    history2 = History.find({userId: Meteor.userId(), mode: "game"}).fetch();
+    counts = _.countBy(history2, function(obj) {
+        return obj.time.toDateString(); }); // Returns the array of counts in the format: [June 06: 3, June 10: 11], etc.
+   
+    gameData = _.map(counts, function(num, key){ return num;}); // Pulls out only the counts, returns an array [3, 11], etc.
+    gameDates = _.map(counts, function(num, key){ return key;});
+
+    workshopData = _.map(_.countBy(History.find({userId: Meteor.userId(), mode: "workshop"}).fetch(), function(obj) {
+                        return obj.time.toDateString();
+                        })
+                        , function(num, key) {return num;});
+
+    workshopData = _.map(_.countBy(History.find({userId: Meteor.userId(), mode: "story"}).fetch(), function(obj) {
+                        return obj.time.toDateString();
+                        })
+                        , function(num, key) {return num;});
 
 
-    // All Time values: (I'm really going to want days, or weeks or something.)
-    //var dates = _.pluck(history, 'time'); // Gives me all the y-values I need.
 
-    // Hits the same collection undefined problem we had before.
-    data = _.pairs(_.countBy(history, 'time')); // I think I'd then want to pluck only the numbers out....??
-    //console.log (JSON.stringify(data));
+    // We love Underscorejs.org!
+    //Not quite working.
+/*
+    I want to have the zeros for the days that you haven't done anything.
+    So.... 
+    I want the counts of times for each mode for every day.
 
-    // Creates the highchart. Uses the meteor highchart package.
+    Do I have to fill in zeros for any mode that doesn't have it??
+
+    First do counts for each mode.
+
+    Iterate through every date that we have from the original array.
+*/
+    // For some reason this isnt' working???
+    history3 = History.find({userId: Meteor.userId()}, {'time': 1, 'word': 1}).fetch();
+       // _.pluck(stooges, 'name');
+//=> ["moe", "larry", "curly"]
+
+        _.uniq([1, 2, 1, 4, 1, 3]);
+
+    //allUniqueDates = _.uniq(
+
+   // _.map(history3, function(time){return time.toDateString(); });
+
+    //_.pluck(history3, 'time'));
+
+    // My goal is a an array of all of the unique dates formatted nicely:
+    // [June 06, June 07, June 08]
+
+/*
+
+        
+
+
+    If mode doesn't have it, add zero to the counts.
+    counts["Sun"] = 0
+
+
+
+*/    // Creates the highchart. Uses the meteor highchart package.
     $('#container-column').highcharts({
         
         chart: {
@@ -63,20 +113,7 @@ function builtColumn()
         
         // Fake. Should be the names of the months that we have data for? Or days? or weeks?
         xAxis: {
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ]
+            categories: gameDates
         },
         
         yAxis: {
@@ -111,17 +148,17 @@ function builtColumn()
         	//History.find({userId: Meteor.userId(), mode: "game"}, {fields: {time: 1}}).fetch().length
 
         // Fake data
-            name: 'Workshop',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+            name: 'Game',
+            data: gameData
 
-        }, {
+       /* }, {
             name: 'Story',
             data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
 
         }, {
             name: 'Game',
             data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-
+*/
         }]
     });
 }
