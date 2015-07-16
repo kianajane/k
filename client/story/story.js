@@ -91,7 +91,7 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //Voice commands: skip (doesnt work), pause, site nav
-      if (final_transcript.includes("skip")) {
+      if (final_transcript.includes("skip word")) {
         skip(event);
       } else if (final_transcript.includes("stop")) {
         recognition.stop();
@@ -182,6 +182,11 @@ function colorGR(correct, incorrect) {
 //Visual feedback after sentence completed
 function feedback() {
   if (correct.length == words.length) {
+    corrSfx.play()
+          .fadeIn()
+          .bind( "timeupdate", function() {
+             var timer = buzz.toTimer( this.getTime() );
+          });
     $("#storyarea").html("<h3>Perfect!</h3> <img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
   } else {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");

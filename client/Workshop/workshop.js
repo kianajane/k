@@ -12,6 +12,14 @@ Template.workshop.rendered = function() {
 	changeWord(event);
 }
 
+//Sound effects
+corrSfx = new buzz.sound( "/sounds/dingsound", {
+    formats: [ "ogg", "mp3", "aac" ]
+});
+incorrSfx = new buzz.sound( "/sounds/wrongsound", {
+    formats: [ "ogg", "mp3", "aac" ]
+});
+
 // Recognizer
 var final_transcript = '';
 var confidence = null;
@@ -238,12 +246,32 @@ if ('webkitSpeechRecognition' in window) {
       		listen(event);
       	} else if (final_transcript=='') { // Nothing in transcript.
 	  		$('#res').html("Sorry, I didn't hear anything...");
+	  		incorrSfx.play()
+			    .fadeIn()
+			    .bind( "timeupdate", function() {
+			       var timer = buzz.toTimer( this.getTime() );
+			    });
 	  	}else if(correct){ // Correct
 	  		$("#res").html("Congratulations! You said the word correctly on your "+attempts+n+" attempt!");
+	  		corrSfx.play()
+			    .fadeIn()
+			    .bind( "timeupdate", function() {
+			       var timer = buzz.toTimer( this.getTime() );
+			    });
 	  	} else if (final_transcript.includes(theWord) && confidence<60) { // Correct but low confidence.
 	  		$("#res").html("That didn't sound quite right, try again.");
+	  		incorrSfx.play()
+			    .fadeIn()
+			    .bind( "timeupdate", function() {
+			       var timer = buzz.toTimer( this.getTime() );
+			    });
 	  	} else { // Wrong, or other error.
 	  		$("#res").html("Try again");
+	  		incorrSfx.play()
+			    .fadeIn()
+			    .bind( "timeupdate", function() {
+			       var timer = buzz.toTimer( this.getTime() );
+			    });
 	  	}
 	  	correct = false; // Reset correct.
 	};
