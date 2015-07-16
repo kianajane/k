@@ -14,7 +14,7 @@ Template.profile.helpers({
     // This doesn't work and I don't know why!?!?!!?
     'click #clearHistory': function(event){    
         console.log ("you've pressed clear!");
-        History.remove({userId: Meteor.userId()});
+        History.find({userId: Meteor.userId()}).remove({});
         return;
         }
 })
