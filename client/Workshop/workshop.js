@@ -51,11 +51,7 @@ Template.workshop.events({
 	},
 
 	'click #speak_button': function(event){
-		msg = new SpeechSynthesisUtterance(theWord);
-		//voices = window.speechSynthesis.getVoices();
-		//msg.voice = voices[3];
-		msg.rate = .7; 
-		window.speechSynthesis.speak(msg);	//"speaks" word
+		listen(event);
 	},
 	'click #skip_button': function(event){
 		changeWord(event);
@@ -123,6 +119,14 @@ function getN(attempts){
 		case 3: return 'rd';
 		default: return 'th';
 	}
+}
+
+function listen(event) {
+	msg = new SpeechSynthesisUtterance(theWord);
+	//voices = window.speechSynthesis.getVoices();
+	//msg.voice = voices[3];
+	msg.rate = .7; 
+	window.speechSynthesis.speak(msg);	//"speaks" word
 }
 
 // **********************  The Speech Recognition Stuff ****************************
@@ -226,10 +230,12 @@ if ('webkitSpeechRecognition' in window) {
 			recognition.stop();
 		} else if (final_transcript.includes("story")) {	//change to story
 			window.location.replace("/story");
-		} else if (final_transcript.includes("game")) {	//change to game
+		} else if (final_transcript.includes("game")) {		//change to game
 			window.location.replace("/game");
 		} else if  (final_transcript.includes("profile")) {
         	window.location.replace("/profile");
+      	} else if (final_transcript.includes("listen")) {
+      		listen(event);
       	} else if (final_transcript=='') { // Nothing in transcript.
 	  		$('#res').html("Sorry, I didn't hear anything...");
 	  	}else if(correct){ // Correct

@@ -95,15 +95,16 @@ if ('webkitSpeechRecognition' in window) {
         skip(event);
       } else if (final_transcript.includes("stop")) {
         recognition.stop();
-      } else if (final_transcript.includes("workshop")) { //change to story
+      } else if (final_transcript.includes("workshop")) { //goes to story
         window.location.replace("/workshop");
-      } else if (final_transcript.includes("game")) {  //change to game
+      } else if (final_transcript.includes("game")) {  //goes to game
         window.location.replace("/game");
-      } else if  (final_transcript.includes("profile")) {
+      } else if  (final_transcript.includes("profile")) { //goes to profile
         window.location.replace("/profile");
       }
 
-      if (end) {                    //if sentence completed
+      //If sentence completed
+      if (end) {                    
         colorGR(correct, incorrect);
         feedback();
         wordNum=0;
@@ -115,7 +116,7 @@ if ('webkitSpeechRecognition' in window) {
       
       getSent();
       
-      //change all char to lowercase
+      //Change all char to lowercase
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
       current = " "+interim_transcript.toLowerCase() + " ";
       words = trimStory.split(" ");
@@ -128,7 +129,7 @@ if ('webkitSpeechRecognition' in window) {
           console.log ("you've completed the sentence!");
           end = true;                   //sentence end
 
-          // add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
+          //Add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
           History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, time: new Date()}); // Probably want to record a different sentence
         } else {
           wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
@@ -137,7 +138,7 @@ if ('webkitSpeechRecognition' in window) {
       }
     };
 }
-//starts reco
+//Starts reco
 function startDictation(event) {
   if (recognizing) {
     recognition.stop();
@@ -148,13 +149,13 @@ function startDictation(event) {
   recognition.lang = 'en-US';
   recognition.start();
 }
-//sentence changing and printing happens here
+//Sentence changing and printing happens here
 function getSent() {
   sent = story1[index];
   original = sent.split(" "); 
   $("#senth1").html(coloring(original, wordNum));
 }
-//"highlights" the word that you are on blue
+//"Highlights" the word that you are on blue
 function coloring(original, wordNum) {
   newSent = "";
   for(var j = 0; j < original.length; j++) {
@@ -166,7 +167,7 @@ function coloring(original, wordNum) {
   }
   return newSent;
 }
-//final coloring: colors the correct words green(G), incorrect words red (R)
+//Final coloring: colors the correct words green(G), incorrect words red (R)
 function colorGR(correct, incorrect) {
   for(var k = 0; k < original.length; k++) {
     var w = original[k]
@@ -178,7 +179,7 @@ function colorGR(correct, incorrect) {
   }
   coloredSent+="<br>";
 }
-//visual feedback after sentence completed
+//Visual feedback after sentence completed
 function feedback() {
   if (correct.length == words.length) {
     $("#storyarea").html("<h3>Perfect!</h3> <img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
@@ -188,20 +189,20 @@ function feedback() {
   correct = []; incorrect = []; //reset arrays
   setTimeout(resetStoryarea, 1500);
 }
-//resets area
+//Resets area
 function resetStoryarea() {
   $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>');
 }
-//when skip
+//When skip
 function skip(event) {
   incorrect.push(wordNum); 
   console.log("incorrect: "+incorrect);
   if (wordNum==words.length-1) {
     end=true;
   } else {
-    wordNum++;
+    wordNum++;  
   }
-  getSent();
+  return;
 }
 
 Template.story.events({
