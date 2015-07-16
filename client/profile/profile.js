@@ -3,6 +3,8 @@ Template.profile.helpers({
 		console.log("profile this = "+JSON.stringify(this));
 		return this.profile.bio;
 		},
+
+    // I have replaced all of the photos with a stock photo, we may want to change that later.
 	photo:function(){ // returns the URL of the gravatar photo for this email
 		return  "images/face.png"
         }, ///Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
@@ -19,22 +21,13 @@ Template.profile.helpers({
         }
 })
 
-/*Meteor.methods({
 
-  data: function(){
+// Call the function to built the chart when the template is rendered
+Template.profile.rendered = function() {    
+    builtColumn();
+}
 
-    check(arguments, [Match.Any]);
-
-	//History.find({userId: Meteor.userId(), mode: "game"}, {fields: {time: 1}}).fetch().length
-    return History.find({userId : Meteor.userId(), mode: "game"},{"time" : 1}).fetch();
-
-  }
-
-});*/
-
-/*
- * Function to draw the column chart
- */
+//Function to draw the column chart
 function builtColumn() 
 {
     
@@ -42,15 +35,14 @@ function builtColumn()
     history = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); 
 
 
-// All Time values: (I'm really going to want days, or weeks or something.)
-//var dates = _.pluck(history, 'time'); // Gives me all the y-values I need.
+    // All Time values: (I'm really going to want days, or weeks or something.)
+    //var dates = _.pluck(history, 'time'); // Gives me all the y-values I need.
 
     // Hits the same collection undefined problem we had before.
     data = _.pairs(_.countBy(history, 'time')); // I think I'd then want to pluck only the numbers out....??
     //console.log (JSON.stringify(data));
 
-
-
+    // Creates the highchart. Uses the meteor highchart package.
     $('#container-column').highcharts({
         
         chart: {
@@ -69,6 +61,7 @@ function builtColumn()
             enabled: false
         },
         
+        // Fake. Should be the names of the months that we have data for? Or days? or weeks?
         xAxis: {
             categories: [
                 'Jan',
@@ -109,16 +102,13 @@ function builtColumn()
             }
         },
         
+        // The data. The data below is fake. Working on getting actual data.
         series: [{
         	//data:data
         	// I want the columns to be a time frame (for now, date). Then have one line per mode.
 
         	// Below returns the number of game entries.
         	//History.find({userId: Meteor.userId(), mode: "game"}, {fields: {time: 1}}).fetch().length
-
-        	// I need the number of game entries on each day. We might need to use an aggregation package, and figure out JQuery???
-        	// https://forums.meteor.com/t/solved-how-to-draw-bar-chart-using-highcharts-and-mongodb-data-reactively/5156/5
-        	// https://forums.meteor.com/t/highcharts-and-mongodb/4605
 
         // Fake data
             name: 'Workshop',
@@ -134,11 +124,4 @@ function builtColumn()
 
         }]
     });
-}
-
-/*
- * Call the function to built the chart when the template is rendered
- */
-Template.profile.rendered = function() {    
-    builtColumn();
 }
