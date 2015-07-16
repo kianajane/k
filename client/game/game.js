@@ -16,6 +16,8 @@ if(Meteor.isClient){
 	var correctCounter = 0;
 	var alive = false;
 	var radius = 0;
+	var skipped = false;
+	var stopped = false;
 	if (Session.get("sound")==undefined){
 	  Session.set("sound", "L");
 	}
@@ -129,6 +131,22 @@ if(Meteor.isClient){
 	         		correct();
 			    }
 	         }
+
+	         //Voice commands: skip (doesnt work), pause, site nav
+			 if (final_transcript.includes("skip")) {
+			 	skipped=true;
+				next(event);
+			 } else if (interim_transcript.includes("stop")) {
+				stopped=true;
+				stop(event);
+			 } else if (interim_transcript.includes("workshop")) { //goes to story
+				window.location.replace("/workshop");
+			 } else if (interim_transcript.includes("game")) {  //goes to game
+				window.location.replace("/game");
+			 } else if  (interim_transcript.includes("profile")) { //goes to profile
+				window.location.replace("/profile");
+			 }
+
 	         function eachWord(transcript) {
 		         var current_result = transcript;
 		         var index = current_result.lastIndexOf(" ");
@@ -144,6 +162,11 @@ if(Meteor.isClient){
 
 	    function correct() {
 			correctCounter++;
+			corrSfx.play()
+	          .fadeIn()
+	          .bind( "timeupdate", function() {
+	             var timer = buzz.toTimer( this.getTime() );
+	          });
 			document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
@@ -162,6 +185,10 @@ if(Meteor.isClient){
 		}
 		
 		function stop(event) {
+			if (stopped) {
+				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
+				stopped=false;
+			}
 			running=false;
 			recognizing=false;
 			recognition.stop();
@@ -178,7 +205,11 @@ if(Meteor.isClient){
 				running=true;
 			}
 			enemyDrawn=false;
-			radius += 5; 		
+			if (!skipped) {
+				radius += 5;
+			} else {
+				skipped=false;
+			}
 			lastTime = (new Date()).getTime();
 			gameLoop();
 		}
