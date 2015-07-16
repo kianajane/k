@@ -47,7 +47,6 @@ var correct = [];     //accessed in events
 var incorrect = [];   //accessed in events
 var coloredSent = ""; //global to make coloredSent accumulate
 var end = false;      //marks end of sentence, used in getSent() for timeout
-var pressedDir = true; 
 
 if (Session.get("sound")==undefined){
   Session.set("sound", "L");
@@ -92,20 +91,23 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //Voice commands: skip (doesnt work), pause, site nav
-      if (interim_transcript.includes("skip")) {
+      if (final_transcript.includes("skip")) {
         skip(event);
-      } else if (interim_transcript.includes("stop")) {
+      } else if (final_transcript.includes("stop")) {
         recognition.stop();
-      } else if (final_transcript.includes("workshop mode")) { //change to story
+      } else if (final_transcript.includes("workshop")) { //change to story
         window.location.replace("/workshop");
-      } else if (final_transcript.includes("game mode")) {  //change to game
+      } else if (final_transcript.includes("game")) {  //change to game
         window.location.replace("/game");
       } else if  (final_transcript.includes("profile")) {
         window.location.replace("/profile");
       }
 
       if (end) {                    //if sentence completed
+        colorGR(correct, incorrect);
         feedback();
+        wordNum=0;
+        index++;
         //setTimeout(getSent, 1500);  //creates lag time for final_transcript, array reset, .. 
         $("#prevSent").html(coloredSent);//shows completed sentences on the side
         end=false;
@@ -120,11 +122,10 @@ if ('webkitSpeechRecognition' in window) {
       console.log ("say: " + words[wordNum]);
       // Note: we are ignoring confidence. Kind of working (if "they" is said, passes for "the")
       if (current.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
+        correct.push(wordNum); //Pushes to correct[]
+        //console.log("correct words: "+correct);
         if (wordNum >= words.length-1) {
-          correct.push(wordNum);        //last word gets pushed to correct[]
           console.log ("you've completed the sentence!");
-          colorGR(correct, incorrect);
-          index++;
           end = true;                   //sentence end
 
           // add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
@@ -132,9 +133,9 @@ if ('webkitSpeechRecognition' in window) {
          
           // Can we get the interim transcript to reset somehow??? Doesn't work.
         } else {
-          correct.push(wordNum); console.log("correct words: "+correct);
           wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
         }
+        
       }
     };
 }
@@ -182,7 +183,6 @@ function colorGR(correct, incorrect) {
     }
   }
   coloredSent+="<br>";
-  wordNum=0;
 }
 
 //visual feedback after sentence completed
@@ -193,7 +193,7 @@ function feedback() {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
   correct = []; incorrect = []; //reset arrays
-  setTimeout(resetStoryarea, 2000);
+  setTimeout(resetStoryarea, 1500);
 }
 
 function resetStoryarea() {
@@ -201,14 +201,11 @@ function resetStoryarea() {
 }
 
 function skip(event) {
+  incorrect.push(wordNum); 
+  console.log("incorrect: "+incorrect);
   if (wordNum==words.length-1) {
-    incorrect.push(wordNum);     //console.log("incorrect: "+incorrect);
-    colorGR(correct, incorrect);
-    feedback(); //visual feedback
     end=true;
-    index++;
   } else {
-    incorrect.push(wordNum);   //console.log("incorrect: "+incorrect);
     wordNum++;
   }
   getSent();
