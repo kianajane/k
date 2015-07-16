@@ -11,6 +11,6 @@ iron:router
 accounts-password
 ian:accounts-ui-bootstrap-3
 fezvrasta:bootstrap-material-design
-autopublish
 maazalik:highcharts
 underscore
+brentjanderson:buzz

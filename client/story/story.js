@@ -31,11 +31,10 @@ if (![].includes) {
   };
 }
 
-/*
+/* VOICE RECO
   Some parts of code comes from this blog post by Amit Agarwal
       http://ctrlq.org/code/19680-html5-web-speech-api
 */
-
 var final_transcript = '';
 var recognizing = false;
 var interim_transcript = '';
@@ -63,7 +62,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
-      $("#start_button").html('<button type="button" class="btn btn-info" id="pause_story">Pause Story</button>');
+      $("#start_button").html('<button type="button" class="btn btn-info" id="pause_story">Stop Story</button>');
       $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
     };
 
@@ -90,6 +89,19 @@ if ('webkitSpeechRecognition' in window) {
         	interim_transcript += Math.round(100*event.results[i][0].confidence)+"% -- "+event.results[i][0].transcript+"<br>";
   			  console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
         }
+      }
+
+      //Voice commands: skip (doesnt work), pause, site nav
+      if (interim_transcript.includes("skip")) {
+        skip(event);
+      } else if (interim_transcript.includes("stop")) {
+        recognition.stop();
+      } else if (final_transcript.includes("workshop mode")) { //change to story
+        window.location.replace("/workshop");
+      } else if (final_transcript.includes("game mode")) {  //change to game
+        window.location.replace("/game");
+      } else if  (final_transcript.includes("profile")) {
+        window.location.replace("/profile");
       }
 
       if (end) {                    //if sentence completed
@@ -175,13 +187,10 @@ function colorGR(correct, incorrect) {
 
 //visual feedback after sentence completed
 function feedback() {
-  var message;
   if (correct.length == words.length) {
-    message = "No mistakes! You're awesome!";
-    $("#storyarea").html("<h3>"+message+"</h3> <img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
+    $("#storyarea").html("<h3>Perfect!</h3> <img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
   } else {
-    message = "You've completed the sentence!";
-    $("#storyarea").html("<h3>"+message+"</h3> <img src = \"images/completedsent.png\" width = \"70%\" alt = \"completed\">");
+    $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
   correct = []; incorrect = []; //reset arrays
   setTimeout(resetStoryarea, 2000);
@@ -189,6 +198,20 @@ function feedback() {
 
 function resetStoryarea() {
   $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>');
+}
+
+function skip(event) {
+  if (wordNum==words.length-1) {
+    incorrect.push(wordNum);     //console.log("incorrect: "+incorrect);
+    colorGR(correct, incorrect);
+    feedback(); //visual feedback
+    end=true;
+    index++;
+  } else {
+    incorrect.push(wordNum);   //console.log("incorrect: "+incorrect);
+    wordNum++;
+  }
+  getSent();
 }
 
 Template.story.events({
@@ -202,29 +225,8 @@ Template.story.events({
     startDictation(event);
   },
   'click #skip': function(event) {
-    if (wordNum==words.length-1) {
-      incorrect.push(wordNum);     //console.log("incorrect: "+incorrect);
-      colorGR(correct, incorrect);
-      feedback(); //visual feedback
-      end=true;
-      index++;
-    } else {
-      incorrect.push(wordNum);   //console.log("incorrect: "+incorrect);
-      wordNum++;
-    }
-    getSent();
+    skip(event);
   }
-  //probably a better/more efficient way to do this
-  // 'click #see_dir': function(event) {
-  //   event.preventDefault();
-  //   if (pressedDir) {
-  //     $("#dir").html('To begin the story, press "Begin Story." <br> Read the highlighted word.<br> If you do not know it or want to move on, press the skip button.');
-  //     pressedDir = false;
-  //   } else {
-  //     $("#dir").html('');
-  //     pressedDir = true;
-  //   }
-  // }
 })
 
 Template.soundselectstory.events({
