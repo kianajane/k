@@ -5,3 +5,30 @@
 h1 {
 	font-size: 2.5em;
 }
+
+@keyframes move {
+	0%{left:0;}
+	50%{left:500;}
+	100%{left:100;}
+}
+
+@-webkit-keyframes move {
+	0%{left:0;}
+	50%{left:500;}
+	100%{left:100;}
+}
+
+/*#gamearea {
+	-webkit-animation: move 30s;
+	animation: move 30s;
+}
+
+#turtle {
+	-webkit-animation: move 30s;
+	animation: move 30s;
+}*/
+
+img {
+	-webkit-animation: move 30s;
+	animation: move 30s;
+}
