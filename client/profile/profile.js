@@ -10,7 +10,7 @@ Template.profile.helpers({
         }, ///Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
 
 	myHistory: function() {
-		return History.find({userId: Meteor.userId()}).fetch();
+		return History.find({userId: Meteor.userId()}, {sort:{time:-1}}).fetch();
         },
 
     // This doesn't work and I don't know why!?!?!!?
@@ -30,85 +30,54 @@ Template.profile.rendered = function() {
 //Function to draw the column chart
 function builtColumn() 
 {
+    // I shouldn't need this line. But it gives me errors when I get rid of it....
+    history = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); 
 
-    // GAME DATA
-    history = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); // Returns the array of the objects of that user's game history.
-
-    history2 = History.find({userId: Meteor.userId(), mode: "game"}).fetch();
+   
+    // ******* Aggregates the counts of entries in History for each mode and creates an array of counts. ***********
+    // Game
+    history2 = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); // Returns the array of the objects of that user's game history. 
     gcounts = _.countBy(history2, function(obj) {
-        return obj.time.toLocaleDateString(); }); // Returns the array of counts in the format: [June 06: 3, June 10: 11], etc.
+        return obj.time.toLocaleDateString(); }); // Returns the array of counts in the format: [7/10/2015: 3, 7/12/2015: 11], etc.
 
+    // Workshop
     workshop = History.find({userId: Meteor.userId(), mode: "workshop"}).fetch();
     wcounts = _.countBy(workshop, function(obj) {
         return obj.time.toLocaleDateString(); });
 
-
+    // Story
     story = History.find({userId: Meteor.userId(), mode: "story"}).fetch();
     scounts = _.countBy(story, function(obj) {
         return obj.time.toLocaleDateString(); });
 
 
-    //Iterate through every date that we have from the original array.
-    // Every date since the oldest history entry.
+    // ***** Need to add zeros for all of the days that there isn't a count for (starting at first count date). ********
 
+    // Create an array of every date between the first use date and today's date.
     start = History.findOne({userId: Meteor.userId()},{sort:{time:1}}).time;     // Pulls your oldest date. 
-    console.log("s: " + start);
-
-    e = (new Date()); //Today's date.
+    end = (new Date()); //Today's date.
     
-    // Do I really want to shorten the dates now?
-    firstAllDays = getAllDays(start,e)
+    // Gets all of the days in between start and end, and turns them into the 7/10/2015, 7/11/2015 format to match the counts.
+    firstAllDays = getAllDays(start,end)
     allDays = _.map(firstAllDays, function(time){ return time.toLocaleDateString();})
-    console.log ("final days: " + allDays)
 
-
+    // Adds the missing zero counts for each mode.
     gcounts = addZeros(allDays, gcounts);
-
-    function addZeros(allDays, counts){
-
-    for (var i = 0; i < allDays.length; i++)
-    {
-        if (counts[allDays[i]] == undefined)
-        {
-            counts[allDays[i]] = 0.1;
-        }
-    }
-    return counts;
-    }
-
-    counts = addZeros(allDays, gcounts);
     wcounts = addZeros(allDays, wcounts);
     scounts = addZeros(allDays, scounts);
 
-    // Resort by date:
+    // Resort by date (initially the zeros are inserted at the end)
     gcounts = _.sortBy(gcounts, function(num, key){ return key; });
     wcounts = _.sortBy(wcounts, function(num, key){ return key; });
     scounts = _.sortBy(scounts, function(num, key){ return key; });
 
-    gameData = _.map(gcounts, function(num, key){ return num;}); // Pulls out only the counts, returns an array [3, 11], etc.
+
+    // ****** Pulls out only the counts so that it can be used in the highchart. Format like: [3, 0, 0, 12, 11, 0, 2], etc.
+    gameData = _.map(gcounts, function(num, key){ return num;});
     storyData = _.map(scounts, function(num, key){ return num;});
     workshopData = _.map(wcounts, function(num, key){ return num;});
 
-    //gameDates = _.map(shcounts, function(num, key){ return key;});
-
-
-// Gets all of the dates between s and e.
-function getAllDays(s, e) {
-    s = new Date(s.valueOf());
-    var e = new Date(e.valueOf());
-    var a = [s];
-
-    while(s < e) {
-        var t = new Date(s);
-        t.setDate(1+ t.getDate());
-        a.push(t);
-        s = t;
-    }
-
-    return a;
-};
-
-   // Creates the highchart. Uses the meteor highchart package.
+   //  *********** Creates the highchart. Uses the meteor highchart package. ***********************
     $('#container-column').highcharts({
         
         chart: {
@@ -127,7 +96,6 @@ function getAllDays(s, e) {
             enabled: false
         },
         
-        // Fake. Should be the names of the months that we have data for? Or days? or weeks?
         xAxis: {
             categories: allDays
         },
@@ -136,7 +104,8 @@ function getAllDays(s, e) {
             min: 0,
             title: {
                 text: 'Log Entries'
-            }
+            },
+            allowDecimals: false
         },
         
         tooltip: {
@@ -155,15 +124,7 @@ function getAllDays(s, e) {
             }
         },
         
-        // The data. The data below is fake. Working on getting actual data.
         series: [{
-        	//data:data
-        	// I want the columns to be a time frame (for now, date). Then have one line per mode.
-
-        	// Below returns the number of game entries.
-        	//History.find({userId: Meteor.userId(), mode: "game"}, {fields: {time: 1}}).fetch().length
-
-        // Fake data
             name: 'Game',
             data: gameData
 
@@ -178,26 +139,32 @@ function getAllDays(s, e) {
         }]
     });
 }
-/*
-Unused code:
 
+// Gets all of the dates between s and e.
+function getAllDays(s, e) {
+    s = new Date(s.valueOf());
+    var e = new Date(e.valueOf());
+    var a = [s];
 
-       
-        // Last: takes unique array, returns an array.
-        //_.uniq(cleanHistory);
+    while(s < e) {
+        var t = new Date(s);
+        t.setDate(1+ t.getDate());
+        a.push(t);
+        s = t;
+    }
 
- // Need an array of just the times. Works. All the times for any testing.
-    
-       // history3 = _.pluck(History.find({}).fetch(), 'time')
-        //cleanHistory = _.map(history3, function(time){ return time.toLocaleDateString();; })
+    return a;
+};
 
-    // My goal is a an array of all of the unique dates formatted nicely:
-    // [June 06, June 07, June 08]
+// Adds zero counts in the data for every date that doesn't currently exist.    
+function addZeros(allDays, counts){
 
-     //Doesn't work.
-    history3 = History.find({userId: Meteor.userId()}, {'time': 1}).fetch();
-    //FacData.find({depts:{$elemMatch:{descr:'Computer Science'}}},{sort:{lastname:1}})
-    
-
-
-*/
+    for (var i = 0; i < allDays.length; i++)
+    {
+        if (counts[allDays[i]] == undefined)
+        {
+            counts[allDays[i]] = 0;
+        }
+    }
+    return counts;
+}
