@@ -133,7 +133,7 @@ if(Meteor.isClient){
 	         }
 
 	         //Voice commands: skip (doesnt work), pause, site nav
-			 if (final_transcript.includes("skip")) {
+			 if (final_transcript.includes("skip" || "pass")) {
 			 	skipped=true;
 				next(event);
 			 } else if (interim_transcript.includes("stop")) {

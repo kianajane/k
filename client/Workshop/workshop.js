@@ -232,7 +232,7 @@ if ('webkitSpeechRecognition' in window) {
 
 
 	 	//FEEDBACK & VOICE COMMANDS:
-		if (final_transcript.includes("skip word")) {	//skip
+		if (final_transcript.includes("pass" || "skip") {	//skip
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
