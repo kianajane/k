@@ -2,7 +2,9 @@ Template.profileEdit.helpers({
 	myEmail: function(){
 		return this.emails[0].address},
 	photo:function(){ 
-		return "images/face.png"}//Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
+		return "images/face.png"},//Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
+  	profile: function(){ 
+    	return Meteor.users.findOne({_id: Meteor.userId()}).profile},
 })
 
 Template.profileEdit.events({

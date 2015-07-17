@@ -1,3 +1,7 @@
 #profilePhoto {
 	width:100%;
 }
+#profileEditSubmit {
+    color: #fff;
+    background-color: #7cd4ff;
+}

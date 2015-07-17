@@ -23,4 +23,24 @@
     padding-bottom:0px !important;
     height: 40px;
 }
-.navbar {min-height:40px !important;}
+.navbar {
+    min-height:40px !important;
+}
+
+a:link,
+a:visited {
+    color: #7cd4ff;
+}
+
+#login-buttons-password,
+#login-buttons-forgot-password,
+#login-buttons-do-change-password,
+#login-buttons-logout {
+    color: #fff;
+    background-color: #7cd4ff;
+}
+
+#forgot-password-link,
+#signup-link {
+    color: #7cd4ff;
+}
