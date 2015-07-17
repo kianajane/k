@@ -125,7 +125,7 @@ if(Meteor.isClient){
 	         		// add to history
 					History.insert({userId: Meteor.userId(), mode: "game", sound: "N/A", word: theWord, time: new Date()});
 	         		correct();
-			    }
+				}
 	         }
 	         function eachWord(transcript) {
 		         var current_result = transcript;
@@ -136,6 +136,12 @@ if(Meteor.isClient){
 		         }
 		         return current_result.toLowerCase();
 	         }
+			
+			//voice control - stops game 
+			if(interim_transcript=="stop"){
+				stop(event);
+				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
+			}
 	         
 	      }
 	    }
@@ -189,44 +195,37 @@ if(Meteor.isClient){
 		
 		function draw(dt){
 			// console.log("drawing board");
-			var h = 0;
-			var s = 0;
-			var l = 93;
+			// h = 0;
+			// s = 0;
+			// l = 93;
 			
-			var drawContext = gameboard.getContext("2d");
-			drawContext.fillStyle='hsl('+h+','+s+'%,'+l+'%)';
-			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-			drawContext.strokeStyle="#f00";
-			drawEnemy(dt);
+			// drawContext = gameboard.getContext("2d");
+			// drawContext.fillStyle='hsl('+h+','+s+'%,'+l+'%)';
+			// drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+			// drawContext.strokeStyle="#f00";
+			
+			// turtle = new Image();
+			// turtle.id = "turtle";
+			// console.log("image created");	
+			// turtle.src = 'images/turtle-d.png';
+			// console.log("image sourced");
+			// drawContext.drawImage(turtle,542,0);
+			// turtleX = 542;
+			// turtleY = 0;
+			// console.log("image drawn");
+			
+			// moveTurtle(dt);
+			
+			// drawEnemy(dt);
 			// console.log("drawing enemy");
-			drawContext.strokeStyle=enemy.c;
-			drawContext.beginPath();
-			drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
-			drawContext.stroke();
+			// drawContext.strokeStyle=enemy.c;
+			// drawContext.beginPath();
+			// drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
+			// drawContext.stroke();
 		}
 		
-		function Enemy(x,y,r,v,c){
-			this.x=x;
-			this.y=y;
-			this.r=r;
-			this.v=v;
-			this.c=c;
-			alive=true;
-		}
-
-		var drawEnemy = function(dt) {
-			if (!enemyDrawn) {
-				this.enemy = new Enemy(gameboard.width/2,20+radius,20+radius,50,"black");
-				enemyDrawn=true;
-			} else {
-				this.enemy.update(dt/1000.0);
-			}
-		};
-		
-		Enemy.prototype.update = function(dt){
-			// console.log("update");
-			if (this.y + this.r >= gameboard.height) {
-				this.y = gameboard.height-this.r;
+		function moveTurtle(dt){
+			if(turtleY+40 >= gameboard.height){
 				running=false;
 				recognition.stop();
 				recognizing=false;
@@ -234,9 +233,50 @@ if(Meteor.isClient){
 				$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
 				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"restart\">Restart</button>");
 			} else {
-				this.y += this.v*dt;
+				while(alive){
+					console.log("begin animation");
+					drawContext.clearRect(0,0,gameboard.width,gameboard.height);
+					drawContext.fillStyle='hsl('+h+','+s+'%,'+l+'%)';
+					drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+					drawContext.translate(0,10);
+					drawContext.drawImage(turtle,542,0);
+					drawContext.save();
+				}
 			}
 		};
+		
+		// function Enemy(x,y,r,v,c){
+		// 	this.x=x;
+		// 	this.y=y;
+		// 	this.r=r;
+		// 	this.v=v;
+		// 	this.c=c;
+		// 	alive=true;
+		// }
+
+		// var drawEnemy = function(dt) {
+		// 	if (!enemyDrawn) {
+		// 		this.enemy = new Enemy(gameboard.width/2,20+radius,20+radius,50,"black");
+		// 		enemyDrawn=true;
+		// 	} else {
+		// 		this.enemy.update(dt/1000.0);
+		// 	}
+		// };
+		
+		// Enemy.prototype.update = function(dt){
+		// 	// console.log("update");
+		// 	if (this.y + this.r >= gameboard.height) {
+		// 		this.y = gameboard.height-this.r;
+		// 		running=false;
+		// 		recognition.stop();
+		// 		recognizing=false;
+		// 		alive=false;
+		// 		$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
+		// 		$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"restart\">Restart</button>");
+		// 	} else {
+		// 		this.y += this.v*dt;
+		// 	}
+		// };
 
 		function gameLoop(){
 			// console.log("game loop");
