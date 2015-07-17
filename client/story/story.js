@@ -44,7 +44,6 @@ var words = [];       //array of the words in sent
 var wordNum = 0;      //index in words[]
 var original = [];    //accessed in .onresult, coloring, colorGR
 var correct = [];     //accessed in events
-var incorrect = [];   //accessed in events
 var coloredSent = ""; //global to make coloredSent accumulate
 var end = false;      //marks end of sentence, used in getSent() for timeout
 
@@ -91,21 +90,19 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //Voice commands: skip (doesnt work), pause, site nav
-      if (final_transcript.includes("skip" || "pass")) {
-        skip(event);
-      } else if (final_transcript.includes("stop")) {
+      if (interim_transcript.includes("stop")) {
         recognition.stop();
-      } else if (final_transcript.includes("workshop")) { //goes to story
+      } else if (interim_transcript.includes("workshop")) { //goes to story
         window.location.replace("/workshop");
-      } else if (final_transcript.includes("game")) {  //goes to game
+      } else if (interim_transcript.includes("game")) {  //goes to game
         window.location.replace("/game");
-      } else if  (final_transcript.includes("profile")) { //goes to profile
+      } else if  (interim_transcript.includes("profile")) { //goes to profile
         window.location.replace("/profile");
       }
 
       //If sentence completed
       if (end) {                    
-        colorGR(correct, incorrect);
+        colorGR(correct);
         feedback();
         wordNum=0;
         index++;
@@ -168,7 +165,7 @@ function coloring(original, wordNum) {
   return newSent;
 }
 //Final coloring: colors the correct words green(G), incorrect words red (R)
-function colorGR(correct, incorrect) {
+function colorGR(correct) {
   for(var k = 0; k < original.length; k++) {
     var w = original[k]
     if (correct.includes(k)) {
@@ -191,7 +188,7 @@ function feedback() {
   } else {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
-  correct = []; incorrect = []; //reset arrays
+  correct = []; //reset arrays
   setTimeout(resetStoryarea, 1500);
 }
 //Resets area
@@ -200,8 +197,6 @@ function resetStoryarea() {
 }
 //When skip
 function skip(event) {
-  incorrect.push(wordNum); 
-  console.log("incorrect: "+incorrect);
   if (wordNum==words.length-1) {
     end=true;
   } else {

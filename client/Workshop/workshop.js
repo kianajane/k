@@ -15,10 +15,10 @@ Template.workshop.rendered = function() {
 
 //Sound effects
 corrSfx = new buzz.sound( "/sounds/dingsound", {
-    formats: [ "ogg", "mp3", "aac" ]
+    formats: ["mp3"]
 });
 incorrSfx = new buzz.sound( "/sounds/wrongsound", {
-    formats: [ "ogg", "mp3", "aac" ]
+    formats: ["mp3"]
 });
 
 // Recognizer
@@ -36,6 +36,7 @@ var correctCounter = 0;
 var wordCounter = 0;
 var attempts = 0;
 var n = '';
+var completedWords = ''; 	//for progress
 
 var messageprinted = false; // For feedback
 
@@ -62,6 +63,8 @@ Template.workshop.events({
 		listen(event);
 	},
 	'click #skip_button': function(event){
+		completedWords += currentWord.fontcolor("#d11141") + "<br>";
+		$("#compWords").html(completedWords);
 		changeWord(event);
 	}
 });
@@ -102,7 +105,6 @@ function changeWord(event){
 	$("#skipButton").html(""); // Remove the skip button.
 	$("#res").html("");
 }
-
 
 // Updates the counters when the user is correct.
 function counter(correct){
@@ -199,6 +201,10 @@ if ('webkitSpeechRecognition' in window) {
 
 	// The actual recognition.
 	recognition.onresult = function(event) {
+		//Progress
+		currentWord = Session.get("workshopWord");
+		var complete = false; 
+
 		messageprinted=true;
 		myevent = event;
 		var interim_transcript = '';
@@ -229,9 +235,9 @@ if ('webkitSpeechRecognition' in window) {
 		counter(correct);
 		document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 
-
 	 	//FEEDBACK & VOICE COMMANDS:
 		if (final_transcript.includes("pass" || "skip")) {	//skip
+			
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
@@ -251,6 +257,9 @@ if ('webkitSpeechRecognition' in window) {
 			       var timer = buzz.toTimer( this.getTime() );
 			    });
 	  	}else if(correct){ // Correct
+	  		complete = true;
+	  		completedWords += currentWord.fontcolor("#00b159") + "<br>"; //ADD ATTEMPTS, MELANIE
+
 	  		$("#res").html("Congratulations! You said the word correctly on your "+attempts+n+" attempt!");
 	  		corrSfx.play()
 			    .fadeIn()
@@ -273,6 +282,13 @@ if ('webkitSpeechRecognition' in window) {
 			    });
 	  	}
 	  	correct = false; // Reset correct.
+
+	  	//Put in progress
+	  	if (complete) {
+	  		$("#progress").html("Completed: ");
+			$("#compWords").html(completedWords);
+			complete = false;
+	  	}
 	};
 }
 
