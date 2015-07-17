@@ -1,4 +1,6 @@
 <template name="story">
+
+  {{#if currentUser}}
   <div class = "row">
     <div class = "col-md-offset-10 col-md-2" id="reco">
       <h2 class = "text-right" id = "mic">Mic OFF</h2>
@@ -6,7 +8,7 @@
   </div>
   <div class = "row">
     <div class = "col-md-offset-1 col-md-7 col-sm-offset-1 col-sm-7" id = "storyarea">
-      <p class = "lead" id = "storyTitle"><small>The page is separated into two areas. Completed sentences will appear on the right. If you are having trouble, check that the microphone is on by looking at the upper right corner or press the "Skip" button.<br>The story will appear below.<br> Click "Begin Story" to start.</small></p>
+      <p class = "lead" id = "storyTitle"></p>
       <h1 class = "text-left" id="senth1"></h1>
     </div> 
     <div class = "col-md-4 col-sm-4"> 
@@ -27,9 +29,12 @@
     <div class = "col-md-2">
       {{> soundselectstory}}
     </div>
-    <div class = "col-md-offset-5 col-md-5">
-      <button type = "button" class = "btn btn-default" id = "see_dir">See directions</button>
-      <p id = "dir"></p>
+      <div class = "col-md-offset-2 col-md-5">
+        <p id = "directions">To begin the story, press "Begin Story." <br> Read the highlighted word.<br> If you do not know it or want to move on, press the skip button or say "skip word." <br> If you want to take a break, say "stop."<br>To move to another mode, say the mode while the microphone is on to be directed to that mode.</p>
     </div>
   </div>
+  {{else}}
+  <br>
+  <center><h3>You must be <a href="{{pathFor 'welcome'}}">logged in</a> to read this story</h3></center>
+  {{/if}}
 </template>

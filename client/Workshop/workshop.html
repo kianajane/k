@@ -3,10 +3,12 @@
 	{{#if currentUser}}
 
 	<div class = "row">
-		<div class = "col-md-offset-3 col-md-4 col-md-offset-4 col-sm-3" id="please_say">
+		<div class = "col-md-3">
+			{{> soundselectworkshop}}
+		</div>	
+		<div class = "col-md-4 col-sm-3">
 			<center>
-				<h2>Choose a sound to begin!</h2>
-				<small>{{> soundselectworkshop}}</small>
+				<h2> Please say:</h2>
 			</center>
 		</div>
 		<div class = "col-md-offset-3 col-md-2" id="reco">
@@ -46,10 +48,16 @@
 		</div>
 	</div>
 
-	{{> soundselectworkshop}}
+	<br/>
+	<div class = "row">
+		<div class = "col-md-offset-2 col-md-8">
+			<center> <p id = "directions"> Click 'Start' to begin. Speak! will wait until you finish speaking, or you may click or say 'Stop' when you are done saying the word. Click or say 'Skip word' to skip the word and have it counted as incorrect. Click 'Listen' to hear Speak! say the word. To move to another mode, say the mode while the microphone is on to be directed to that mode.</p> </center>
+		</div>
+	</div>
 
 	{{else}}
-	<h2>You must be logged in to play</h2>
+	<br>
+	<center><h3>You must be <a href="{{pathFor 'welcome'}}">logged in</a> to play</h3></center>
 	{{/if}}
 
 </template>

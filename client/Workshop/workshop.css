@@ -1,3 +1,8 @@
 #word {
 	font-size: 100px;
 }
+
+#directions {
+	font-size: 15px;
+	color: gray;
+}

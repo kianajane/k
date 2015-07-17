@@ -1,5 +1,14 @@
 if(Meteor.isClient){
-	
+
+	// Chooses an initial sound
+	Template.game.rendered=function(){
+		draw(0);
+		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
+		getNewWord();
+		$("#say_word").html("say: "+Session.get("gameWord"));
+	}
+
+	var wordList=[];
 	var final_transcript = '';
 	var interim_transcript = '';
 	var confidence = null;
@@ -7,12 +16,12 @@ if(Meteor.isClient){
 	var correctCounter = 0;
 	var alive = false;
 	var radius = 0;
+	var skipped = false;
+	var stopped = false;
 	if (Session.get("sound")==undefined){
 	  Session.set("sound", "L");
 	}
-	var lastSound = Session.get("sound");
-	var wordList = [];
-	var noWord = true;
+	lastSound = Session.get("sound");
 	
 	Template.score.helpers({
 		
@@ -24,12 +33,6 @@ if(Meteor.isClient){
 	
 	Template.game.events({
 		"click #start": function(event){
-			wordList = Phonetics.findOne({sound: lastSound}).words;
-			if (noWord){
-				getNewWord();
-				$("#say_word").html("say: "+Session.get("gameWord"));
-				noWord=false;
-			}	
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
 		},
@@ -38,6 +41,7 @@ if(Meteor.isClient){
 			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
 		},
 		"click #restart": function(event){
+			$("#gamearea").html('<canvas id="gameboard" width="1135" height = "500"></canvas>');
 			enemyDrawn=false;
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");	
@@ -68,7 +72,7 @@ if(Meteor.isClient){
 	
 	function getNewWord(){
 		theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
-		console.log(theWord);
+		console.log("getting word: "+theWord);
 		Session.set("gameWord",theWord);
 	}
 	
@@ -86,6 +90,7 @@ if(Meteor.isClient){
 	   	  $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');	 
 	      console.log("recognition started");    
 	      recognizing = true;
+	      if(!running) running=true;
 	      lastTime = (new Date()).getTime();
 		  gameLoop();
 	    };
@@ -96,7 +101,6 @@ if(Meteor.isClient){
 	
 	    recognition.onend = function() {
 	      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
-	      console.log("recognition stopped");
 	      recognizing = false;
 	    };
 	
@@ -123,10 +127,26 @@ if(Meteor.isClient){
 						+ " --- " +JSON.stringify(confidence));
 	         	if(interim_transcript==theWord && confidence>30 && alive){
 	         		// add to history
-					History.insert({userId: Meteor.userId(), mode: "game", sound: "N/A", word: theWord, time: new Date()});
+					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date()});
 	         		correct();
 				}
 	         }
+
+	         //Voice commands: skip (doesnt work), pause, site nav
+			 if (final_transcript.includes("skip" || "pass")) {
+			 	skipped=true;
+				next(event);
+			 } else if (interim_transcript.includes("stop")) {
+				stopped=true;
+				stop(event);
+			 } else if (interim_transcript.includes("workshop")) { //goes to story
+				window.location.replace("/workshop");
+			 } else if (interim_transcript.includes("game")) {  //goes to game
+				window.location.replace("/game");
+			 } else if  (interim_transcript.includes("profile")) { //goes to profile
+				window.location.replace("/profile");
+			 }
+
 	         function eachWord(transcript) {
 		         var current_result = transcript;
 		         var index = current_result.lastIndexOf(" ");
@@ -148,6 +168,11 @@ if(Meteor.isClient){
 
 	    function correct() {
 			correctCounter++;
+			corrSfx.play()
+	          .fadeIn()
+	          .bind( "timeupdate", function() {
+	             var timer = buzz.toTimer( this.getTime() );
+	          });
 			document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
 			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
@@ -158,17 +183,18 @@ if(Meteor.isClient){
 /* --------------------------------------------------------------------------------------------------------------------------------*/
 		function start(event) {
 			if (!running) {
-				running=true;
-		  		recognizing=true;
 		 		final_transcript = '';
 		 		interim_transcript = '';
 				recognition.lang = 'en-US';
 				recognition.start();
-
 			}
 		}
 		
 		function stop(event) {
+			if (stopped) {
+				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
+				stopped=false;
+			}
 			running=false;
 			recognizing=false;
 			recognition.stop();
@@ -176,19 +202,20 @@ if(Meteor.isClient){
 	       	return;
 		}
 
-		Template.game.rendered=function(){
-			draw(0);
-		}
-
 		function next(event){
 			getNewWord();
 			$("#say_word").html("say: "+Session.get("gameWord"));
 			if (!recognizing){
 				start(event);
+			} else {
+				running=true;
 			}
 			enemyDrawn=false;
-			radius += 5;
-			running=true;  		
+			if (!skipped) {
+				radius += 5;
+			} else {
+				skipped=false;
+			}
 			lastTime = (new Date()).getTime();
 			gameLoop();
 		}
@@ -223,7 +250,7 @@ if(Meteor.isClient){
 			// drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
 			// drawContext.stroke();
 		}
-		
+	
 		function moveTurtle(dt){
 			if(turtleY+40 >= gameboard.height){
 				running=false;
@@ -287,5 +314,4 @@ if(Meteor.isClient){
 			if (running) window.requestAnimationFrame(gameLoop);
 		}
 	}
-
-}
+};	

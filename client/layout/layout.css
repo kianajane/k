@@ -1,4 +1,46 @@
-.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
-color: white; /*BACKGROUND color for active*/
-background-color: #030033;
+#navbar {
+	background-color: #7cd4ff;
+}
+#navbar .navbar-nav > li > a {
+    color: #fff;
+}
+#navbar .navbar-nav > li > a:hover,
+#navbar .navbar-nav > li > a:focus {
+	color: #7cd4ff;
+    background-color: #fff;
+}
+#navbar .navbar-toggle:hover,
+#navbar .navbar-toggle:focus {
+	color: #7cd4ff;
+    background-color: #fff;
+}
+#navbar .navbar-toggle .icon-bar {
+	color: #7cd4ff;
+    background-color: #fff;
+}
+.navbar-nav > li > a, .navbar-brand {
+    padding-top:10px !important; 
+    padding-bottom:0px !important;
+    height: 40px;
+}
+.navbar {
+    min-height:40px !important;
+}
+
+a:link,
+a:visited {
+    color: #7cd4ff;
+}
+
+#login-buttons-password,
+#login-buttons-forgot-password,
+#login-buttons-do-change-password,
+#login-buttons-logout {
+    color: #fff;
+    background-color: #7cd4ff;
+}
+
+#forgot-password-link,
+#signup-link {
+    color: #7cd4ff;
 }
