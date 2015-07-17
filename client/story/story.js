@@ -93,13 +93,13 @@ if ('webkitSpeechRecognition' in window) {
       //Voice commands: skip (doesnt work), pause, site nav
       if (final_transcript.includes("skip" || "pass")) {
         skip(event);
-      } else if (final_transcript.includes("stop")) {
+      } else if (interim_transcript.includes("stop")) {
         recognition.stop();
-      } else if (final_transcript.includes("workshop")) { //goes to story
+      } else if (interim_transcript.includes("workshop")) { //goes to story
         window.location.replace("/workshop");
-      } else if (final_transcript.includes("game")) {  //goes to game
+      } else if (interim_transcript.includes("game")) {  //goes to game
         window.location.replace("/game");
-      } else if  (final_transcript.includes("profile")) { //goes to profile
+      } else if  (interim_transcript.includes("profile")) { //goes to profile
         window.location.replace("/profile");
       }
 
