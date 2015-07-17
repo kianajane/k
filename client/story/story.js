@@ -91,9 +91,7 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //Voice commands: skip (doesnt work), pause, site nav
-      if (final_transcript.includes("skip" || "pass")) {
-        skip(event);
-      } else if (interim_transcript.includes("stop")) {
+      if (interim_transcript.includes("stop")) {
         recognition.stop();
       } else if (interim_transcript.includes("workshop")) { //goes to story
         window.location.replace("/workshop");
