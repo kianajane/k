@@ -44,7 +44,6 @@ var words = [];       //array of the words in sent
 var wordNum = 0;      //index in words[]
 var original = [];    //accessed in .onresult, coloring, colorGR
 var correct = [];     //accessed in events
-var incorrect = [];   //accessed in events
 var coloredSent = ""; //global to make coloredSent accumulate
 var end = false;      //marks end of sentence, used in getSent() for timeout
 
@@ -103,7 +102,7 @@ if ('webkitSpeechRecognition' in window) {
 
       //If sentence completed
       if (end) {                    
-        colorGR(correct, incorrect);
+        colorGR(correct);
         feedback();
         wordNum=0;
         index++;
@@ -166,7 +165,7 @@ function coloring(original, wordNum) {
   return newSent;
 }
 //Final coloring: colors the correct words green(G), incorrect words red (R)
-function colorGR(correct, incorrect) {
+function colorGR(correct) {
   for(var k = 0; k < original.length; k++) {
     var w = original[k]
     if (correct.includes(k)) {
@@ -189,7 +188,7 @@ function feedback() {
   } else {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
-  correct = []; incorrect = []; //reset arrays
+  correct = []; //reset arrays
   setTimeout(resetStoryarea, 1500);
 }
 //Resets area
@@ -198,8 +197,6 @@ function resetStoryarea() {
 }
 //When skip
 function skip(event) {
-  incorrect.push(wordNum); 
-  console.log("incorrect: "+incorrect);
   if (wordNum==words.length-1) {
     end=true;
   } else {
