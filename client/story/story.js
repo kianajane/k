@@ -91,15 +91,15 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //Voice commands: skip (doesnt work), pause, site nav
-      if (final_transcript.includes("skip")) {
+      if (final_transcript.includes("skip" || "pass")) {
         skip(event);
-      } else if (final_transcript.includes("stop")) {
+      } else if (interim_transcript.includes("stop")) {
         recognition.stop();
-      } else if (final_transcript.includes("workshop")) { //goes to story
+      } else if (interim_transcript.includes("workshop")) { //goes to story
         window.location.replace("/workshop");
-      } else if (final_transcript.includes("game")) {  //goes to game
+      } else if (interim_transcript.includes("game")) {  //goes to game
         window.location.replace("/game");
-      } else if  (final_transcript.includes("profile")) { //goes to profile
+      } else if  (interim_transcript.includes("profile")) { //goes to profile
         window.location.replace("/profile");
       }
 
@@ -182,6 +182,11 @@ function colorGR(correct, incorrect) {
 //Visual feedback after sentence completed
 function feedback() {
   if (correct.length == words.length) {
+    corrSfx.play()
+          .fadeIn()
+          .bind( "timeupdate", function() {
+             var timer = buzz.toTimer( this.getTime() );
+          });
     $("#storyarea").html("<h3>Perfect!</h3> <img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
   } else {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
