@@ -2,12 +2,13 @@ if(Meteor.isClient){
 
 	// Chooses an initial sound
 	Template.game.rendered=function(){
-		draw(0);
+		draw();
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 		getNewWord();
 		$("#say_word").html("say: "+Session.get("gameWord"));
 	}
 
+	var i = 0;
 	var wordList=[];
 	var final_transcript = '';
 	var interim_transcript = '';
@@ -220,97 +221,50 @@ if(Meteor.isClient){
 			gameLoop();
 		}
 		
-		function draw(dt){
-			// console.log("drawing board");
-			// h = 0;
-			// s = 0;
-			// l = 93;
+		function draw(){
+			console.log("drawing board");
 			
-			// drawContext = gameboard.getContext("2d");
-			// drawContext.fillStyle='hsl('+h+','+s+'%,'+l+'%)';
-			// drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-			// drawContext.strokeStyle="#f00";
+			drawContext = gameboard.getContext("2d");
+			drawContext.fillStyle='#ffffff';
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+			drawContext.strokeStyle="#f00";
 			
-			// turtle = new Image();
-			// turtle.id = "turtle";
-			// console.log("image created");	
-			// turtle.src = 'images/turtle-d.png';
-			// console.log("image sourced");
-			// drawContext.drawImage(turtle,542,0);
-			// turtleX = 542;
-			// turtleY = 0;
-			// console.log("image drawn");
-			
-			// moveTurtle(dt);
-			
-			// drawEnemy(dt);
-			// console.log("drawing enemy");
-			// drawContext.strokeStyle=enemy.c;
-			// drawContext.beginPath();
-			// drawContext.arc(enemy.x,enemy.y,enemy.r,0,2*Math.PI,true);
-			// drawContext.stroke();
+			turtle = new Image();
+			console.log("image created");	
+			turtle.src = 'images/turtle.png';
+			console.log("image sourced");
+			drawContext.drawImage(turtle,0,90);
+			console.log("image drawn");
 		}
 	
-		function moveTurtle(dt){
-			if(turtleY+40 >= gameboard.height){
+		function moveTurtle(){
+			if(i+50 >= gameboard.width){
 				running=false;
 				recognition.stop();
 				recognizing=false;
 				alive=false;
-				$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
+				//$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
 				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"restart\">Restart</button>");
 			} else {
-				while(alive){
-					console.log("begin animation");
-					drawContext.clearRect(0,0,gameboard.width,gameboard.height);
-					drawContext.fillStyle='hsl('+h+','+s+'%,'+l+'%)';
-					drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-					drawContext.translate(0,10);
-					drawContext.drawImage(turtle,542,0);
-					drawContext.save();
-				}
+				moveRight();
+				i++;
 			}
 		};
 		
-		// function Enemy(x,y,r,v,c){
-		// 	this.x=x;
-		// 	this.y=y;
-		// 	this.r=r;
-		// 	this.v=v;
-		// 	this.c=c;
-		// 	alive=true;
-		// }
-
-		// var drawEnemy = function(dt) {
-		// 	if (!enemyDrawn) {
-		// 		this.enemy = new Enemy(gameboard.width/2,20+radius,20+radius,50,"black");
-		// 		enemyDrawn=true;
-		// 	} else {
-		// 		this.enemy.update(dt/1000.0);
-		// 	}
-		// };
-		
-		// Enemy.prototype.update = function(dt){
-		// 	// console.log("update");
-		// 	if (this.y + this.r >= gameboard.height) {
-		// 		this.y = gameboard.height-this.r;
-		// 		running=false;
-		// 		recognition.stop();
-		// 		recognizing=false;
-		// 		alive=false;
-		// 		$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
-		// 		$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"restart\">Restart</button>");
-		// 	} else {
-		// 		this.y += this.v*dt;
-		// 	}
-		// };
+		function moveRight(){
+			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
+			drawContext.fillStyle='#ffffff';
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+			drawContext.translate(1,0);
+			drawContext.drawImage(turtle,0,90);
+		}
 
 		function gameLoop(){
 			// console.log("game loop");
 			var theTime = (new Date()).getTime();
 			var dt = theTime - lastTime;  // in milliseconds
 			lastTime = theTime;
-			draw(dt);
+			moveTurtle();
 			if (running) window.requestAnimationFrame(gameLoop);
 		}
 	}
