@@ -3,12 +3,14 @@ Template.profile.helpers({
 		console.log("profile this = "+JSON.stringify(this));
 		return this.profile.bio;
 		},
+
+    // I have replaced all of the photos with a stock photo, we may want to change that later.
 	photo:function(){ // returns the URL of the gravatar photo for this email
 		return  "images/face.png"
         }, ///Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
 
 	myHistory: function() {
-		return History.find({userId: Meteor.userId()}).fetch();
+		return History.find({userId: Meteor.userId()}, {sort:{time:-1}}).fetch();
         },
 
     // This doesn't work and I don't know why!?!?!!?
@@ -19,38 +21,63 @@ Template.profile.helpers({
         }
 })
 
-/*Meteor.methods({
 
-  data: function(){
+// Call the function to built the chart when the template is rendered
+Template.profile.rendered = function() {    
+    builtColumn();
+}
 
-    check(arguments, [Match.Any]);
-
-	//History.find({userId: Meteor.userId(), mode: "game"}, {fields: {time: 1}}).fetch().length
-    return History.find({userId : Meteor.userId(), mode: "game"},{"time" : 1}).fetch();
-
-  }
-
-});*/
-
-/*
- * Function to draw the column chart
- */
+//Function to draw the column chart
 function builtColumn() 
 {
-    
-    // Turn it into an array. WORKS
+    // I shouldn't need this line. But it gives me errors when I get rid of it....
     history = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); 
 
+   
+    // ******* Aggregates the counts of entries in History for each mode and creates an array of counts. ***********
+    // Game
+    history2 = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); // Returns the array of the objects of that user's game history. 
+    gcounts = _.countBy(history2, function(obj) {
+        return obj.time.toLocaleDateString(); }); // Returns the array of counts in the format: [7/10/2015: 3, 7/12/2015: 11], etc.
 
-// All Time values: (I'm really going to want days, or weeks or something.)
-//var dates = _.pluck(history, 'time'); // Gives me all the y-values I need.
+    // Workshop
+    workshop = History.find({userId: Meteor.userId(), mode: "workshop"}).fetch();
+    wcounts = _.countBy(workshop, function(obj) {
+        return obj.time.toLocaleDateString(); });
 
-    // Hits the same collection undefined problem we had before.
-    data = _.pairs(_.countBy(history, 'time')); // I think I'd then want to pluck only the numbers out....??
-    //console.log (JSON.stringify(data));
+    // Story
+    story = History.find({userId: Meteor.userId(), mode: "story"}).fetch();
+    scounts = _.countBy(story, function(obj) {
+        return obj.time.toLocaleDateString(); });
 
 
+    // ***** Need to add zeros for all of the days that there isn't a count for (starting at first count date). ********
 
+    // Create an array of every date between the first use date and today's date.
+    start = History.findOne({userId: Meteor.userId()},{sort:{time:1}}).time;     // Pulls your oldest date. 
+    end = (new Date()); //Today's date.
+    
+    // Gets all of the days in between start and end, and turns them into the 7/10/2015, 7/11/2015 format to match the counts.
+    firstAllDays = getAllDays(start,end)
+    allDays = _.map(firstAllDays, function(time){ return time.toLocaleDateString();})
+
+    // Adds the missing zero counts for each mode.
+    gcounts = addZeros(allDays, gcounts);
+    wcounts = addZeros(allDays, wcounts);
+    scounts = addZeros(allDays, scounts);
+
+    // Resort by date (initially the zeros are inserted at the end)
+    gcounts = _.sortBy(gcounts, function(num, key){ return key; });
+    wcounts = _.sortBy(wcounts, function(num, key){ return key; });
+    scounts = _.sortBy(scounts, function(num, key){ return key; });
+
+
+    // ****** Pulls out only the counts so that it can be used in the highchart. Format like: [3, 0, 0, 12, 11, 0, 2], etc.
+    gameData = _.map(gcounts, function(num, key){ return num;});
+    storyData = _.map(scounts, function(num, key){ return num;});
+    workshopData = _.map(wcounts, function(num, key){ return num;});
+
+   //  *********** Creates the highchart. Uses the meteor highchart package. ***********************
     $('#container-column').highcharts({
         
         chart: {
@@ -70,27 +97,15 @@ function builtColumn()
         },
         
         xAxis: {
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ]
+            categories: allDays
         },
         
         yAxis: {
             min: 0,
             title: {
                 text: 'Log Entries'
-            }
+            },
+            allowDecimals: false
         },
         
         tooltip: {
@@ -110,35 +125,46 @@ function builtColumn()
         },
         
         series: [{
-        	//data:data
-        	// I want the columns to be a time frame (for now, date). Then have one line per mode.
-
-        	// Below returns the number of game entries.
-        	//History.find({userId: Meteor.userId(), mode: "game"}, {fields: {time: 1}}).fetch().length
-
-        	// I need the number of game entries on each day. We might need to use an aggregation package, and figure out JQuery???
-        	// https://forums.meteor.com/t/solved-how-to-draw-bar-chart-using-highcharts-and-mongodb-data-reactively/5156/5
-        	// https://forums.meteor.com/t/highcharts-and-mongodb/4605
-
-        // Fake data
-            name: 'Workshop',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
-        }, {
-            name: 'Story',
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-        }, {
             name: 'Game',
-            data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+            data: gameData
+
+       }, {
+            name: 'Story',
+            data: storyData
+
+        }, {
+            name: 'Workshop',
+            data: workshopData
 
         }]
     });
 }
 
-/*
- * Call the function to built the chart when the template is rendered
- */
-Template.profile.rendered = function() {    
-    builtColumn();
+// Gets all of the dates between s and e.
+function getAllDays(s, e) {
+    s = new Date(s.valueOf());
+    var e = new Date(e.valueOf());
+    var a = [s];
+
+    while(s < e) {
+        var t = new Date(s);
+        t.setDate(1+ t.getDate());
+        a.push(t);
+        s = t;
+    }
+
+    return a;
+};
+
+// Adds zero counts in the data for every date that doesn't currently exist.    
+function addZeros(allDays, counts){
+
+    for (var i = 0; i < allDays.length; i++)
+    {
+        if (counts[allDays[i]] == undefined)
+        {
+            counts[allDays[i]] = 0;
+        }
+    }
+    return counts;
 }
