@@ -9,7 +9,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 // Chooses an intial sound
 Template.workshop.rendered = function() {
 	wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
-	changeWord(event);
+	getNewWord();
+	$("#word").html(Session.get("workshopWord"));
 }
 
 //Sound effects
@@ -43,7 +44,6 @@ if (Session.get("sound")==undefined){
 	Session.set("sound", "L");
 }
 var lastSound = Session.get("sound");
-var first=true;
 /*TO FIX: 
 errors in "speak" after a word is skipped? 
 */
@@ -79,10 +79,13 @@ Template.correct.helpers({
 // ********************* Functions ********************
 //returns new word from the word collection. Called whenever word needs to change.
 function getNewWord(){
-
+	if (!wordChanged || attempts>0) wordCounter++;
+	$("#word_counter").html("<b>Total words:</b> "+wordCounter);
 	theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
 	Session.set("workshopWord",theWord);
 	console.log(theWord);
+	attempts=0;
+	correct=false;
 }
 
 //random # returned inside given range. (called in getNewWord)
@@ -94,14 +97,10 @@ function getRandomArbitrary(min, max) {
 function changeWord(event){
 	getNewWord();
 	$("#word").html(Session.get("workshopWord"));
-	correct=false;
 
 	// Update counters.
-	if (!wordChanged || attempts>0) wordCounter++;
-	$("#word_counter").html("<b>Total words:</b> "+wordCounter);
 	$("#skipButton").html(""); // Remove the skip button.
 	$("#res").html("");
-	attempts = 0;
 }
 
 
@@ -113,7 +112,7 @@ function counter(correct){
 	attempts++;
 	// Prints out the attempts with the correct ending (1st, 2nd, 3rd, 4th, etc.)
 	n = getN(attempts);
-	console.log("attempts = "+attempts+n);
+	console.log(attempts+n+" attempt(s)");
 	if (attempts >= 1){
 		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip word</button>');
 	}
@@ -300,12 +299,8 @@ Template.soundselectworkshop.events({
 		var newSound = Session.get("sound");
 		
 		// If the sound has actually been changed
-		if ((lastSound!=newSound) || first){
+		if ((lastSound!=newSound)){
 			wordChanged=true;
-			if (first){
-				wordCounter++;
-				first=false;
-			}
 			console.log("CHANGING WORKSHOP SOUND... new sound = "+newSound);
 			// Reset the wordList and pick a new word
 			wordList = Phonetics.findOne({sound: newSound}).words;
