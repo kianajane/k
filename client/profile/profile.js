@@ -35,64 +35,80 @@ function builtColumn()
     history = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); // Returns the array of the objects of that user's game history.
 
     history2 = History.find({userId: Meteor.userId(), mode: "game"}).fetch();
-    counts = _.countBy(history2, function(obj) {
-        return obj.time.toDateString(); }); // Returns the array of counts in the format: [June 06: 3, June 10: 11], etc.
-   
-    gameData = _.map(counts, function(num, key){ return num;}); // Pulls out only the counts, returns an array [3, 11], etc.
-    gameDates = _.map(counts, function(num, key){ return key;});
+    gcounts = _.countBy(history2, function(obj) {
+        return obj.time.toLocaleDateString(); }); // Returns the array of counts in the format: [June 06: 3, June 10: 11], etc.
 
-    workshopData = _.map(_.countBy(History.find({userId: Meteor.userId(), mode: "workshop"}).fetch(), function(obj) {
-                        return obj.time.toDateString();
-                        })
-                        , function(num, key) {return num;});
-
-    workshopData = _.map(_.countBy(History.find({userId: Meteor.userId(), mode: "story"}).fetch(), function(obj) {
-                        return obj.time.toDateString();
-                        })
-                        , function(num, key) {return num;});
+    workshop = History.find({userId: Meteor.userId(), mode: "workshop"}).fetch();
+    wcounts = _.countBy(workshop, function(obj) {
+        return obj.time.toLocaleDateString(); });
 
 
-
-    // We love Underscorejs.org!
-    //Not quite working.
-/*
-    I want to have the zeros for the days that you haven't done anything.
-    So.... 
-    I want the counts of times for each mode for every day.
-
-    Do I have to fill in zeros for any mode that doesn't have it??
-
-    First do counts for each mode.
-
-    Iterate through every date that we have from the original array.
-*/
-    // For some reason this isnt' working???
-    history3 = History.find({userId: Meteor.userId()}, {'time': 1, 'word': 1}).fetch();
-       // _.pluck(stooges, 'name');
-//=> ["moe", "larry", "curly"]
-
-        _.uniq([1, 2, 1, 4, 1, 3]);
-
-    //allUniqueDates = _.uniq(
-
-   // _.map(history3, function(time){return time.toDateString(); });
-
-    //_.pluck(history3, 'time'));
-
-    // My goal is a an array of all of the unique dates formatted nicely:
-    // [June 06, June 07, June 08]
-
-/*
-
-        
+    story = History.find({userId: Meteor.userId(), mode: "story"}).fetch();
+    scounts = _.countBy(story, function(obj) {
+        return obj.time.toLocaleDateString(); });
 
 
-    If mode doesn't have it, add zero to the counts.
-    counts["Sun"] = 0
+    //Iterate through every date that we have from the original array.
+    // Every date since the oldest history entry.
+
+    start = History.findOne({userId: Meteor.userId()},{sort:{time:1}}).time;     // Pulls your oldest date. 
+    console.log("s: " + start);
+
+    e = (new Date()); //Today's date.
+    
+    // Do I really want to shorten the dates now?
+    firstAllDays = getAllDays(start,e)
+    allDays = _.map(firstAllDays, function(time){ return time.toLocaleDateString();})
+    console.log ("final days: " + allDays)
 
 
+    gcounts = addZeros(allDays, gcounts);
 
-*/    // Creates the highchart. Uses the meteor highchart package.
+    function addZeros(allDays, counts){
+
+    for (var i = 0; i < allDays.length; i++)
+    {
+        if (counts[allDays[i]] == undefined)
+        {
+            counts[allDays[i]] = 0.1;
+        }
+    }
+    return counts;
+    }
+
+    counts = addZeros(allDays, gcounts);
+    wcounts = addZeros(allDays, wcounts);
+    scounts = addZeros(allDays, scounts);
+
+    // Resort by date:
+    gcounts = _.sortBy(gcounts, function(num, key){ return key; });
+    wcounts = _.sortBy(wcounts, function(num, key){ return key; });
+    scounts = _.sortBy(scounts, function(num, key){ return key; });
+
+    gameData = _.map(gcounts, function(num, key){ return num;}); // Pulls out only the counts, returns an array [3, 11], etc.
+    storyData = _.map(scounts, function(num, key){ return num;});
+    workshopData = _.map(wcounts, function(num, key){ return num;});
+
+    //gameDates = _.map(shcounts, function(num, key){ return key;});
+
+
+// Gets all of the dates between s and e.
+function getAllDays(s, e) {
+    s = new Date(s.valueOf());
+    var e = new Date(e.valueOf());
+    var a = [s];
+
+    while(s < e) {
+        var t = new Date(s);
+        t.setDate(1+ t.getDate());
+        a.push(t);
+        s = t;
+    }
+
+    return a;
+};
+
+   // Creates the highchart. Uses the meteor highchart package.
     $('#container-column').highcharts({
         
         chart: {
@@ -113,7 +129,7 @@ function builtColumn()
         
         // Fake. Should be the names of the months that we have data for? Or days? or weeks?
         xAxis: {
-            categories: gameDates
+            categories: allDays
         },
         
         yAxis: {
@@ -151,14 +167,37 @@ function builtColumn()
             name: 'Game',
             data: gameData
 
-       /* }, {
+       }, {
             name: 'Story',
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+            data: storyData
 
         }, {
-            name: 'Game',
-            data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-*/
+            name: 'Workshop',
+            data: workshopData
+
         }]
     });
 }
+/*
+Unused code:
+
+
+       
+        // Last: takes unique array, returns an array.
+        //_.uniq(cleanHistory);
+
+ // Need an array of just the times. Works. All the times for any testing.
+    
+       // history3 = _.pluck(History.find({}).fetch(), 'time')
+        //cleanHistory = _.map(history3, function(time){ return time.toLocaleDateString();; })
+
+    // My goal is a an array of all of the unique dates formatted nicely:
+    // [June 06, June 07, June 08]
+
+     //Doesn't work.
+    history3 = History.find({userId: Meteor.userId()}, {'time': 1}).fetch();
+    //FacData.find({depts:{$elemMatch:{descr:'Computer Science'}}},{sort:{lastname:1}})
+    
+
+
+*/
