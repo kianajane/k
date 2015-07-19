@@ -98,6 +98,11 @@ if ('webkitSpeechRecognition' in window) {
         window.location.replace("/profile");
       }
 
+      //At the end of the story
+      // if (index == story1.length) {
+      //   $("#storyarea").html("<img src = \"images/storycomplete-01.jpg\" width = \"100%\" alt = \"completed\">");
+      // }
+
       //If sentence completed
       if (end) {                    
         colorGR(correct);
@@ -141,9 +146,12 @@ function startDictation(event) {
 }
 //Sentence changing and printing happens here
 function getSent() {
-  sent = story1[index];
-  original = sent.split(" "); 
-  $("#senth1").html(coloring(original, wordNum));
+  // if (index = story1.length-1) {
+  //   $("#senth1").html("You've completed the story!");
+  // } else {}
+    sent = story1[index];
+    original = sent.split(" "); 
+    $("#senth1").html(coloring(original, wordNum));
 }
 //"Highlights" the word that you are on blue
 function coloring(original, wordNum) {
