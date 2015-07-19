@@ -251,7 +251,7 @@ if ('webkitSpeechRecognition' in window) {
       		listen(event);
       	} else if (final_transcript=='') { // Nothing in transcript.
 	  		$('#res').html("Sorry, I didn't hear anything...");
-	  		incorrSfx.play()
+	  		var incorrectAudio = incorrSfx.play()
 			    .fadeIn()
 			    .bind( "timeupdate", function() {
 			       var timer = buzz.toTimer( this.getTime() );
@@ -268,18 +268,10 @@ if ('webkitSpeechRecognition' in window) {
 			    });
 	  	} else if (final_transcript.includes(theWord) && confidence<60) { // Correct but low confidence.
 	  		$("#res").html("That didn't sound quite right, try again.");
-	  		incorrSfx.play()
-			    .fadeIn()
-			    .bind( "timeupdate", function() {
-			       var timer = buzz.toTimer( this.getTime() );
-			    });
+	  		incorrectAudio;
 	  	} else { // Wrong, or other error.
 	  		$("#res").html("Try again");
-	  		incorrSfx.play()
-			    .fadeIn()
-			    .bind( "timeupdate", function() {
-			       var timer = buzz.toTimer( this.getTime() );
-			    });
+	  		incorrectAudio;
 	  	}
 	  	correct = false; // Reset correct.
 

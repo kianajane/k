@@ -79,12 +79,10 @@ if ('webkitSpeechRecognition' in window) {
 
       for (var i = event.resultIndex; i < event.results.length; ++i) {
         if (event.results[i].isFinal) {
-        	final_transcript += 
-      		Math.round(100*event.results[i][0].confidence)+"% -- "+
-      		event.results[i][0].transcript.trim() +".\n";
+        	final_transcript += event.results[i][0].transcript.trim() +".\n";
   				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
         } else {
-        	interim_transcript += Math.round(100*event.results[i][0].confidence)+"% -- "+event.results[i][0].transcript+"<br>";
+        	interim_transcript += event.results[i][0].transcript+"<br>";
   			  console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
         }
       }
@@ -104,15 +102,9 @@ if ('webkitSpeechRecognition' in window) {
       if (end) {                    
         colorGR(correct);
         feedback();
-        wordNum=0;
-        index++;
-        //setTimeout(getSent, 1500);  //creates lag time for final_transcript, array reset, .. 
         $("#prevSent").html(coloredSent);//shows completed sentences on the side
-        end=false;
       }
-      
-      getSent();
-      
+            
       //Change all char to lowercase
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
       current = " "+interim_transcript.toLowerCase() + " ";
@@ -130,6 +122,7 @@ if ('webkitSpeechRecognition' in window) {
           History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, time: new Date()}); // Probably want to record a different sentence
         } else {
           wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
+          getSent();
         }
         
       }
@@ -179,7 +172,7 @@ function colorGR(correct) {
 //Visual feedback after sentence completed
 function feedback() {
   if (correct.length == words.length) {
-    corrSfx.play()
+    var storyaud = corrSfx.play()
           .fadeIn()
           .bind( "timeupdate", function() {
              var timer = buzz.toTimer( this.getTime() );
@@ -189,20 +182,22 @@ function feedback() {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
   correct = []; //reset arrays
-  setTimeout(resetStoryarea, 1500);
+  setTimeout(function() {
+    $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>') 
+    wordNum=0; index++; end=false;
+    getSent();
+  }, 1300);
+    
 }
-//Resets area
-function resetStoryarea() {
-  $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>');
-}
+
 //When skip
 function skip(event) {
   if (wordNum==words.length-1) {
     end=true;
   } else {
     wordNum++;  
+    getSent();
   }
-  return;
 }
 
 Template.story.events({
