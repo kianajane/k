@@ -16,12 +16,15 @@
 
 
 		<h2>Your Progress</h2>
+		{{#if yesData}}
 		<div id="container-column" style="min-width: 310px; height: 400px;"></div>
-
+		{{else}}
+			<h4> You have no data. Please practice to display analytics. </h4>
+		{{/if}}
 
 		<div class = "row">
 			<button class="btn btn-material btn-raised btn-info" id="clearHistory"> Clear History</button>
-			
+
 		</div>
 
 		<div class ="row">

@@ -13,6 +13,10 @@ Template.profile.helpers({
 		return History.find({userId: Meteor.userId()}, {sort:{time:-1}}).fetch();
         },
 
+    yesData: function() {
+        return (History.findOne({userId: Meteor.userId()}) == undefined);
+    },
+
     // This doesn't work and I don't know why!?!?!!?
     'click #clearHistory': function(event){
         console.log ('hello');
