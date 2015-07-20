@@ -128,7 +128,6 @@ if ('webkitSpeechRecognition' in window) {
           end = true;                   //sentence end
         } else {
           wordNum++;  console.log("wordNum: "+wordNum+", words.length: "+words.length);
-          getSent();
         }
         
       }
@@ -201,7 +200,7 @@ function skip(event) {
     end=true;
   } else {
     wordNum++;  
-    getSent();
+    //getSent();
   }
 }
 
