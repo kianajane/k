@@ -14,14 +14,18 @@ Template.profile.helpers({
         },
 
     yesData: function() {
-        return (History.findOne({userId: Meteor.userId()}) == undefined);
-    },
+        return !(History.findOne({userId: Meteor.userId()}) == undefined);
+    }
+});
 
-    // This doesn't work and I don't know why!?!?!!?
+Template.profile.events({
+
     'click #clearHistory': function(event){
         console.log ('hello');
+        Meteor.call('removeUserHistory')
     }
 })
+
 
 
 // Call the function to built the chart when the template is rendered
