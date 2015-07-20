@@ -204,6 +204,7 @@ if(Meteor.isClient){
 		}
 
 		function next(event){
+			drawContext.restore();
 			getNewWord();
 			$("#say_word").html("say: "+Session.get("gameWord"));
 			if (!recognizing){
@@ -212,11 +213,11 @@ if(Meteor.isClient){
 				running=true;
 			}
 			enemyDrawn=false;
-			if (!skipped) {
-				radius += 5;
-			} else {
-				skipped=false;
-			}
+			// if (!skipped) {
+			// 	radius += 5;
+			// } else {
+			// 	skipped=false;
+			// }
 			lastTime = (new Date()).getTime();
 			gameLoop();
 		}
