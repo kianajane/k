@@ -237,7 +237,8 @@ if ('webkitSpeechRecognition' in window) {
 
 	 	//FEEDBACK & VOICE COMMANDS:
 		if (final_transcript.includes("pass" || "skip")) {	//skip
-			
+			completedWords += currentWord.fontcolor("#d11141") + "<br>";
+			$("#compWords").html(completedWords); //7/20 test this
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();

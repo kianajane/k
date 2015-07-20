@@ -87,27 +87,29 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
-      //Voice commands: skip (doesnt work), pause, site nav
+      //Voice commands: pause, site nav
       if (interim_transcript.includes("stop")) {
         recognition.stop();
-      } else if (interim_transcript.includes("workshop")) { //goes to story
+      } else if (interim_transcript.includes("workshop")) {
         window.location.replace("/workshop");
-      } else if (interim_transcript.includes("game")) {  //goes to game
+      } else if (interim_transcript.includes("game")) {
         window.location.replace("/game");
-      } else if  (interim_transcript.includes("profile")) { //goes to profile
+      } else if  (interim_transcript.includes("profile")) {
         window.location.replace("/profile");
       }
 
       //At the end of the story
-      // if (index == story1.length) {
-      //   $("#storyarea").html("<img src = \"images/storycomplete-01.jpg\" width = \"100%\" alt = \"completed\">");
-      // }
+      if (index == story1.length) {
+        $("#storyarea").html('<img src = "images/storycomplete-01.jpg" width = "100%" alt = "completed">');
+      }
 
       //If sentence completed
-      if (end) {                    
+      if (end) {
         colorGR(correct);
         feedback();
         $("#prevSent").html(coloredSent);//shows completed sentences on the side
+        //Add to history; (might want to make the sentence into the colored one?)
+        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: coloredSent, time: new Date()});
       }
             
       //Change all char to lowercase
@@ -122,9 +124,6 @@ if ('webkitSpeechRecognition' in window) {
         if (wordNum >= words.length-1) {
           console.log ("you've completed the sentence!");
           end = true;                   //sentence end
-
-          //Add to history; (7/11 jane - changed "word: trimStory" to sent, might want to make the sentence into the colored one?)
-          History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, time: new Date()}); // Probably want to record a different sentence
         } else {
           wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
           getSent();
@@ -146,9 +145,6 @@ function startDictation(event) {
 }
 //Sentence changing and printing happens here
 function getSent() {
-  // if (index = story1.length-1) {
-  //   $("#senth1").html("You've completed the story!");
-  // } else {}
     sent = story1[index];
     original = sent.split(" "); 
     $("#senth1").html(coloring(original, wordNum));
@@ -170,9 +166,9 @@ function colorGR(correct) {
   for(var k = 0; k < original.length; k++) {
     var w = original[k]
     if (correct.includes(k)) {
-      coloredSent += " " + w.fontcolor("#00b159");
+      coloredSent += " " + "<span style=\"color:#00b159\">"+w+"</span>"; // w.fontcolor("#00b159");
     } else {
-      coloredSent += " " + w.fontcolor("#d11141");
+      coloredSent += " " + "<span style=\"color:#d11141\">"+w+"</span>"; //w.fontcolor("#d11141");
     }
   }
   coloredSent+="<br>";
@@ -194,7 +190,7 @@ function feedback() {
     $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>') 
     wordNum=0; index++; end=false;
     getSent();
-  }, 1300);
+  }, 1500);
     
 }
 
