@@ -13,11 +13,19 @@ Template.profile.helpers({
 		return History.find({userId: Meteor.userId()}, {sort:{time:-1}}).fetch();
         },
 
-    // This doesn't work and I don't know why!?!?!!?
+    yesData: function() {
+        return !(History.findOne({userId: Meteor.userId()}) == undefined);
+    }
+});
+
+Template.profile.events({
+
     'click #clearHistory': function(event){
         console.log ('hello');
+        Meteor.call('removeUserHistory')
     }
 })
+
 
 
 // Call the function to built the chart when the template is rendered
