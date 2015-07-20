@@ -53,8 +53,8 @@ if (Session.get("sound")==undefined){
 var lastSound = Session.get("sound");
 
 if ('webkitSpeechRecognition' in window) {
-	console.log("webkit is available!");
-	var recognition = new webkitSpeechRecognition();
+  console.log("webkit is available!");
+  var recognition = new webkitSpeechRecognition();
   recognition.continuous = true;
   recognition.interimResults = true;
 
@@ -75,15 +75,15 @@ if ('webkitSpeechRecognition' in window) {
     };
 
     recognition.onresult = function(event) {
-  		myevent = event;
+      myevent = event;
 
       for (var i = event.resultIndex; i < event.results.length; ++i) {
         if (event.results[i].isFinal) {
-        	final_transcript += event.results[i][0].transcript.trim() +".\n";
-  				console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+          final_transcript += event.results[i][0].transcript.trim() +".\n";
+          console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
         } else {
-        	interim_transcript += event.results[i][0].transcript+"<br>";
-  			  console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+          interim_transcript += event.results[i][0].transcript+"<br>";
+          console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
         }
       }
 
@@ -111,8 +111,6 @@ if ('webkitSpeechRecognition' in window) {
         //Add to history; (might want to make the sentence into the colored one?)
         History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: coloredSent, time: new Date()});
       }
-
-      getSent();
             
       //Change all char to lowercase
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
@@ -127,7 +125,8 @@ if ('webkitSpeechRecognition' in window) {
           console.log ("you've completed the sentence!");
           end = true;                   //sentence end
         } else {
-          wordNum++;  console.log("wordNum: "+wordNum+", words.length: "+words.length);
+          wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
+          getSent();
         }
         
       }
@@ -190,6 +189,7 @@ function feedback() {
   setTimeout(function() {
     $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>') 
     wordNum=0; index++; end=false;
+    getSent();
   }, 1500);
     
 }
@@ -200,17 +200,17 @@ function skip(event) {
     end=true;
   } else {
     wordNum++;  
-    //getSent();
+    getSent();
   }
 }
 
 Template.story.events({
-	'click #start_story': function(event){
+  'click #start_story': function(event){
     story1 = Phonetics.findOne({sound: lastSound}).story;
-    $("#storyTitle").html('Read the following: '); $("#resTitle").html('Your progress: ');  //Is there a way to make this show up forever after one sentence is complete?
-		startDictation(event);
+    $("#storyTitle").html('Read the following: '); $("#resTitle").html('Your progress: ');
+    startDictation(event);
     getSent();
-	},
+  },
   'click #pause_story': function(event) {
     startDictation(event);
   },
