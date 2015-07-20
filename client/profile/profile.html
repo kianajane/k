@@ -15,14 +15,13 @@
 
 
 
-	<h2>Your Progress</h2>
-    <div id="container-column" style="min-width: 310px; height: 400px;"></div>
-
+		<h2>Your Progress</h2>
+		<div id="container-column" style="min-width: 310px; height: 400px;"></div>
 
 
 		<div class = "row">
-		      <button type = "button" class="btn btn-info btn-lg" id="clearHistory"> Clear History </button>
-		 
+			<button class="btn btn-material btn-raised btn-info" id="clearHistory"> Clear History</button>
+			
 		</div>
 
 		<div class ="row">
@@ -35,7 +34,7 @@
 				</thead>
 				<tbody>
 					{{#each myHistory}}
-						{{> historyRow}}
+					{{> historyRow}}
 					{{/each}}	
 				</tbody>
 			</table>
@@ -51,9 +50,9 @@
 
 <template name = "historyRow">
 
-<tr>
-	<td> {{mode}} </td> <td> {{sound}} </td> <td> {{word}} </td> <td> {{time}} </td>
-</tr>
+	<tr>
+		<td> {{mode}} </td> <td> {{sound}} </td> <td> {{word}} </td> <td> {{time}} </td>
+	</tr>
 
 </template>
 
