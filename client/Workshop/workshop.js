@@ -70,7 +70,7 @@ Template.workshop.events({
 		listen(event);
 	},
 	'click #skip_button': function(event){
-		completedWords += theWord.fontcolor("#d11141")+"-"+attempts+"<br>";
+		completedWords += theWord.fontcolor("#d11141")+" ("+attempts+")<br>";
 		$("#compWords").html(completedWords);
 		changeWord(event);
 	}
@@ -196,7 +196,6 @@ if ('webkitSpeechRecognition' in window) {
 
 		messageprinted=true;
 		myevent = event;
-		var interim_transcript = '';
 		for (var i = event.resultIndex; i < event.results.length; ++i) {
 			console.log("i="+i);
 
@@ -273,10 +272,10 @@ function counter(correct){
 
 		// Add to history & progress
 		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date()});
-		completedWords += theWord.fontcolor("#00b159") +"-"+attempts+"<br>";
+		completedWords += theWord.fontcolor("#00b159")+" ("+attempts+")<br>";
 
 		// Change word after 2 seconds
-		setTimeout(function(){changeWord(event)},2000);
+		setTimeout(function(){changeWord(event)},3000);
 	} else { // incorrect or low confidence
 		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip word</button>');
 		var incorrectAudio = incorrSfx.play()
@@ -287,7 +286,7 @@ function counter(correct){
 	}
 
 	// Show progress
-	$("#progress").html("Completed: ");
+	$("#progress").html("Completed words (attempts):");
 	$("#compWords").html(completedWords);
 }
 
