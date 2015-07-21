@@ -323,4 +323,4 @@ Template.soundselectworkshop.events({
 		}
 		if (wordChanged) wordChanged=false; // Reset wordChanged
 	} 
-})
+});
