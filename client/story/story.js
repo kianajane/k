@@ -60,7 +60,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
-      $("#start_button").html('<button type="button" class="btn btn-info" id="pause_story">Stop Story</button>');
+      $("#story_start_button").html('<button type="button" class="btn btn-info" id="pause_story">Stop Story</button>');
       $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
     };
 
@@ -70,7 +70,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onend = function() {
       recognizing = false;
-      $("#start_button").html('<button type="button" class="btn btn-success" id="start_story">Begin Story</button>');
+      $("#story_start_button").html('<button type="button" class="btn btn-success" id="start_story">Begin Story</button>');
       $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
     };
 

@@ -88,7 +88,7 @@ Template.workshop.events({
 		listen(event);
 	},
 	'click #skip_button': function(event){
-		completedWords += theWord.fontcolor("#d11141")+" ("+attempts+")<br>";
+		completedWords += theWord.fontcolor("#E2646B")+" ("+attempts+")<br>";
 		$("#compWords").html(completedWords);
 		changeWord(event);
 	}
@@ -184,8 +184,8 @@ if ('webkitSpeechRecognition' in window) {
 	recognition.onstart = function() {
 		recognizing = true;
 		messageprinted=false;
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
-		$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-raised\" id=\"stop_button\">Stop</button>");
+		$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#65D6A3")+'</h2>');
 	};
 
 	recognition.onerror = function(event) {
@@ -204,8 +204,8 @@ if ('webkitSpeechRecognition' in window) {
 			messageprinted=true;
 		}
 		recognizing = false;
-		$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
-		$("#dictButton").html("<button type=\"button\" class=\"btn btn-success\" id=\"start_button\">Speak</button>");
+		$("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#E2646B")+'</h2>');
+		$("#dictButton").html("<button type=\"button\" class=\"btn btn-raised\" id=\"start_button\">Speak</button>");
 	};
 
 	// The actual recognition.
@@ -231,7 +231,7 @@ if ('webkitSpeechRecognition' in window) {
 		// ******** Results ********
 	 	//VOICE COMMANDS:
 	 	if (final_transcript.includes("pass" || "skip")) {	//skip
-	 		completedWords += theWord.fontcolor("#d11141")+" ("+attempts+")<br>";
+	 		completedWords += theWord.fontcolor("#E2646B")+" ("+attempts+")<br>";
 			$("#compWords").html(completedWords);
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
@@ -291,12 +291,12 @@ function counter(correct){
 
 		// Add to history & progress
 		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date()});
-		completedWords += theWord.fontcolor("#00b159")+" ("+attempts+")<br>";
+		completedWords += theWord.fontcolor("#65D6A3")+" ("+attempts+")<br>";
 
 		// Change word after 2 seconds
 		setTimeout(function(){changeWord(event)},3000);
 	} else { // incorrect or low confidence
-		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip word</button>');
+		$("#skipButton").html('<button type="button" class="btn btn-raised" id="skip_button">Skip word</button>');
 		var incorrectAudio = incorrSfx.play()
 	    .fadeIn()
 	    .bind( "timeupdate", function() {
