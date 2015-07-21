@@ -70,5 +70,9 @@ Template.welcome.helpers({
   // Login mode or account creation mode
   existingUser: function(){
     return Session.get("login");
+  },
+
+  last: function() {
+    return History.findOne({userId: Meteor.userId()},{sort:{time:1}});
   }
 })
