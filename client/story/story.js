@@ -110,7 +110,10 @@ if ('webkitSpeechRecognition' in window) {
         $("#prevSent").html(coloredSent);//shows completed sentences on the side
         //Add to history; (might want to make the sentence into the colored one?)
         History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: coloredSent, time: new Date()});
+        end=false;
       }
+
+      getSent();
             
       //Change all char to lowercase
       trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
@@ -126,7 +129,6 @@ if ('webkitSpeechRecognition' in window) {
           end = true;                   //sentence end
         } else {
           wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
-          getSent();
         }
         
       }
@@ -185,10 +187,9 @@ function feedback() {
   } else {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
-  correct = []; //reset arrays
+  correct = []; wordNum=0; index++; //reset array, vars
   setTimeout(function() {
     $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>') 
-    wordNum=0; index++; end=false;
     getSent();
   }, 1500);
     
