@@ -7,12 +7,7 @@ body {
 	background-color:white;
 }
 
-#a1 {
-	color: #fff;
-	background-color: #7cd4ff;
-}
-
-#a2 {
+#a1, #a2 {
 	color: #fff;
 	background-color: #7cd4ff;
 }
