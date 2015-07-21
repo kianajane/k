@@ -15,7 +15,7 @@ if(Meteor.isClient){
 	var confidence = null;
 	var recognizing = false;
 	var correctCounter = 0;
-	var alive = false;
+	var alive = true;
 	var radius = 0;
 	var skipped = false;
 	var stopped = false;
@@ -43,7 +43,6 @@ if(Meteor.isClient){
 		},
 		"click #restart": function(event){
 			$("#gamearea").html('<canvas id="gameboard" width="1135" height = "500"></canvas>');
-			enemyDrawn=false;
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");	
 		}	
@@ -67,7 +66,6 @@ if(Meteor.isClient){
 	});
 	
 	var running=false;
-	var enemyDrawn = false;
 
 /* -------------------------------------This is the code for getting the word to test----------------------------------------------*/
 	
@@ -107,7 +105,6 @@ if(Meteor.isClient){
 	
 	    recognition.onresult = function(event) {
 			myevent = event;
-			console.log("result");
 
 	      for (var i = event.resultIndex; i < event.results.length; ++i) {
 			console.log("i="+i);
@@ -118,7 +115,8 @@ if(Meteor.isClient){
 	        	final_transcript = eachWord(final_transcript);
 				console.log('final events.results['+i+'][0].transcript = '+ JSON.stringify(final_transcript)
 						+ " --- " +JSON.stringify(confidence));
-				if(final_transcript==theWord && confidence>60 && alive){
+				if(final_transcript==Session.get("gameWord") && confidence>60 && alive){
+					console.log("test for word: "+Session.get("gameWord"));
 	         		correct();
 			    }
 	         } else {
@@ -126,8 +124,9 @@ if(Meteor.isClient){
 	        	interim_transcript = eachWord(interim_transcript);
 				console.log('interim events.results['+i+'][0].transcript = '+ JSON.stringify(interim_transcript)
 						+ " --- " +JSON.stringify(confidence));
-	         	if(interim_transcript==theWord && confidence>30 && alive){
+	         	if(interim_transcript==Session.get("gameWord") && confidence>30 && alive){
 	         		// add to history
+					console.log("test for word: "+Session.get("gameWord"));
 					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date()});
 	         		correct();
 				}
@@ -157,12 +156,6 @@ if(Meteor.isClient){
 		         }
 		         return current_result.toLowerCase();
 	         }
-			
-			//voice control - stops game 
-			if(interim_transcript=="stop"){
-				stop(event);
-				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
-			}
 	         
 	      }
 	    }
@@ -204,21 +197,25 @@ if(Meteor.isClient){
 		}
 
 		function next(event){
-			drawContext.restore();
 			getNewWord();
+			i=0;
+			alive=true;
 			$("#say_word").html("say: "+Session.get("gameWord"));
 			if (!recognizing){
 				start(event);
 			} else {
 				running=true;
 			}
-			enemyDrawn=false;
 			// if (!skipped) {
 			// 	radius += 5;
 			// } else {
 			// 	skipped=false;
 			// }
 			lastTime = (new Date()).getTime();
+			drawContext.restore();
+			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
+			console.log("canvas context restored and cleared");
+			draw();
 			gameLoop();
 		}
 		
@@ -236,6 +233,9 @@ if(Meteor.isClient){
 			console.log("image sourced");
 			drawContext.drawImage(turtle,0,90);
 			console.log("image drawn");
+			
+			drawContext.save();
+			console.log("canvas context saved");
 		}
 	
 		function moveTurtle(){
@@ -244,6 +244,7 @@ if(Meteor.isClient){
 				recognition.stop();
 				recognizing=false;
 				alive=false;
+				console.log("you hit the end!");
 				//$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
 				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"restart\">Restart</button>");
 			} else {
