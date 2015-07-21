@@ -127,7 +127,21 @@ if(Meteor.isClient){
 	         	if(interim_transcript==Session.get("gameWord") && confidence>30 && alive){
 	         		// add to history
 					console.log("test for word: "+Session.get("gameWord"));
-					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date()});
+
+					// Pull previous completed word list if available
+					if (History.findOne({userId: Meteor.userId(), mode: "game", sound: Session.get("sound")}, {sort:{time:-1}}) == undefined)
+					{
+						wordArray = [theWord]
+					} else {
+						wordArray = History.findOne({userId: Meteor.userId(), mode: "game", sound: Session.get("sound")}, {sort:{time:-1}}).completed;
+						
+						// Only add if the word isn't already in the list
+						if (!wordArray.includes(theWord)) {
+							wordArray.push(theWord);
+						}
+					}
+
+					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), completed: wordArray});
 	         		correct();
 				}
 	         }

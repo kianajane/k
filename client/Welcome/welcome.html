@@ -6,8 +6,11 @@
 <br/>
  <h3>Welcome back, <b>{{profile.firstName}}</b>!</h3>
 
-<h4> You were previous working in <b> {{last.mode}} </b> mode, on the <b> {{last.sound}} </b> sound. </h4>
+{{#if yesData}}
 
+<h4> You were previously working in <b> {{last.mode}} </b> mode, on the <b> {{last.sound}} </b> sound. </h4>
+{{else}}
+{{/if}}
 
 <br/>
  <div class = "col-md-5 col-md-offset-1">

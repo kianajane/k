@@ -2,59 +2,61 @@
 
 	{{#if currentUser}}
 
-	<div class = "row">
-		<div class = "col-md-3">
+	<!-- Sidebar with counters, progress, etc... -->
+	<div class = "col-md-2" id="sidebar">
+		<div class = "row">
 			{{> soundselectworkshop}}
-		</div>	
-		<div class = "col-md-4 col-sm-3">
-			<center>
-				<h2> Please say:</h2>
-			</center>
-		</div>
-		<div class = "col-md-offset-3 col-md-2" id="reco">
-			<h2 class = "text-right" id = "mic">Mic OFF</h2>
-		</div>
-	</div>
-	<div class="row">
-		<div class = "col-md-offset-3 col-md-6 col-sm-offset-1 col-sm-4">
-			<h1 class = "text-center" id="word">{{> getWord}}</h1>
-		</div>
-		<div  class = "col-md-2" style = "height: 240px; overflow: scroll">
-			<p class = "lead" id ="progress"></p>
-			<p class = "lead text-left" id="compWords"></p>
-		</div>
-	</div> 
-	
-	<div class = "row">
-		<div id = "dictButton" class="col-md-offset-3 col-md-1">
-			<button type="button" class="btn btn-success" id="start_button">Speak</button>
-		</div>
-		<div id = "skipButton" class="col-md-offset-1 col-md-1">
-		</div>  
-		<div id = "speakButton" class="col-md-offset-1 col-md-1">
-			<button type="button" class="btn btn-info" id="speak_button">Listen</button>
-		</div>
-	</div>
-
-	<div class = "row">
-		<div id="results" class="bg-info col-md-offset-3 col-md-6">
-			<h2 id="results_heading"></h2>
-			<br>
-			<p id="res"></p>
 			<hr>
 		</div>
-	</div>
-
-	<div class = "row">
-		<div class = "bg-info col-md-offset-3 col-md-6">
+		<div class = "row">
 			{{ > correct}}
+			<hr>
+		</div>
+		<div class = "row">
+			<h4>Completed words (attempts):</h4>
+			<div style = "width: 180px; height: 240px; overflow: scroll">
+				<p class = "lead text-left" id="compWords"></p>
+			</div>
 		</div>
 	</div>
 
-	<br/>
-	<div class = "row">
-		<div class = "col-md-offset-2 col-md-8">
-			<center> <p id = "directions"> Click 'Start' to begin. Speak! will wait until you finish speaking, or you may click or say 'Stop' when you are done saying the word. Click or say 'Skip word' to skip the word and have it counted as incorrect. Click 'Listen' to hear Speak! say the word. To go to another mode, press "Start" and then say the name of the mode to be redirected.</p> </center>
+	<!-- Context -->
+	<div class="col-md-9 col-md-offset-1">
+		<div class="row">			
+			{{> directionsBox}}
+		</div>
+		<div class = "row">
+			<div class = "col-md-4 col-sm-3">
+				<center>
+					<h2> Please say:</h2>
+				</center>
+			</div>
+			<div class = "col-md-offset-2 col-md-3" id="reco">
+				<h2 class = "text-right" id = "mic">Mic OFF</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class = "col-md-offset-2 col-md-6 col-sm-offset-1 col-sm-4">
+				<h1 class = "text-center" id="word">{{> getWord}}</h1>
+			</div>
+		</div> 
+		<div class = "row">
+			<div id = "dictButton" class="col-md-offset-2 col-md-1">
+				<button type="button" class="btn btn-success" id="start_button">Speak</button>
+			</div>
+			<div id = "skipButton" class="col-md-offset-1 col-md-1">
+			</div>  
+			<div id = "speakButton" class="col-md-offset-1 col-md-1">
+				<button type="button" class="btn btn-info" id="speak_button">Listen</button>
+			</div>
+		</div>
+		<div class = "row">
+			<div id="results" class="bg-info col-md-offset-2 col-md-6">
+				<h2 id="results_heading"></h2>
+				<br>
+				<p id="res"></p>
+				<hr>
+			</div>
 		</div>
 	</div>
 
@@ -73,3 +75,20 @@
 	<p id="correct_counter"><b>Number correct:</b> {{correct}}</p>
 	<p id="word_counter"><b>Total words:</b> {{wordCounter}}</p>
 </template> 
+
+<template name="directionsBox">
+	{{#if showDirections}}
+	<div class= "col-md-7 col-md-offset-1">
+		<div class="alert">
+			<button type="button" class="close" id="close_directions">&times;</button>
+			<center> <p id = "directions"><small><small> Click 'Speak' to begin. Speak! will wait until you finish speaking, or you may click or say 'Stop' when you are done saying the word. Click or say 'Skip word' to skip the word and have it counted as incorrect. Click 'Listen' to hear Speak! say the word. To go to another mode, press "Start" and then say the name of the mode to be redirected.</small></small></p></center>
+		</div>
+	</div>
+	{{else}}
+	<div class="col-md-1 col-md-offset-9">
+		<button id="show_directions">
+			<span class="glyphicon glyphicon-question-sign"></span>
+		</button>
+	</div>
+	{{/if}}
+</template>

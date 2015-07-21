@@ -4,10 +4,15 @@
 
 #directions {
 	font-size: 15px;
-	color: gray;
+	color: #333333;
 }
 
 #compWords {
 	font-size: 30px;
 	opacity: 0.6;
+}
+
+#sidebar {
+	background-color: #FFEF74;
+	padding: 25px;
 }
