@@ -126,7 +126,8 @@ if ('webkitSpeechRecognition' in window) {
           console.log ("you've completed the sentence!");
           end = true;                   //sentence end
         } else {
-          wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
+          wordNum++;
+          console.log("wordNum: "+wordNum+", words.length: "+words.length);
           getSent();
         }
         
