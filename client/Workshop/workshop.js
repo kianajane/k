@@ -14,6 +14,7 @@ Template.workshop.rendered = function() {
 	completedWords='';
 	// Show a word
 	wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
+	console.log("current sound = '"+Session.get("sound")+"'");
 	getNewWord();
 	$("#word").html(Session.get("workshopWord"));
 }
@@ -69,7 +70,7 @@ Template.workshop.events({
 		listen(event);
 	},
 	'click #skip_button': function(event){
-		completedWords += currentWord.fontcolor("#d11141") + "<br>";
+		completedWords += theWord.fontcolor("#d11141")+" ("+attempts+")<br>";
 		$("#compWords").html(completedWords);
 		changeWord(event);
 	}
@@ -90,9 +91,18 @@ Template.correct.helpers({
 function getNewWord(){
 	if (!wordChanged || attempts>0) wordCounter++;
 	$("#word_counter").html("<b>Total words:</b> "+wordCounter);
-	theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
+	theWord = getWord();
+	console.log("next word: "+theWord);
 	Session.set("workshopWord",theWord);
-	console.log(theWord);
+}
+
+function getWord(){ // gets a word that has not already been tried in this session
+	theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
+	if (completedWords.indexOf(">"+theWord+"<")>=0){
+		console.log("repeated word: "+theWord+"... getting another word")
+		getWord();
+	}
+	return theWord;
 }
 
 //random # returned inside given range. (called in getNewWord)
@@ -110,60 +120,8 @@ function changeWord(event){
 	correct=false;
 	result=false;
 	$("#skipButton").html(""); // Remove the skip button.
+	$("#results_heading").html("");
 	$("#res").html("");
-}
-
-// Updates the counters when the user is correct.
-function counter(correct){
-	attempts++;
-
-	// Prints out the attempts with the correct ending (1st, 2nd, 3rd, 4th, etc.)
-	n = getN(attempts);
-	console.log(attempts+n+" attempt(s)");
-	if (attempts >= 1){
-		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip word</button>');
-	}
-
-	if (correct) {
-		// Update counter
-		correctCounter++;
-		document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
-
-		// Feedback
-	  	$("#res").html("Congratulations! You said the word correctly on your "+attempts+n+" attempt!");
-	  	corrSfx.play()
-		    .fadeIn()
-		    .bind( "timeupdate", function() {
-		       var timer = buzz.toTimer( this.getTime() );
-		    });
-
-		// Add to history & progress
-		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date()});
-		completedWords += currentWord.fontcolor("#00b159") + " (" + attempts + ")" + "<br>";
-
-		// Change word
-		changeWord(event);
-	} else {
-		var incorrectAudio = incorrSfx.play()
-	    .fadeIn()
-	    .bind( "timeupdate", function() {
-	       var timer = buzz.toTimer( this.getTime() );
-	    });	
-	}
-
-	// Show progress
-	$("#progress").html("Completed: ");
-	$("#compWords").html(completedWords);
-}
-
-// Finds the correct ending for the number (of attempts).
-function getN(attempts){
-	switch(attempts){
-		case 1: return 'st';
-		case 2: return 'nd';
-		case 3: return 'rd';
-		default: return 'th';
-	}
 }
 
 function listen(event) {
@@ -183,8 +141,6 @@ function startDictation(event) {
 	final_transcript = '';
 	recognition.lang = 'en-US';
 	recognition.start();
-	$("#results_heading").html("");
-	$('#res').html("");
 }
 
 // Stop recognition. Called by the Stop button.
@@ -208,7 +164,6 @@ if ('webkitSpeechRecognition' in window) {
 
 	// Called by Start Recognition. 
 	recognition.onstart = function() {
-		interim_span.innerHTML = "I'm listening..."; // feedback that it's working, and removes previous message.
 		recognizing = true;
 		messageprinted=false;
 		$("#dictButton").html("<button type=\"button\" class=\"btn btn-danger\" id=\"stop_button\">Stop</button>");
@@ -221,7 +176,6 @@ if ('webkitSpeechRecognition' in window) {
 
 	// Called by Stop Recognition. 
 	recognition.onend = function() {
-		interim_span.innerHTML = '';
 		console.log("end");
 
 		// FEEDBACK FOR NO AUDIO
@@ -238,12 +192,10 @@ if ('webkitSpeechRecognition' in window) {
 	// The actual recognition.
 	recognition.onresult = function(event) {
 		//Progress
-		currentWord = Session.get("workshopWord");
 		var complete = false; 
 
 		messageprinted=true;
 		myevent = event;
-		var interim_transcript = '';
 		for (var i = event.resultIndex; i < event.results.length; ++i) {
 			console.log("i="+i);
 
@@ -256,17 +208,11 @@ if ('webkitSpeechRecognition' in window) {
 		}
 
 		console.log("You said \""+final_transcript+"\" with a recorded accuracy of "+confidence+"%");
-		interim_span.innerHTML = linebreak(interim_transcript);
 
 		// ******** Results ********
-		//CORRECT PARAMETERS, threshold: 60% confidence
-		if (final_transcript.includes(theWord) && confidence>=60) {
-			console.log ("you are correct!");
-			result=true;
-			correct=true;
-	 	//FEEDBACK & VOICE COMMANDS:
-	 	} else if (final_transcript.includes("pass" || "skip")) {	//skip
-	 		completedWords += currentWord.fontcolor("#d11141") + "<br>";
+	 	//VOICE COMMANDS:
+	 	if (final_transcript.includes("pass" || "skip")) {	//skip
+	 		completedWords += theWord.fontcolor("#d11141") + "<br>";
 			$("#compWords").html(completedWords);
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
@@ -279,15 +225,22 @@ if ('webkitSpeechRecognition' in window) {
         	window.location.replace("/profile");
       	} else if (final_transcript.includes("listen")) {
       		listen(event);
+      	//PRONUNCIATION FEEDBACK:
       	} else if (final_transcript=='') { // Nothing in transcript.
-	  		$('#res').html("Sorry, I didn't hear anything...");    
-	  	} else if (final_transcript.includes(theWord) && confidence<60) { // Correct but low confidence.
+	  		$('#res').html("Sorry, I didn't hear anything...");
+	  	//CORRECT PARAMETERS, threshold: 60% confidence
+		} else if (final_transcript.includes(theWord.toLowerCase()) && confidence>=60) {
+			console.log ("you are correct!");
+			result=true;
+			correct=true; 
+	  	} else if (final_transcript.includes(theWord.toLowerCase())) { // Correct but low confidence.
 	  		result=true;
 	  		$("#res").html("That didn't sound quite right, try again.");
 	  	} else { // Wrong, or other error.
 	  		result=true;
 	  		$("#res").html("Try again");
 	  	}
+	  	// Get feedback / update
 	  	if (result){
 	  		counter(correct);
 	  		result=false; // Reset
@@ -295,15 +248,56 @@ if ('webkitSpeechRecognition' in window) {
 	};
 }
 
-// Formatting functions.
-var two_line = /\n\n/g;
-var one_line = /\n/g;
-function linebreak(s) {
-	return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+// Updates the counters and feedback
+function counter(correct){
+	attempts++;
+
+	// Prints out the attempts with the correct ending (1st, 2nd, 3rd, 4th, etc.)
+	n = getN(attempts);
+	console.log(attempts+n+" attempt(s)");
+
+	if (correct) {
+		// Update counter
+		correctCounter++;
+		$("#correct_counter").html("<b>Number correct:</b> "+correctCounter);
+		$("#skipButton").html("");
+
+		// Feedback
+	  	$("#res").html("Congratulations! You said <b>"+theWord+"</b> correctly on your "+attempts+n+" attempt!");
+	  	corrSfx.play()
+		    .fadeIn()
+		    .bind( "timeupdate", function() {
+		       var timer = buzz.toTimer( this.getTime() );
+		    });
+
+		// Add to history & progress
+		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date()});
+		completedWords += theWord.fontcolor("#00b159")+" ("+attempts+")<br>";
+
+		// Change word after 2 seconds
+		setTimeout(function(){changeWord(event)},3000);
+	} else { // incorrect or low confidence
+		$("#skipButton").html('<button type="button" class="btn btn-warning" id="skip_button">Skip word</button>');
+		var incorrectAudio = incorrSfx.play()
+	    .fadeIn()
+	    .bind( "timeupdate", function() {
+	       var timer = buzz.toTimer( this.getTime() );
+	    });	
+	}
+
+	// Show progress
+	$("#progress").html("Completed words (attempts):");
+	$("#compWords").html(completedWords);
 }
 
-function capitalize(s) { // Unused???
-	return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
+// Finds the correct ending for the number (of attempts).
+function getN(attempts){
+	switch(attempts){
+		case 1: return 'st';
+		case 2: return 'nd';
+		case 3: return 'rd';
+		default: return 'th';
+	}
 }
 
 
@@ -328,4 +322,4 @@ Template.soundselectworkshop.events({
 		}
 		if (wordChanged) wordChanged=false; // Reset wordChanged
 	} 
-})
+});
