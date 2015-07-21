@@ -24,9 +24,9 @@
 
 
 		<h2>  Your History </h2>
-		<div class ="row" style = "height: 400px; overflow: scroll">
+		<div class ="row" style = "height: 400px; overflow-y: scroll" id="history_table">
 
-			<table class="table table-striped table-hover ">
+			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
 						<th> Mode </th> <th> Sound </th> <th> Word </th> <th> Time </th> 
@@ -56,7 +56,7 @@
 <template name = "historyRow">
 
 	<tr>
-		<td> {{mode}} </td> <td> {{sound}} </td> <td> {{word}} </td> <td> {{time}} </td>
+		<td width="100px"> {{mode}} </td> <td> {{sound}} </td> <td> {{word}} </td> <td width="400px"> {{time}} </td>
 	</tr>
 
 </template>
