@@ -31,6 +31,11 @@ if (![].includes) {
   };
 }
 
+//Sound effect
+cheer = new buzz.sound( "/sounds/yaysound", {
+    formats: ["mp3"]
+});
+
 /* VOICE RECO
   Some parts of code comes from this blog post by Amit Agarwal
       http://ctrlq.org/code/19680-html5-web-speech-api
@@ -107,11 +112,13 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //If at the end of the story
-      if (index == story1.length) {
-        recognition.stop();
+      if (index == story1.length-1) {
+        var storyEnd = cheer.play();
         $("#storyarea").html('<img src = "images/storycomplete-01.png" width = "100%" alt = "completed">');
-        //suggested sound/story?
-
+        setTimeout(function() {
+          $("#storyarea").html('You just finished the "'+newSound+'" sound story! Choose another sound and read some more!');
+        }, 2000);
+        recognition.stop();
       } else if (end) {
       //If sentence completed
         var toHistory = sent+" | "+correct.length+" correct out of "+words.length+" words.";
@@ -212,7 +219,7 @@ function feedback() {
   setTimeout(function() {
     $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>') 
     getSent();
-  }, 1500);
+  }, 1700);
     
 }
 
