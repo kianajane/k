@@ -196,7 +196,6 @@ if ('webkitSpeechRecognition' in window) {
 
 		messageprinted=true;
 		myevent = event;
-		var interim_transcript = '';
 		for (var i = event.resultIndex; i < event.results.length; ++i) {
 			console.log("i="+i);
 
