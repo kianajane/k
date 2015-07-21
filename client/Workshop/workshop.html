@@ -6,17 +6,16 @@
 	<div class = "col-md-2" id="sidebar">
 		<div class = "row">
 			{{> soundselectworkshop}}
-			<hr>
+		</div>
+		<hr>
+		<div class = "row">
+			<h4>Completed words (attempts):</h4>
+			<div id="progress" style = "width: 170px; height: 240px; overflow-y: scroll">
+				<p class = "lead text-left" id="compWords"></p>
+			</div>
 		</div>
 		<div class = "row">
 			{{ > correct}}
-			<hr>
-		</div>
-		<div class = "row">
-			<h4>Completed words (attempts):</h4>
-			<div style = "width: 180px; height: 240px; overflow: scroll">
-				<p class = "lead text-left" id="compWords"></p>
-			</div>
 		</div>
 	</div>
 
@@ -25,7 +24,7 @@
 		<div class="row">			
 			{{> directionsBox}}
 		</div>
-		<div class = "row">
+		<div class = "row" id="WS_top">
 			<div class = "col-md-4 col-sm-3">
 				<center>
 					<h2> Please say:</h2>
@@ -40,22 +39,22 @@
 				<h1 class = "text-center" id="word">{{> getWord}}</h1>
 			</div>
 		</div> 
-		<div class = "row">
-			<div id = "dictButton" class="col-md-offset-2 col-md-1">
-				<button type="button" class="btn btn-success" id="start_button">Speak</button>
-			</div>
-			<div id = "skipButton" class="col-md-offset-1 col-md-1">
-			</div>  
-			<div id = "speakButton" class="col-md-offset-1 col-md-1">
-				<button type="button" class="btn btn-info" id="speak_button">Listen</button>
+		<div class = "row-fluid">
+			<div class="col-md-offset-2 col-md-6">
+				<div id = "dictButton">
+					<button type="button" class="btn btn-success" id="start_button">Speak</button>
+				</div>
+				<div id = "skipButton">
+				</div>
+				<div id = "speakButton">
+					<button type="button" class="btn btn-info" id="speak_button">Listen</button>
+				</div>
 			</div>
 		</div>
 		<div class = "row">
 			<div id="results" class="bg-info col-md-offset-2 col-md-6">
 				<h2 id="results_heading"></h2>
-				<br>
 				<p id="res"></p>
-				<hr>
 			</div>
 		</div>
 	</div>
@@ -72,16 +71,18 @@
 </template>
 
 <template name="correct">
-	<p id="correct_counter"><b>Number correct:</b> {{correct}}</p>
-	<p id="word_counter"><b>Total words:</b> {{wordCounter}}</p>
+	<div id="counters">
+		<p id="correct_counter">{{correct}} <b>correct</b> out of</p>
+		<p id="word_counter">{{wordCounter}} <b>total</b></p>
+	</div>
 </template> 
 
 <template name="directionsBox">
 	{{#if showDirections}}
 	<div class= "col-md-7 col-md-offset-1">
-		<div class="alert">
+		<div class="alert" id="directions_alert">
 			<button type="button" class="close" id="close_directions">&times;</button>
-			<center> <p id = "directions"><small><small> Click 'Speak' to begin. Speak! will wait until you finish speaking, or you may click or say 'Stop' when you are done saying the word. Click or say 'Skip word' to skip the word and have it counted as incorrect. Click 'Listen' to hear Speak! say the word. To go to another mode, press "Start" and then say the name of the mode to be redirected.</small></small></p></center>
+			<center><p id = "directions">Click 'Speak' to turn on the microphone and say the word on the screen. Speak! will wait until you finish speaking, or you may click or say 'Stop' when you are done saying the word. Click or say 'Skip word' to skip the word and have it counted as incorrect. Click 'Listen' to hear Speak! say the word. To go to another mode, press "Start" and then say the name of the mode to be redirected to that page.</p></center>
 		</div>
 	</div>
 	{{else}}

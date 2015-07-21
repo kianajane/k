@@ -108,7 +108,7 @@ Template.correct.helpers({
 //returns new word from the word collection. Called whenever word needs to change.
 function getNewWord(){
 	if (!wordChanged || attempts>0) wordCounter++;
-	$("#word_counter").html("<b>Total words:</b> "+wordCounter);
+	$("#word_counter").html(wordCounter+" <b>total</b>");
 	theWord = getWord();
 	console.log("next word: "+theWord);
 	Session.set("workshopWord",theWord);
@@ -194,6 +194,7 @@ if ('webkitSpeechRecognition' in window) {
 
 	// Called by Stop Recognition. 
 	recognition.onend = function() {
+		$("#results_heading").html("Results:");
 		console.log("end");
 
 		// FEEDBACK FOR NO AUDIO
@@ -230,7 +231,7 @@ if ('webkitSpeechRecognition' in window) {
 		// ******** Results ********
 	 	//VOICE COMMANDS:
 	 	if (final_transcript.includes("pass" || "skip")) {	//skip
-	 		completedWords += theWord.fontcolor("#d11141") + "<br>";
+	 		completedWords += theWord.fontcolor("#d11141")+" ("+attempts+")<br>";
 			$("#compWords").html(completedWords);
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
@@ -277,7 +278,7 @@ function counter(correct){
 	if (correct) {
 		// Update counter
 		correctCounter++;
-		$("#correct_counter").html("<b>Number correct:</b> "+correctCounter);
+		$("#correct_counter").html(correctCounter+" <b>correct</b> out of");
 		$("#skipButton").html("");
 
 		// Feedback
