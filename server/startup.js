@@ -53,4 +53,13 @@ Meteor.startup(function(){
 														 "\"They didn't show that in the movie,\" she thought as she walked home, \"I'm sure I can solve this problem.\"")})
 	}
 
+
+	return Meteor.methods({
+
+		removeUserHistory: function() {
+			return History.remove({userId: Meteor.userId()});
+			}
+
+	});
+
 });
