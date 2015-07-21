@@ -73,6 +73,6 @@ Template.welcome.helpers({
   },
 
   last: function() {
-    return History.findOne({userId: Meteor.userId()},{sort:{time:1}});
+    return History.findOne({userId: Meteor.userId()},{sort:{time:-1}});
   }
 })
