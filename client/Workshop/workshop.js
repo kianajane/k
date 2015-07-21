@@ -57,6 +57,24 @@ errors in "speak" after a word is skipped?
 */
 
 // ****************** Helpers **********************
+// Show directions
+Session.set("directions",true);
+
+Template.directionsBox.helpers({
+	showDirections: function(){
+		return Session.get("directions");
+	}
+});
+
+Template.directionsBox.events({
+	'click #close_directions': function(event){
+		Session.set("directions",false);
+	},
+	'click #show_directions': function(event){
+		Session.set("directions",true);
+	}
+});
+
 // Button event helpers
 Template.workshop.events({
 	'click #start_button': function(event){
@@ -286,7 +304,6 @@ function counter(correct){
 	}
 
 	// Show progress
-	$("#progress").html("Completed words (attempts):");
 	$("#compWords").html(completedWords);
 }
 
