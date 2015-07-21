@@ -87,37 +87,50 @@ if ('webkitSpeechRecognition' in window) {
         }
       }
 
-      //Voice commands: pause, site nav
+      //Voice commands: restarts sentence, pause, site nav
       if (interim_transcript.includes("stop")) {
         recognition.stop();
+        return;
+      } else if (interim_transcript.includes("restart")) {
+        wordNum=0;
+        getSent();
+        return;
       } else if (interim_transcript.includes("workshop")) {
         window.location.replace("/workshop");
+        return;
       } else if (interim_transcript.includes("game")) {
         window.location.replace("/game");
-      } else if  (interim_transcript.includes("profile")) {
+        return;
+      } else if (interim_transcript.includes("profile")) {
         window.location.replace("/profile");
+        return;
       }
 
-      //At the end of the story
+      //If at the end of the story
       if (index == story1.length) {
-        $("#storyarea").html('<img src = "images/storycomplete-01.jpg" width = "100%" alt = "completed">');
-      }
+        recognition.stop();
+        $("#storyarea").html('<img src = "images/storycomplete-01.png" width = "100%" alt = "completed">');
+        //suggested sound/story?
 
+      } else if (end) {
       //If sentence completed
-      if (end) {
+        var toHistory = sent+" | "+correct.length+" correct out of "+words.length+" words.";
+        //Add to history; (might want to make the sentence into the colored one?) This should be adding each word (Geula)
+        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: toHistory, time: new Date()});
+        
         colorGR(correct);
         feedback();
         $("#prevSent").html(coloredSent);//shows completed sentences on the side
-        //Add to history; (might want to make the sentence into the colored one?) This should be adding each word (Geula)
-        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: coloredSent, time: new Date()});
         end=false;
+
+        //coloredSent experiment
+        //History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: coloredSent, time: new Date()});
         
         /*if (!Progress.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound")}).completed_.contains(coloredSent))
         {
             // Not quite. Want to add to the array of sentances....
              //Progress.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), time: new Date()})
-        }*/
-        
+        }*/  
       }
 
       getSent();
@@ -163,6 +176,7 @@ function coloring(original, wordNum) {
   newSent = "";
   for(var j = 0; j < original.length; j++) {
     if (j == wordNum) {
+      //var theWord = original[j].fontcolor("#00aedb");
       newSent += " " + original[j].fontcolor("#00aedb"); 
     } else {
       newSent += " " + original[j].fontcolor("black");
@@ -190,7 +204,7 @@ function feedback() {
           .bind( "timeupdate", function() {
              var timer = buzz.toTimer( this.getTime() );
           });
-    $("#storyarea").html("<h3>Perfect!</h3> <img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
+    $("#storyarea").html("<img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
   } else {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
