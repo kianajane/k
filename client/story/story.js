@@ -60,7 +60,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
-      $("#story_start_button").html('<button type="button" class="btn btn-info" id="pause_story">Stop Story</button>');
+      $("#startButton").html('<button type="button" class="btn btn-info" id="pause_story">Stop Story</button>');
       $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
     };
 
@@ -70,7 +70,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onend = function() {
       recognizing = false;
-      $("#story_start_button").html('<button type="button" class="btn btn-success" id="start_story">Begin Story</button>');
+      $("#startButton").html('<button type="button" class="btn btn-success" id="start_story">Begin Story</button>');
       $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
     };
 
@@ -109,13 +109,7 @@ if ('webkitSpeechRecognition' in window) {
         feedback();
         $("#prevSent").html(coloredSent);//shows completed sentences on the side
         //Add to history; (might want to make the sentence into the colored one?) This should be adding each word (Geula)
-        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: coloredSent, time: new Date()});
-        
-        /*if (!Progress.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound")}).completed_.contains(coloredSent))
-        {
-            // Not quite. Want to add to the array of sentances....
-             //Progress.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), time: new Date()})
-        }*/
+        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: story1[index], time: new Date()});
         
       }
             
