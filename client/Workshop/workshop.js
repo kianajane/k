@@ -235,9 +235,9 @@ if ('webkitSpeechRecognition' in window) {
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
-		} else if (final_transcript.includes("story")) {	//change to story
+		} else if (final_transcript.includes("story mode")) {	//change to story
 			window.location.replace("/story");
-		} else if (final_transcript.includes("game")) {		//change to game
+		} else if (final_transcript.includes("game mode")) {		//change to game
 			window.location.replace("/game");
 		} else if  (final_transcript.includes("profile")) {
         	window.location.replace("/profile");
@@ -288,11 +288,28 @@ function counter(correct){
 		    });
 
 		// Add to history & progress
-		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date()});
+		// Pull previous completed word list if available
+		if (History.findOne({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound")}, {sort:{time:-1}}) == undefined)
+		{
+			wordArray = [theWord]
+		} else {
+			wordArray = History.findOne({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound")}, {sort:{time:-1}}).completed;
+			
+			// Only add if the word isn't already in the list
+			if (!wordArray.includes(theWord)) {
+				wordArray.push(theWord);
+			}
+		}
+
+		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date(), completed: wordArray});
+ 		
+
+
+		
 		completedWords += theWord.fontcolor("#65D6A3")+" ("+attempts+")<br>";
 
 		// Change word after 2 seconds
-		setTimeout(function(){changeWord(event)},3000);
+		setTimeout(function(){changeWord(event)},3000);	
 	} else { // incorrect or low confidence
 		var incorrectAudio = incorrSfx.play()
 	    .fadeIn()
