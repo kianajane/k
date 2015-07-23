@@ -90,6 +90,7 @@ Template.workshop.events({
 	'click #skip_button': function(event){
 		completedWords += theWord.fontcolor("#E2646B")+" ("+attempts+")<br>";
 		$("#compWords").html(completedWords);
+		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});
 		changeWord(event);
 	}
 });
@@ -287,21 +288,8 @@ function counter(correct){
 		       var timer = buzz.toTimer( this.getTime() );
 		    });
 
-		// Add to history & progress
-		// Pull previous completed word list if available
-		if (History.findOne({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound")}, {sort:{time:-1}}) == undefined)
-		{
-			wordArray = [theWord]
-		} else {
-			wordArray = History.findOne({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound")}, {sort:{time:-1}}).completed;
-			
-			// Only add if the word isn't already in the list
-			if (!wordArray.includes(theWord)) {
-				wordArray.push(theWord);
-			}
-		}
-
-		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date(), completed: wordArray});
+		// Add to history
+		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date(), correct: true});
  		
 
 
