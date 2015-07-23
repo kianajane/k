@@ -9,6 +9,7 @@ if(Meteor.isClient){
 	}
 
 	var i = 0;
+	var x = 0.2;
 	var wordList=[];
 	var final_transcript = '';
 	var interim_transcript = '';
@@ -172,6 +173,7 @@ if(Meteor.isClient){
 			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
 			running=false;
+			x+=0.025;
 			next(event);
 	    }
 	
@@ -240,7 +242,7 @@ if(Meteor.isClient){
 			console.log("turtle drawn");
 		}
 	
-		function moveTurtle(){
+		function moveTurtle(dt){
 			if(i+50 >= gameboard.width){
 				running=false;
 				recognition.stop();
@@ -251,12 +253,12 @@ if(Meteor.isClient){
 				//$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
 				$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"restart\">Restart</button>");
 			} else {
-				moveRight();
-				i++;
+				moveRight(dt);
 			}
 		};
 		
-		function moveRight(){
+		function moveRight(dt){
+			i+=x*dt;
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
 			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			drawContext.fillStyle=pat;
@@ -268,7 +270,7 @@ if(Meteor.isClient){
 			var theTime = (new Date()).getTime();
 			var dt = theTime - lastTime;  // in milliseconds
 			lastTime = theTime;
-			moveTurtle();
+			moveTurtle(dt);
 			if (running) window.requestAnimationFrame(gameLoop);
 		}
 	}
