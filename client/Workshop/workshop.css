@@ -46,16 +46,19 @@
 }
 
 #start_button,
-#start_story {
+#start_story,
+#start {
 	color:white;
 	background-color:#65D6A3;
 }
-#speak_button {
+#speak_button,
+#restart {
 	color:white;
 	background-color:#9964E7;
 }
 #stop_button,
-#pause_story {
+#pause_story,
+#pause {
 	color:white;
 	background-color:#E2646B;
 }
