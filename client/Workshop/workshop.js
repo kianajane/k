@@ -235,9 +235,9 @@ if ('webkitSpeechRecognition' in window) {
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
-		} else if (final_transcript.includes("story")) {	//change to story
+		} else if (final_transcript.includes("story mode")) {	//change to story
 			window.location.replace("/story");
-		} else if (final_transcript.includes("game")) {		//change to game
+		} else if (final_transcript.includes("game mode")) {		//change to game
 			window.location.replace("/game");
 		} else if  (final_transcript.includes("profile")) {
         	window.location.replace("/profile");
