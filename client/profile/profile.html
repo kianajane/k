@@ -14,11 +14,12 @@
 		</div>
 		<br>
 		{{#if yesData}}
+
 		<div class = "container" id = "myTabContent">
 			<ul class="tabs">
-				<li class="tab-link current" data-tab="tab-1">Your Activity</li>
-				<li class="tab-link" data-tab="tab-2">Sound Progress</li>
-				<li class="tab-link " data-tab="tab-2">History</li>
+				<li class="tab-link current" data-tab="tab-1" id = "actLink">Your Activity</li>
+				<li class="tab-link" data-tab="tab-2" id = "soundProg">Sound Progress</li>
+				<li class="tab-link " data-tab="tab-3" id = "histLink">History</li>
 			</ul>
 			<center>
 			<!-- Overall activity -->
@@ -28,15 +29,15 @@
 					
 			</div>
 			<!-- Sound Progress -->
-			<div id="tab-2" class = "tab-content current">
+			<div id="tab-2" class = "tab-content">
 				<div id="sound-chart" style="min-width: 310px; height: 400px;"></div>
 			</div>
 			<!-- History -->
-			<div id="tab-3" class = "tab-content current" style = "height: 400px; overflow-y: scroll">
+			<div id="tab-3" class = "tab-content" style = "height: 400px; overflow-y: scroll">
 				<table class="table table-striped" id = "histTable">
 					<thead>
 						<tr>
-							<th> Mode </th> <th> Sound </th> <th> Word </th> <th> Time </th> 
+							<th> Mode </th> <th> Sound </th> <th> Word </th>  <th> Correct? </th> <th> Time </th> 
 						</tr>
 					</thead>
 					<tbody>
@@ -65,7 +66,7 @@
 <template name = "historyRow">
 
 	<tr>
-		<td width="100px"> {{mode}} </td> <td> {{sound}} </td> <td> {{word}} </td> <td width="400px"> {{time}} </td>
+		<td width="100px"> {{mode}} </td> <td> {{sound}} </td> <td> {{word}} </td> <td> {{correct}} </td> <td width="400px"> {{time}} </td>
 	</tr>
 
 </template>
