@@ -237,19 +237,25 @@ if(Meteor.isClient){
 			console.log("drawing board");
 			
 			drawContext = gameboard.getContext("2d");
-			drawContext.fillStyle='#ffffff';
-			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-			drawContext.strokeStyle="#f00";
 			
-			turtle = new Image();
-			console.log("image created");	
-			turtle.src = 'images/turtle.png';
-			console.log("image sourced");
-			drawContext.drawImage(turtle,0,90);
-			console.log("image drawn");
+			ground = new Image();
+			console.log("ground created");
+			ground.src = 'images/ground_0.png';
+			console.log("ground sourced");
+			groundPat = drawContext.createPattern(ground,"repeat");
+			console.log("pattern created");
+			drawContext.fillRect(0,120,gameboard.width,gameboard.height);
+			drawContext.fillStyle=groundPat;
 			
 			drawContext.save();
 			console.log("canvas context saved");
+			
+			turtle = new Image();
+			console.log("turtle created");	
+			turtle.src = 'images/turtle.png';
+			console.log("turtle sourced");
+			drawContext.drawImage(turtle,0,90);
+			console.log("turtle drawn");
 		}
 	
 		function moveTurtle(){
@@ -269,10 +275,9 @@ if(Meteor.isClient){
 		
 		function moveRight(){
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
-			drawContext.fillStyle='#ffffff';
-			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
-			drawContext.translate(1,0);
-			drawContext.drawImage(turtle,0,90);
+			drawContext.fillRect(0,120,gameboard.width,gameboard.height);
+			drawContext.fillStyle=groundPat;
+			drawContext.drawImage(turtle,i,90);
 		}
 
 		function gameLoop(){
