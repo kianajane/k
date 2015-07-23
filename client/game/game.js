@@ -256,7 +256,7 @@ if(Meteor.isClient){
 		
 		function moveRight(){
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
-			drawContext.fillRect(0,120,gameboard.width,gameboard.height);
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			drawContext.fillStyle=pat;
 			drawContext.drawImage(turtle,i,91);
 		}
