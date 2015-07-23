@@ -110,7 +110,7 @@ if(Meteor.isClient){
 	    recognition.interimResults = true;
 	
 	    recognition.onstart = function() {
-	   	  $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');	 
+	   	  $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#65D6A3")+'</h2>');	 
 	      console.log("recognition started");    
 	      recognizing = true;
 	      if(!running) running=true;
@@ -123,7 +123,7 @@ if(Meteor.isClient){
 	    };
 	
 	    recognition.onend = function() {
-	      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
+	      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#E2646B")+'</h2>');
 	      recognizing = false;
 	    };
 	
@@ -164,10 +164,10 @@ if(Meteor.isClient){
 			 } else if (interim_transcript.includes("stop")) {
 				stopped=true;
 				stop(event);
-			 } else if (interim_transcript.includes("workshop")) { //goes to story
+			 } else if (interim_transcript.includes("workshop")) { //goes to workshop
 				window.location.replace("/workshop");
-			 } else if (interim_transcript.includes("game")) {  //goes to game
-				window.location.replace("/game");
+			 } else if (interim_transcript.includes("story")) {  //goes to story
+				window.location.replace("/story");
 			 } else if  (interim_transcript.includes("profile")) { //goes to profile
 				window.location.replace("/profile");
 			 }
@@ -192,7 +192,7 @@ if(Meteor.isClient){
 	          .bind( "timeupdate", function() {
 	             var timer = buzz.toTimer( this.getTime() );
 	          });
-			document.getElementById("correct_counter").innerHTML = "<b>Score:</b> "+correctCounter;
+			$("#game_counter").innerHTML = "<b>Score:</b> "+correctCounter;
 			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
 			running=false;
@@ -282,7 +282,7 @@ if(Meteor.isClient){
 		
 		function moveRight(){
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
-			drawContext.fillRect(0,120,gameboard.width,gameboard.height);
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			drawContext.fillStyle=pat;
 			drawContext.drawImage(turtle,i,91);
 		}

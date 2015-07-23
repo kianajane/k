@@ -23,6 +23,15 @@ Template.profile.events({
     'click #clearHistory': function(event){
         console.log ('hello');
         Meteor.call('removeUserHistory')
+    },
+    'click #actLink': function(event) {
+        tabLayout(event);
+    },
+    'click #histLink': function(event) {
+        tabLayout(event);
+    },
+    'click #soundProg': function(event) {
+        tabLayout(event);
     }
 })
 
@@ -276,16 +285,14 @@ function addZeros(allDays, counts){
 }
 
 //LAYOUT - for the tabs
-$(document).ready(function(){
-    
+function tabLayout(event) {
     $('ul.tabs li').click(function(){
         var tab_id = $(this).attr('data-tab');
 
-        $('ul.tabs li').removeClass('current');
-        $('.tab-content').removeClass('current');
+        $('ul.tabs li').removeClass('tab-link current').addClass('tab-link');
+        $('.tab-content').removeClass('tab-content current').addClass('tab-content');
 
-        $(this).addClass('current');
-        $("#"+tab_id).addClass('current');
+        $(this).removeClass('tab-link').addClass('tab-link current');
+        $("#"+tab_id).removeClass('tab-content').addClass('tab-content current');
     })
-
-})
+}
