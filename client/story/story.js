@@ -110,7 +110,7 @@ if ('webkitSpeechRecognition' in window) {
       } else if (interim_transcript.includes("workshop")) {
         window.location.replace("/workshop");
         return;
-      } else if (interim_transcript.includes("game")) {
+      } else if (interim_transcript.includes("game mode")) {
         window.location.replace("/game");
         return;
       } else if (interim_transcript.includes("profile")) {
@@ -119,7 +119,7 @@ if ('webkitSpeechRecognition' in window) {
       }
 
       //If at the end of the story
-      if (index == story1.length-1) {
+      if (index == story1.length) {
         var storyEnd = cheer.play();
         $("#storyarea").html('<img src = "images/storycomplete-01.png" width = "100%" alt = "completed">');
         setTimeout(function() {
@@ -135,16 +135,7 @@ if ('webkitSpeechRecognition' in window) {
         colorGR(correct);
         feedback();
         $("#prevSent").html(coloredSent);//shows completed sentences on the side
-        end=false;
-
-        //coloredSent experiment
-        //History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: coloredSent, time: new Date()});
-        
-        /*if (!Progress.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound")}).completed_.contains(coloredSent))
-        {
-            // Not quite. Want to add to the array of sentances....
-             //Progress.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), time: new Date()})
-        }*/  
+        end=false; 
       }
 
       getSent();

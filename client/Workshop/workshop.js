@@ -90,6 +90,7 @@ Template.workshop.events({
 	'click #skip_button': function(event){
 		completedWords += theWord.fontcolor("#E2646B")+" ("+attempts+")<br>";
 		$("#compWords").html(completedWords);
+		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});
 		changeWord(event);
 	}
 });
@@ -235,9 +236,9 @@ if ('webkitSpeechRecognition' in window) {
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
-		} else if (final_transcript.includes("story")) {	//change to story
+		} else if (final_transcript.includes("story mode")) {	//change to story
 			window.location.replace("/story");
-		} else if (final_transcript.includes("game")) {		//change to game
+		} else if (final_transcript.includes("game mode")) {		//change to game
 			window.location.replace("/game");
 		} else if  (final_transcript.includes("profile")) {
         	window.location.replace("/profile");
@@ -287,12 +288,16 @@ function counter(correct){
 		       var timer = buzz.toTimer( this.getTime() );
 		    });
 
-		// Add to history & progress
-		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date()});
+		// Add to history
+		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date(), correct: true});
+ 		
+
+
+		
 		completedWords += theWord.fontcolor("#65D6A3")+" ("+attempts+")<br>";
 
 		// Change word after 2 seconds
-		setTimeout(function(){changeWord(event)},3000);
+		setTimeout(function(){changeWord(event)},3000);	
 	} else { // incorrect or low confidence
 		var incorrectAudio = incorrSfx.play()
 	    .fadeIn()
