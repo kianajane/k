@@ -5,7 +5,7 @@ if(Meteor.isClient){
 		draw();
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 		getNewWord();
-		$("#say_word").html("say: "+Session.get("gameWord"));
+		$("#say").html(Session.get("gameWord"));
 	}
 
 	var i = 0;
@@ -35,16 +35,16 @@ if(Meteor.isClient){
 	Template.game.events({
 		"click #start": function(event){
 			start(event);
-			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
+			$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"pause\">Pause</button>");
 		},
 		"click #pause": function(event){
 			stop(event);
-			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
+			$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"start\">Resume</button>");
 		},
 		"click #restart": function(event){
 			$("#gamearea").html('<canvas id="gameboard" width="1135" height = "500"></canvas>');
 			start(event);
-			$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");	
+			$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"pause\">Pause</button>");	
 		}	
 	});
 	
@@ -58,7 +58,7 @@ if(Meteor.isClient){
 		    if (lastSound!=newSound){
 		      console.log("CHANGING GAME SOUND... new sound = "+newSound);
 		      wordList = Phonetics.findOne({sound: newSound}).words;
-		      $("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"pause\">Pause</button>");
+		      $("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"pause\">Pause</button>");
 		      next(event);
 		      lastSound=newSound;
 		    }
@@ -167,7 +167,7 @@ if(Meteor.isClient){
 	          .bind( "timeupdate", function() {
 	             var timer = buzz.toTimer( this.getTime() );
 	          });
-			document.getElementById("correct_counter").innerHTML = "<b>Number correct:</b> "+correctCounter;
+			document.getElementById("correct_counter").innerHTML = "<b>Score:</b> "+correctCounter;
 			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
 			running=false;
@@ -186,7 +186,7 @@ if(Meteor.isClient){
 		
 		function stop(event) {
 			if (stopped) {
-				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"start\">Resume</button>");
+				$("#game_controls").html("<button 'class'=\"btn btn-raised\" type=\"submit\" id=\"start\">Resume</button>");
 				stopped=false;
 			}
 			running=false;
@@ -200,7 +200,7 @@ if(Meteor.isClient){
 			getNewWord();
 			i=0;
 			alive=true;
-			$("#say_word").html("say: "+Session.get("gameWord"));
+			$("#say").html(Session.get("gameWord"));
 			if (!recognizing){
 				start(event);
 			} else {
@@ -235,7 +235,7 @@ if(Meteor.isClient){
 			console.log("turtle created");	
 			turtle.src = 'images/turtle.png';
 			console.log("turtle sourced");
-			drawContext.drawImage(turtle,0,90);
+			drawContext.drawImage(turtle,0,91);
 			console.log("turtle drawn");
 		}
 	
@@ -247,7 +247,7 @@ if(Meteor.isClient){
 				alive=false;
 				console.log("you hit the end!");
 				//$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
-				$("#game_controls").html("<button class=\"btn btn-default\" type=\"submit\" id=\"restart\">Restart</button>");
+				$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"restart\">Restart</button>");
 			} else {
 				moveRight();
 				i++;
@@ -256,9 +256,9 @@ if(Meteor.isClient){
 		
 		function moveRight(){
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
-			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+			drawContext.fillRect(0,120,gameboard.width,gameboard.height);
 			drawContext.fillStyle=pat;
-			drawContext.drawImage(turtle,i,90);
+			drawContext.drawImage(turtle,i,91);
 		}
 
 		function gameLoop(){

@@ -1,29 +1,40 @@
 <template name="game">
 
 {{#if currentUser}}
-	<div class= "row">
-		<div class = "col-md-2">
-			{{> soundselectgame}}
+<div class = "col-md-2" id="sidebar_game">
+    <div class = "row">
+      {{> soundselectgame}}
+    </div>
+    <hr>
+    <div class = "row">
+      {{> score}}
+    </div>
+</div>
+<div class="row">
+	<div class="col-md-3 col-md-offset-2">
+		<center><h3 id="say_word">Please say:</h3><h1 id="say">{{word}}</h1></center>
+	</div>
+	<div class="col-md-2 col-md-offset-2" id="reco">
+	  <h2 class = "text-right" id = "mic">Mic OFF</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-9 col-md-offset-1">
+		<div id="game_controls" class="centered">
+			<button class="btn btn-default" type="submit" id="start">Start game</button>
 		</div>
-		<div class = "col-md-offset-8 col-md-2" id="reco">
-	      <h2 class = "text-right" id = "mic">Mic OFF</h2>
-	    </div>
 	</div>
-	<h1 id="say_word">say: {{word}}</h1>
-	<div id="game_controls" class="centered">
-		<button class="btn btn-default" type="submit" id="start">Start game</button>
-	</div>
-	<div id="gamearea">
-		<canvas id="gameboard" width="1135" height = "200"></canvas>
-	</div>
-	{{> score}}
+</div>
+<div id="gamearea">
+	<canvas id="gameboard" width="1135" height = "200"></canvas>
+</div>
 
 {{else}}
-	<br>
-	<center><h3>You must be <a href="{{pathFor 'welcome'}}">logged in</a> to play</h3></center>
+<br>
+<center><h3>You must be <a href="{{pathFor 'welcome'}}">logged in</a> to play</h3></center>
 {{/if}}
 </template>
 
 <template name="score">
-  <h2 id="correct_counter"><b>Number correct:</b> {{correct}}</h2>
+  <h2 id="correct_counter"><b>Score:</b> {{correct}}</h2>
 </template>
