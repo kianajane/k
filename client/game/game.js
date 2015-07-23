@@ -4,11 +4,13 @@ if(Meteor.isClient){
 	Template.game.rendered=function(){
 		draw();
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
-		getNewWord();
+		theWord = wordList[0];
+		Session.set("gameWord",theWord);
 		$("#say").html(Session.get("gameWord"));
 	}
 
 	var i = 0;
+	var x = 0.2;
 	var wordList=[];
 	var final_transcript = '';
 	var interim_transcript = '';
@@ -24,10 +26,6 @@ if(Meteor.isClient){
 	}
 	lastSound = Session.get("sound");
 	
-	Template.score.helpers({
-		
-	});
-	
 	Template.game.helpers({
 		word: Session.get("gameWord")
 	});
@@ -42,7 +40,14 @@ if(Meteor.isClient){
 			$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"start\">Resume</button>");
 		},
 		"click #restart": function(event){
-			$("#gamearea").html('<canvas id="gameboard" width="1135" height = "500"></canvas>');
+			$("#say").html(Session.get("gameWord"));
+			drawContext.restore();
+			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
+			console.log("canvas context restored and cleared");
+			i=0;
+			alive=true;
+			x=0.2;
+			draw();
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"pause\">Pause</button>");	
 		}	
@@ -69,9 +74,32 @@ if(Meteor.isClient){
 
 /* -------------------------------------This is the code for getting the word to test----------------------------------------------*/
 	
-	function getNewWord(){
-		theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
-		console.log("getting word: "+theWord);
+	function getNewWord(){ // gets a word that has not already been completed.
+	// Get all unique words: 
+	completedWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch()));
+	
+	// If you've finished all of the sounds.
+	if (completedWords.length == wordList.length)
+	{
+		console.log ("You've finished the sound!");
+		theWord = wordList[0]; // Really should stop, or something.
+		return theWord;
+	}
+
+	// Should get the first word on the list that is allowed.
+	// if we've reached the end, go back to the beginning.
+	if (wordList.indexOf(theWord) + 1 >= wordList.length) {
+		theWord = wordList[0];
+	} else {
+		// Else, pick the next word on the list.
+		theWord = wordList[wordList.indexOf(theWord) + 1];
+	}
+
+	// Keep picking new words until you find one you haven't done.
+	if (completedWords.includes(theWord)) {
+		console.log("repeated word: "+theWord+"... getting another word");
+		getNewWord();
+	}
 		Session.set("gameWord",theWord);
 	}
 	
@@ -86,7 +114,7 @@ if(Meteor.isClient){
 	    recognition.interimResults = true;
 	
 	    recognition.onstart = function() {
-	   	  $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');	 
+	   	  $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#65D6A3")+'</h2>');	 
 	      console.log("recognition started");    
 	      recognizing = true;
 	      if(!running) running=true;
@@ -99,7 +127,7 @@ if(Meteor.isClient){
 	    };
 	
 	    recognition.onend = function() {
-	      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
+	      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#E2646B")+'</h2>');
 	      recognizing = false;
 	    };
 	
@@ -168,10 +196,11 @@ if(Meteor.isClient){
 	          .bind( "timeupdate", function() {
 	             var timer = buzz.toTimer( this.getTime() );
 	          });
-			document.getElementById("correct_counter").innerHTML = "<b>Score:</b> "+correctCounter;
+			$("#game_counter").html("<b>Score:</b> "+correctCounter);
 			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
 			running=false;
+			x+=0.025;
 			next(event);
 	    }
 	
@@ -240,7 +269,7 @@ if(Meteor.isClient){
 			console.log("turtle drawn");
 		}
 	
-		function moveTurtle(){
+		function moveTurtle(dt){
 			if(i+50 >= gameboard.width){
 				running=false;
 				recognition.stop();
@@ -251,14 +280,14 @@ if(Meteor.isClient){
 				//$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
 				$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"restart\">Restart</button>");
 			} else {
-				moveRight();
-				i++;
+				moveRight(dt);
 			}
 		};
 		
-		function moveRight(){
+		function moveRight(dt){
+			i+=x*dt;
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
-			drawContext.fillRect(0,120,gameboard.width,gameboard.height);
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			drawContext.fillStyle=pat;
 			drawContext.drawImage(turtle,i,91);
 		}
@@ -268,7 +297,7 @@ if(Meteor.isClient){
 			var theTime = (new Date()).getTime();
 			var dt = theTime - lastTime;  // in milliseconds
 			lastTime = theTime;
-			moveTurtle();
+			moveTurtle(dt);
 			if (running) window.requestAnimationFrame(gameLoop);
 		}
 	}

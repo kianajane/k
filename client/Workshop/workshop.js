@@ -15,7 +15,8 @@ Template.workshop.rendered = function() {
 	// Show a word
 	wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 	console.log("current sound = '"+Session.get("sound")+"'");
-	getNewWord();
+	theWord = wordList[0];
+	Session.set("workshopWord",theWord);
 	$("#word").html(Session.get("workshopWord"));
 }
 
@@ -115,12 +116,33 @@ function getNewWord(){
 	Session.set("workshopWord",theWord);
 }
 
-function getWord(){ // gets a word that has not already been tried in this session
-	theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
-	if (completedWords.indexOf(">"+theWord+"<")>=0){
-		console.log("repeated word: "+theWord+"... getting another word")
+function getWord(){ // gets a word that has not already been completed.
+	// Get all unique words: 
+	completedWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch()));
+	
+	// If you've finished all of the sounds.
+	if (completedWords.length == wordList.length)
+	{
+		console.log ("You've finished the sound!");
+		theWord = wordList[0]; // Really should stop, or something.
+		return theWord;
+	}
+
+	// Should get the first word on the list that is allowed.
+	// if we've reached the end, go back to the beginning.
+	if (wordList.indexOf(theWord) + 1 >= wordList.length) {
+		theWord = wordList[0];
+	} else {
+		// Else, pick the next word on the list.
+		theWord = wordList[wordList.indexOf(theWord) + 1];
+	}
+
+	// Keep picking new words until you find one you haven't done.
+	if (completedWords.includes(theWord)) {
+		console.log("repeated word: "+theWord+"... getting another word");
 		getWord();
 	}
+	
 	return theWord;
 }
 
@@ -236,9 +258,9 @@ if ('webkitSpeechRecognition' in window) {
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
-		} else if (final_transcript.includes("story mode")) {	//change to story
+		} else if (final_transcript.includes("story")) {	//change to story
 			window.location.replace("/story");
-		} else if (final_transcript.includes("game mode")) {		//change to game
+		} else if (final_transcript.includes("game")) {		//change to game
 			window.location.replace("/game");
 		} else if  (final_transcript.includes("profile")) {
         	window.location.replace("/profile");

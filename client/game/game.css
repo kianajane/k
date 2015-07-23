@@ -1,7 +1,3 @@
-.centered {
-	text-align: center;
-}
-
 h1 {
 	font-size: 2.5em;
 }
@@ -16,17 +12,17 @@ h1 {
 	margin-bottom: 0em;
 }
 
-#correct_counter {
+#game_counter {
 	font-size: 20px;
 }
 
-#say_word {
-	padding-left:50px;
-}
 #say {
-	padding-left:30px;
 	font-size:60px;
 }
-#game_controls {
-	padding-left:55px;
+#game_controls,
+#say {
+	padding-top: 0px;
+	margin-top: 0px;
+	text-align: center;
 }
+
