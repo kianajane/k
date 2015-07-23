@@ -47,7 +47,7 @@ function buildSoundProgressChart()
     gdata = []
     for (var i = 0; i < sounds.length; i++)
     {
-        progress = History.find({userId: Meteor.userId(), mode: "game", sound: sounds[i], /*correct: true */ }).fetch();
+        progress = History.find({userId: Meteor.userId(), mode: "game", sound: sounds[i], correct: true}).fetch();
         count = _.uniq(_.pluck(progress, 'word')).length;
         gdata.push(count);
     }
@@ -56,7 +56,7 @@ function buildSoundProgressChart()
     wdata = []
     for (var i = 0; i < sounds.length; i++)
     {
-        progress = History.find({userId: Meteor.userId(), mode: "workshop", sound: sounds[i], /*correct: true */ }).fetch();
+        progress = History.find({userId: Meteor.userId(), mode: "workshop", sound: sounds[i], correct: true}).fetch();
         count = _.uniq(_.pluck(progress, 'word')).length;
         wdata.push(count);
     }
@@ -65,7 +65,7 @@ function buildSoundProgressChart()
     sdata = []
     for (var i = 0; i < sounds.length; i++)
     {
-        progress = History.find({userId: Meteor.userId(), mode: "story", sound: sounds[i], /*correct: true */ }).fetch();
+        progress = History.find({userId: Meteor.userId(), mode: "story", sound: sounds[i], correct: true }).fetch();
         count = _.uniq(_.pluck(progress, 'word')).length;
         sdata.push(count);
     }
