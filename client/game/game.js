@@ -26,10 +26,6 @@ if(Meteor.isClient){
 	}
 	lastSound = Session.get("sound");
 	
-	Template.score.helpers({
-		
-	});
-	
 	Template.game.helpers({
 		word: Session.get("gameWord")
 	});
@@ -44,7 +40,14 @@ if(Meteor.isClient){
 			$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"start\">Resume</button>");
 		},
 		"click #restart": function(event){
-			$("#gamearea").html('<canvas id="gameboard" width="1135" height = "500"></canvas>');
+			$("#say").html(Session.get("gameWord"));
+			drawContext.restore();
+			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
+			console.log("canvas context restored and cleared");
+			i=0;
+			alive=true;
+			x=0.2;
+			draw();
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"pause\">Pause</button>");	
 		}	
@@ -193,7 +196,7 @@ if(Meteor.isClient){
 	          .bind( "timeupdate", function() {
 	             var timer = buzz.toTimer( this.getTime() );
 	          });
-			$("#game_counter").innerHTML = "<b>Score:</b> "+correctCounter;
+			$("#game_counter").html("<b>Score:</b> "+correctCounter);
 			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
 			running=false;
