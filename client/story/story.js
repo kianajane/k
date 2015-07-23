@@ -1,6 +1,7 @@
 /*
   This code comes from:
   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
+  Allows arrays to have .includes() 
 */
 if (![].includes) {
   Array.prototype.includes = function(searchElement /*, fromIndex*/ ) {

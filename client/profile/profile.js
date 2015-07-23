@@ -296,12 +296,3 @@ function tabLayout(event) {
         $("#"+tab_id).removeClass('tab-content').addClass('tab-content current');
     })
 }
-$('ul.tabs li').click(function(){
-        var tab_id = $(this).attr('data-tab');
-
-        $('ul.tabs li').removeClass('tab-link current').addClass('tab-link');
-        $('.tab-content').removeClass('tab-content current').addClass('tab-content');
-
-        $(this).removeClass('tab-link').addClass('tab-link current');
-        $("#"+tab_id).removeClass('tab-content').addClass('tab-content current');
-    })

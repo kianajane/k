@@ -7,6 +7,7 @@ ul.tabs{
 	margin-color: #E2646B;
 	padding: 0px;
 	list-style: none;
+	background: #e78388;
 }
 ul.tabs li{
 	background: none;
@@ -15,7 +16,6 @@ ul.tabs li{
 	cursor: pointer;
 	font-style: 12px;
 	color: black;
-
 }
 
 ul.tabs li:hover {

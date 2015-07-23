@@ -252,7 +252,7 @@ if ('webkitSpeechRecognition' in window) {
 
 		// ******** Results ********
 	 	//VOICE COMMANDS:
-	 	if (final_transcript.includes("pass" || "skip")) {	//skip
+	 	if (final_transcript.includes("pass")) {	//skip
 	 		completedWords += theWord.fontcolor("#E2646B")+" ("+attempts+")<br>";
 			$("#compWords").html(completedWords);
 			changeWord(event);
