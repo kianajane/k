@@ -137,7 +137,6 @@ function changeWord(event){
 	attempts=0;
 	correct=false;
 	result=false;
-	$("#skipButton").html(""); // Remove the skip button.
 	$("#results_heading").html("");
 	$("#res").html("");
 }
@@ -279,7 +278,6 @@ function counter(correct){
 		// Update counter
 		correctCounter++;
 		$("#correct_counter").html(correctCounter+" <b>correct</b> out of");
-		$("#skipButton").html("");
 
 		// Feedback
 	  	$("#res").html("Congratulations! You said <b>"+theWord+"</b> correctly on your "+attempts+n+" attempt!");
@@ -296,7 +294,6 @@ function counter(correct){
 		// Change word after 2 seconds
 		setTimeout(function(){changeWord(event)},3000);
 	} else { // incorrect or low confidence
-		$("#skipButton").html('<button type="button" class="btn btn-raised" id="skip_button">Skip word</button>');
 		var incorrectAudio = incorrSfx.play()
 	    .fadeIn()
 	    .bind( "timeupdate", function() {

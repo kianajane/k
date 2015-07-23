@@ -42,17 +42,9 @@
 #counters p {
     display: inline-block;
 }
-#dictButton {
-    float:left;
-}
-#skipButton {
-	padding-left: 10px;
-}
-#speakButton {
-    float:right;
-}
 
-#start_button {
+#start_button,
+#start_story {
 	color:white;
 	background-color:#65D6A3;
 }
@@ -60,11 +52,13 @@
 	color:white;
 	background-color:#9964E7;
 }
-#stop_button {
+#stop_button,
+#pause_story {
 	color:white;
 	background-color:#E2646B;
 }
-#skip_button {
+#skip_button,
+#skip {
 	color:white;
 	background-color:#FFEF74;
 }

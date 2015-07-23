@@ -31,6 +31,13 @@ if (![].includes) {
   };
 }
 
+// On rendered
+Template.story.rendered = function() {
+  // Show first sentence
+  story1 = Phonetics.findOne({sound: lastSound}).story;
+  getSent();
+}
+
 //Sound effect
 cheer = new buzz.sound( "/sounds/yaysound", {
     formats: ["mp3"]
@@ -65,8 +72,8 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
-      $("#startButton").html('<button type="button" class="btn btn-info" id="pause_story">Stop Story</button>');
-      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#7fe508")+'</h2>');
+      $("#startButton").html('<button type="button" class="btn btn-raised" id="pause_story">Stop Story</button>');
+      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#65D6A3")+'</h2>');
     };
 
     recognition.onerror = function(event) {
@@ -75,8 +82,8 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onend = function() {
       recognizing = false;
-      $("#startButton").html('<button type="button" class="btn btn-success" id="start_story">Begin Story</button>');
-      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#FF7373")+'</h2>');
+      $("#startButton").html('<button type="button" class="btn btn-raised" id="start_story">Begin Story</button>');
+      $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic OFF".fontcolor("#E2646B")+'</h2>');
     };
 
     recognition.onresult = function(event) {
@@ -217,7 +224,7 @@ function feedback() {
   }
   correct = []; wordNum=0; index++; //reset array, vars
   setTimeout(function() {
-    $("#storyarea").html('<p class = "lead" id = "storyTitle"></p> <h1 class = "text-left" id="senth1"></h1>') 
+    $("#storyarea").html('<h1 class = "text-left" id="senth1"></h1>') 
     getSent();
   }, 1700);
     
@@ -233,10 +240,28 @@ function skip(event) {
   }
 }
 
+// Show directions
+Session.set("story_directions",true);
+
+Template.storyDirections.helpers({
+  showDirections: function(){
+    return Session.get("story_directions");
+  }
+});
+
+Template.storyDirections.events({
+  'click #close_directions': function(event){
+    Session.set("story_directions",false);
+  },
+  'click #show_directions': function(event){
+    Session.set("story_directions",true);
+  }
+});
+
+
 Template.story.events({
   'click #start_story': function(event){
     story1 = Phonetics.findOne({sound: lastSound}).story;
-    $("#storyTitle").html('Read the following: '); $("#resTitle").html('Your progress: ');
     startDictation(event);
     getSent();
   },
