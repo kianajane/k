@@ -4,7 +4,8 @@ if(Meteor.isClient){
 	Template.game.rendered=function(){
 		draw();
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
-		getNewWord();
+		theWord = wordList[0];
+		Session.set("gameWord",theWord);
 		$("#say").html(Session.get("gameWord"));
 	}
 
@@ -69,9 +70,32 @@ if(Meteor.isClient){
 
 /* -------------------------------------This is the code for getting the word to test----------------------------------------------*/
 	
-	function getNewWord(){
-		theWord = wordList[Math.round(getRandomArbitrary(0,wordList.length-1))];
-		console.log("getting word: "+theWord);
+	function getNewWord(){ // gets a word that has not already been completed.
+	// Get all unique words: 
+	completedWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch()));
+	
+	// If you've finished all of the sounds.
+	if (completedWords.length == wordList.length)
+	{
+		console.log ("You've finished the sound!");
+		theWord = wordList[0]; // Really should stop, or something.
+		return theWord;
+	}
+
+	// Should get the first word on the list that is allowed.
+	// if we've reached the end, go back to the beginning.
+	if (wordList.indexOf(theWord) + 1 >= wordList.length) {
+		theWord = wordList[0];
+	} else {
+		// Else, pick the next word on the list.
+		theWord = wordList[wordList.indexOf(theWord) + 1];
+	}
+
+	// Keep picking new words until you find one you haven't done.
+	if (completedWords.includes(theWord)) {
+		console.log("repeated word: "+theWord+"... getting another word");
+		getNewWord();
+	}
 		Session.set("gameWord",theWord);
 	}
 	
