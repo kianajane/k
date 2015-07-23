@@ -30,11 +30,111 @@ Template.profile.events({
 
 // Call the function to built the chart when the template is rendered
 Template.profile.rendered = function() {    
-    builtColumn();
+    buildDailyProgressChart();
+    buildSoundProgressChart();
 }
 
-//Function to draw the column chart
-function builtColumn() 
+// *************************************** Build the chart with the progress for each sound. ****************************************************
+function buildSoundProgressChart()
+{
+
+    // X-axis data that is a list of all of the sounds. Get from the Phonetics collection.
+    sounds = _.pluck(Phonetics.find().fetch(), 'sound');
+
+
+    // Y-axis that is the number of words in the finished array.
+    // Game mode
+    gdata = []
+    for (var i = 0; i < sounds.length; i++)
+    {
+        progress = History.find({userId: Meteor.userId(), mode: "game", sound: sounds[i], /*correct: true */ }).fetch();
+        count = _.uniq(_.pluck(progress, 'word')).length;
+        gdata.push(count);
+    }
+
+    // Workshop mode
+    wdata = []
+    for (var i = 0; i < sounds.length; i++)
+    {
+        progress = History.find({userId: Meteor.userId(), mode: "workshop", sound: sounds[i], /*correct: true */ }).fetch();
+        count = _.uniq(_.pluck(progress, 'word')).length;
+        wdata.push(count);
+    }
+
+    // Story mode.
+    sdata = []
+    for (var i = 0; i < sounds.length; i++)
+    {
+        progress = History.find({userId: Meteor.userId(), mode: "story", sound: sounds[i], /*correct: true */ }).fetch();
+        count = _.uniq(_.pluck(progress, 'word')).length;
+        sdata.push(count);
+    }
+
+
+
+
+
+$('#sound-chart').highcharts({
+        
+        chart: {
+            type: 'column'
+        },
+        
+        title: {
+            text: 'Your Sound Progress'
+        },
+        
+        credits: {
+            enabled: false
+        },
+        
+        xAxis: {
+            categories: sounds
+        },
+        
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Completed Words'
+            },
+            allowDecimals: false
+        },
+        
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.0f} Completed</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        
+        series: [{
+            name: 'Game',
+            data: gdata
+
+       }, {
+            name: 'Story',
+            data: sdata
+
+        }, {
+            name: 'Workshop',
+            data: wdata
+
+        }]
+    });
+}
+
+
+// ******************************** Function to draw the daily progress chart *****************************************************************
+function buildDailyProgressChart() 
 {
     // I shouldn't need this line. But it gives me errors when I get rid of it....
     history = History.find({userId: Meteor.userId(), mode: "game"}).fetch(); 
@@ -84,7 +184,7 @@ function builtColumn()
     workshopData = _.map(wcounts, function(num, key){ return num;});
 
    //  *********** Creates the highchart. Uses the meteor highchart package. ***********************
-    $('#container-column').highcharts({
+    $('#activity-chart').highcharts({
         
         chart: {
             type: 'column'
@@ -174,3 +274,18 @@ function addZeros(allDays, counts){
     }
     return counts;
 }
+
+//LAYOUT - for the tabs
+$(document).ready(function(){
+    
+    $('ul.tabs li').click(function(){
+        var tab_id = $(this).attr('data-tab');
+
+        $('ul.tabs li').removeClass('current');
+        $('.tab-content').removeClass('current');
+
+        $(this).addClass('current');
+        $("#"+tab_id).addClass('current');
+    })
+
+})
