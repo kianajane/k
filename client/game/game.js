@@ -127,13 +127,14 @@ if(Meteor.isClient){
 	         	if(interim_transcript==Session.get("gameWord") && confidence>30 && alive){
 	         		// add to history
 					console.log("test for word: "+Session.get("gameWord"));
-					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), completed: true});
+					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: true});
 	         		correct();
 				}
 	         }
 
 	         //Voice commands: skip (doesnt work), pause, site nav
 			 if (final_transcript.includes("skip" || "pass")) {
+			 	History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});
 			 	skipped=true;
 				next(event);
 			 } else if (interim_transcript.includes("stop")) {
@@ -245,6 +246,7 @@ if(Meteor.isClient){
 				recognition.stop();
 				recognizing=false;
 				alive=false;
+				History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});	
 				console.log("you hit the end!");
 				//$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
 				$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"restart\">Restart</button>");

@@ -127,10 +127,14 @@ if ('webkitSpeechRecognition' in window) {
         }, 2000);
         recognition.stop();
       } else if (end) {
-      //If sentence completed
-        var toHistory = sent+" | "+correct.length+" correct out of "+words.length+" words.";
-        //Add to history; (might want to make the sentence into the colored one?) This should be adding each word (Geula)
-        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: toHistory, time: new Date()});
+      //If sentence completed with 80% right, add to history as correct:
+      if (correct.length >= words.length * (8.0 / 10))
+      {
+        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, correct: true, time: new Date()});
+      } else {
+        console.log ("the sentence was not above 80% complete");
+        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, correct: false, time: new Date()});   
+      }
         
         colorGR(correct);
         feedback();

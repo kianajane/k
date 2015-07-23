@@ -14,16 +14,12 @@
 		</div>
 		<br>
 		{{#if yesData}}
+
 		<div class = "container" id = "myTabContent">
 			<ul class="tabs">
 				<li class="tab-link current" data-tab="tab-1" id = "actLink">Your Activity</li>
 				<li class="tab-link" data-tab="tab-2" id = "soundProg">Sound Progress</li>
 				<li class="tab-link " data-tab="tab-3" id = "histLink">History</li>
-				<!-- 
-				<li class="active"><a data-toggle="tab" href = "#tab1">Your Activity</a></li>
-				<li><a data-toggle="tab" href = "#tab2">Sound Progress</a></li>
-				<li><a data-toggle="tab" href = "#tab3">History</a></li>
-				 -->
 			</ul>
 			<center>
 			<!-- Overall activity -->
@@ -41,7 +37,7 @@
 				<table class="table table-striped" id = "histTable">
 					<thead>
 						<tr>
-							<th> Mode </th> <th> Sound </th> <th> Word </th> <th> Time </th> 
+							<th> Mode </th> <th> Sound </th> <th> Word </th>  <th> Correct? </th> <th> Time </th> 
 						</tr>
 					</thead>
 					<tbody>
@@ -70,7 +66,7 @@
 <template name = "historyRow">
 
 	<tr>
-		<td width="100px"> {{mode}} </td> <td> {{sound}} </td> <td> {{word}} </td> <td width="400px"> {{time}} </td>
+		<td width="100px"> {{mode}} </td> <td> {{sound}} </td> <td> {{word}} </td> <td> {{correct}} </td> <td width="400px"> {{time}} </td>
 	</tr>
 
 </template>
