@@ -1,11 +1,5 @@
-/*#profPhoto{
-	border-style: solid;
-	border-color: #E2646B;
-	border-width: 15px;
-}*/
-
-#myTabContent{
-	width: 800px;
+#userName {
+	font-weight: 790;
 }
 
 ul.tabs{
@@ -21,6 +15,7 @@ ul.tabs li{
 	cursor: pointer;
 	font-style: 12px;
 	color: black;
+
 }
 
 ul.tabs li:hover {
@@ -48,9 +43,3 @@ ul.tabs li.current{
 #histTable {
 	background: white;
 }
-/*
-.table-striped > 
-
-.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
-   background-color: #b2b2b2;
-}*/
