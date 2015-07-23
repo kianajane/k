@@ -1,0 +1,56 @@
+/*#profPhoto{
+	border-style: solid;
+	border-color: #E2646B;
+	border-width: 15px;
+}*/
+
+#myTabContent{
+	width: 800px;
+}
+
+ul.tabs{
+	margin: 0px;
+	margin-color: #E2646B;
+	padding: 0px;
+	list-style: none;
+}
+ul.tabs li{
+	background: none;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+	font-style: 12px;
+	color: black;
+}
+
+ul.tabs li:hover {
+	font-style: oblique;
+	background: #E2646B;
+	color: black;
+}
+
+ul.tabs li.current{
+	background: #E2646B;
+	font-size: 17px;
+	color: white;
+}
+
+.tab-content{
+	display: none;
+	background: #E2646B;
+	padding: 15px;
+}
+
+.tab-content.current{
+	display: inherit;
+}
+
+#histTable {
+	background: white;
+}
+/*
+.table-striped > 
+
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+   background-color: #b2b2b2;
+}*/
