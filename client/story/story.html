@@ -31,17 +31,17 @@
       </div>
     </div>
     <div class = "row">
-      <div class = "col-md-offset-1 col-md-2" id = "startButton">
+      <div class = "col-md-11 col-sm-7" id = "storyarea">
+        <h1 class = "text-left" id="senth1"></h1>
+      </div> 
+    </div>
+    <div class = "row">
+      <div class = "col-md-offset-2 col-md-2" id = "startButton">
         <button type="button" class="btn btn-raised" id="start_story">Begin Story</button>
       </div>
       <div class = "col-md-offset-1 col-md-2">
         <button type="button" class="btn btn-raised" id="skip">Skip</button>
       </div>
-    </div>
-    <div class = "row">
-      <div class = "col-md-8 col-sm-7" id = "storyarea">
-        <h1 class = "text-left" id="senth1"></h1>
-      </div> 
     </div>
   </div>
 
@@ -53,7 +53,7 @@
 
 <template name="storyDirections">
   {{#if showDirections}}
-  <div class= "col-md-7 col-md-offset-1">
+  <div class= "col-md-8 col-md-offset-1">
     <div class="alert" id="directions_alert">
       <button type="button" class="close" id="close_directions">&times;</button>
       <center><p id = "directions">To begin the story, press "Begin Story." Read the highlighted word. If you do not know it or want to move on, press the skip button. If you want to take a break, press or say "stop." Say "restart" if you would like to start the sentence from the beginning. To go to another mode, press "Start" and then say the name of the mode to be redirected to that page.</p></center>

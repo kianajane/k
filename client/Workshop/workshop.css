@@ -4,11 +4,13 @@
 }
 
 #directions {
-	font-size: 10px;
-	color: #333333;
+	font-size: 12px;
+	color: #999999;
+	padding-right:10px;
 }
 
-#compWords {
+#compWords,
+#prevSent {
 	font-size: 15px;
 	opacity: 0.8;
 }
