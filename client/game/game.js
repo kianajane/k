@@ -139,10 +139,10 @@ if(Meteor.isClient){
 			 } else if (interim_transcript.includes("stop")) {
 				stopped=true;
 				stop(event);
-			 } else if (interim_transcript.includes("workshop")) { //goes to story
+			 } else if (interim_transcript.includes("workshop")) { //goes to workshop
 				window.location.replace("/workshop");
-			 } else if (interim_transcript.includes("game")) {  //goes to game
-				window.location.replace("/game");
+			 } else if (interim_transcript.includes("story")) {  //goes to story
+				window.location.replace("/story");
 			 } else if  (interim_transcript.includes("profile")) { //goes to profile
 				window.location.replace("/profile");
 			 }
