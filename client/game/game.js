@@ -220,11 +220,6 @@ if(Meteor.isClient){
 			} else {
 				running=true;
 			}
-			// if (!skipped) {
-			// 	radius += 5;
-			// } else {
-			// 	skipped=false;
-			// }
 			lastTime = (new Date()).getTime();
 			drawContext.restore();
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
@@ -238,14 +233,14 @@ if(Meteor.isClient){
 			
 			drawContext = gameboard.getContext("2d");
 			
-			ground = new Image();
-			console.log("ground created");
-			ground.src = 'images/ground_0.png';
-			console.log("ground sourced");
-			groundPat = drawContext.createPattern(ground,"repeat");
+			background = new Image();
+			console.log("background created");
+			background.src = 'images/fullbackground.png';
+			console.log("background sourced");
+			pat = drawContext.createPattern(background,"repeat-x");
 			console.log("pattern created");
-			drawContext.fillRect(0,120,gameboard.width,gameboard.height);
-			drawContext.fillStyle=groundPat;
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+			drawContext.fillStyle=pat;
 			
 			drawContext.save();
 			console.log("canvas context saved");
@@ -275,8 +270,8 @@ if(Meteor.isClient){
 		
 		function moveRight(){
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
-			drawContext.fillRect(0,120,gameboard.width,gameboard.height);
-			drawContext.fillStyle=groundPat;
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
+			drawContext.fillStyle=pat;
 			drawContext.drawImage(turtle,i,90);
 		}
 
