@@ -174,6 +174,7 @@ if(Meteor.isClient){
 			 } else if (interim_transcript.includes("stop")) {
 				stopped=true;
 				stop(event);
+				$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"start\">Resume</button>");
 			 } else if (interim_transcript.includes("workshop")) { //goes to workshop
 				window.location.replace("/workshop");
 			 } else if (interim_transcript.includes("story")) {  //goes to story
@@ -222,7 +223,6 @@ if(Meteor.isClient){
 		
 		function stop(event) {
 			if (stopped) {
-				$("#game_controls").html("<button 'class'=\"btn btn-raised\" type=\"submit\" id=\"start\">Resume</button>");
 				stopped=false;
 			}
 			running=false;
