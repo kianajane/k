@@ -1,19 +1,23 @@
-/*#profPhoto{
-	border-style: solid;
-	border-color: #E2646B;
-	border-width: 15px;
-}*/
-
-#myTabContent{
-	width: 800px;
+#userName {
+	font-weight: 800;
 }
 
 ul.tabs{
 	margin: 0px;
 	margin-color: #E2646B;
-	padding: 0px;
+	padding-bottom: 0px;
+	padding-top: 15px;
+	padding-left: 0px;
 	list-style: none;
+	background: #e78388;
 }
+
+ul.tabs li.current{
+	background: #E2646B;
+	font-size: 17px;
+	color: white;
+}
+
 ul.tabs li{
 	background: none;
 	display: inline-block;
@@ -24,33 +28,48 @@ ul.tabs li{
 }
 
 ul.tabs li:hover {
-	font-style: oblique;
-	background: #E2646B;
-	color: black;
-}
-
-ul.tabs li.current{
-	background: #E2646B;
-	font-size: 17px;
-	color: white;
+/*	font-style: oblique;
+*/	background: #E2646B;
 }
 
 .tab-content{
 	display: none;
-	background: #E2646B;
+	background: white;
+	border-style: solid;
+	border-width: 15px;
+	border-color: #E2646B;
+	/*	height: 440px;
 	padding: 15px;
+	background: #E2646B;
+	*/	
 }
 
 .tab-content.current{
 	display: inherit;
 }
 
+#clearAlert {
+	padding: 30px;
+	padding-bottom: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+#clearHistory{
+	background: #7cd4ff;
+	border-radius: 3px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+#clearHistory:hover {
+	font-weight: bold;
+}
+
+#activity-chart, #sound-chart {
+	margin-top: 3px;
+}
+
 #histTable {
 	background: white;
 }
-/*
-.table-striped > 
-
-.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
-   background-color: #b2b2b2;
-}*/
