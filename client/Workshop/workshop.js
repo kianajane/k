@@ -118,7 +118,7 @@ function getNewWord(){
 
 function getWord(){ // gets a word that has not already been completed.
 	// Get all unique words: 
-	completedWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch()));
+	completedWords +=_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch()));
 	
 	// If you've finished all of the sounds.
 	if (completedWords.length == wordList.length)

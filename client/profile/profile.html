@@ -19,6 +19,7 @@
 				<li class="tab-link current" data-tab="tab-1" id = "actLink">Your Activity</li>
 				<li class="tab-link" data-tab="tab-2" id = "soundProg">Sound Progress</li>
 				<li class="tab-link " data-tab="tab-3" id = "histLink">History</li>
+				<li class="tab-link" data-tab="tab-4" id="clearHist"> Clear My History </li>
 			</ul>
 			<center>
 			<!-- Overall activity -->
@@ -31,7 +32,7 @@
 			</div>
 			<!-- History -->
 			<div id="tab-3" class = "tab-content" style = "height: 400px; overflow-y: scroll">
-				<table class="table table-striped" id = "histTable">
+				<table class="table table-striped" id = "histTable">	
 					<thead>
 						<tr>
 							<th> Mode </th> <th> Sound </th> <th> Word </th>  <th> Correct? </th> <th> Time </th> 
@@ -42,8 +43,12 @@
 						{{> historyRow}}
 						{{/each}}	
 					</tbody>
-				</table>
-				<button class="btn btn-material btn-raised btn-info" id="clearHistory"> Clear History</button>
+				</table>	
+			</div>
+			<!-- Clear History -->
+			<div id="tab-4" class = "tab-content">
+				<p class = "lead text-left" id = "clearAlert">Clearing your history will erase all of your progress. Are you sure you want to do that? If not, take a look at all of your progress on the other tabs! If so, click the "Yes" button below. </p>
+				<button class="btn btn-material btn-raised" id="clearHistory"> Yes </button>
 			</div>
 		</center>
 		</div>

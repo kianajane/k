@@ -32,6 +32,9 @@ Template.profile.events({
     },
     'click #soundProg': function(event) {
         tabLayout(event);
+    },
+    'click #clearHist': function(event) {
+        tabLayout(event);
     }
 })
 

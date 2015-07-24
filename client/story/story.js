@@ -119,29 +119,7 @@ if ('webkitSpeechRecognition' in window) {
         return;
       }
 
-      //If at the end of the story
-      if (index == story1.length) {
-        var storyEnd = cheer.play();
-        $("#storyarea").html('<img src = "images/storycomplete-01.png" width = "100%" alt = "completed">');
-        setTimeout(function() {
-          $("#storyarea").html('You just finished the "'+newSound+'" sound story! Choose another sound and read some more!');
-        }, 2000);
-        recognition.stop();
-      } else if (end) {
-      //If sentence completed with 80% right, add to history as correct:
-      if (correct.length >= words.length * (8.0 / 10))
-      {
-        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, correct: true, time: new Date()});
-      } else {
-        console.log ("the sentence was not above 80% complete");
-        History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, correct: false, time: new Date()});   
-      }
-        
-        colorGR(correct);
-        feedback();
-        $("#prevSent").html(coloredSent);//shows completed sentences on the side
-        end=false; 
-      }
+      endCheck();
 
       getSent();
             
@@ -151,16 +129,17 @@ if ('webkitSpeechRecognition' in window) {
       words = trimStory.split(" ");
       console.log ("say: " + words[wordNum]);
       // Note: we are ignoring confidence. Kind of working (if "they" is said, passes for "the")
-      if (current.includes(" "+words[wordNum] || words[wordNum]+" " || " "+words[wordNum]+" ")) {
+      if (current.includes(" "+words[wordNum] || words[wordNum]+" ")) {
         correct.push(wordNum); //Pushes index to correct[]
         console.log("correct words: "+correct);
         if (wordNum >= words.length-1) {
           console.log ("you've completed the sentence!");
           end = true;                   //sentence end
-        } else {
-          wordNum++;             console.log("wordNum: "+wordNum+", words.length: "+words.length);
         }
-        
+        if (wordNum<words.length-1) {
+          wordNum++;
+          console.log("wordNum: "+wordNum+", words.length: "+words.length);
+        } 
       }
     };
 }
@@ -194,6 +173,31 @@ function coloring(original, wordNum) {
   }
   return newSent;
 }
+//If at the end of the story or sent, does stuff
+function endCheck() {
+  //If at the end of the story
+  if (index == story1.length) {
+    var storyEnd = cheer.play();
+    $("#storyarea").html('<img src = "images/storycomplete-01.png" width = "100%" alt = "completed">');
+    setTimeout(function() {
+      $("#storyarea").html('You just finished the "'+newSound+'" sound story! Choose another sound and read some more!');
+    }, 2000);
+    recognition.stop();
+  } else if (end) {
+  //If sentence completed with 80% right, add to history as correct:
+    if (correct.length >= words.length * (8.0 / 10))
+    {
+      History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, correct: true, time: new Date()});
+    } else {
+      console.log ("the sentence was not above 80% complete");
+      History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, correct: false, time: new Date()});   
+    }
+    colorGR(correct);
+    feedback();
+    $("#prevSent").html(coloredSent);//shows completed sentences on the side
+    end=false; 
+  }
+}
 //Final coloring: colors the correct words green(G), incorrect words red (R)
 function colorGR(correct) {
   for(var k = 0; k < original.length; k++) {
@@ -214,7 +218,7 @@ function feedback() {
           .bind( "timeupdate", function() {
              var timer = buzz.toTimer( this.getTime() );
           });
-    $("#storyarea").html("<img src = \"images/goodjob.jpg\" width = \"100%\" alt = \"completed\">");
+    $("#storyarea").html("<img src = \"images/goodjob.jpg\" width = \"60%\" alt = \"completed\">");
   } else {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
@@ -222,14 +226,16 @@ function feedback() {
   setTimeout(function() {
     $("#storyarea").html('<h1 class = "text-left" id="senth1"></h1>') 
     getSent();
-  }, 1700);
-    
+  }, 1700);   
 }
+
 
 //When skip
 function skip(event) {
   if (wordNum==words.length-1) {
     end=true;
+    endCheck();
+    getSent();
   } else {
     wordNum++;  
     getSent();

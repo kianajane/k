@@ -1,14 +1,28 @@
 #userName {
-	font-weight: 790;
+	font-weight: 800;
 }
 
 ul.tabs{
 	margin: 0px;
 	margin-color: #E2646B;
-	padding: 0px;
+	padding-bottom: 0px;
+	padding-top: 15px;
+	padding-left: 0px;
 	list-style: none;
 	background: #e78388;
 }
+
+ul.tabs li.current{
+	background: #E2646B;
+	font-size: 17px;
+	color: white;
+}
+
+#clearHistory{
+	background: #7cd4ff;
+	/*border-radius: 3px;*/
+}
+
 ul.tabs li{
 	background: none;
 	display: inline-block;
@@ -21,23 +35,27 @@ ul.tabs li{
 ul.tabs li:hover {
 	font-style: oblique;
 	background: #E2646B;
-	color: black;
-}
-
-ul.tabs li.current{
-	background: #E2646B;
-	font-size: 17px;
-	color: white;
 }
 
 .tab-content{
 	display: none;
-	background: #E2646B;
+	background: white;
+	border-style: solid;
+	border-width: 15px;
+	border-color: #E2646B;
+	/*	
 	padding: 15px;
+	background: #E2646B;
+	*/	
 }
 
 .tab-content.current{
 	display: inherit;
+}
+
+#clearAlert {
+	padding: 15px;
+	padding-bottom: 0px;
 }
 
 #histTable {
