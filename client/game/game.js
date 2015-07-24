@@ -250,27 +250,29 @@ if(Meteor.isClient){
 			gameLoop();
 		}
 		
+		var background = new Image();
+		console.log("background created");
+		background.src = 'images/fullbackground.png';
+		console.log("background sourced");
+		
+		var turtle = new Image();
+		console.log("turtle created");	
+		turtle.src = 'images/turtle.png';
+		console.log("turtle sourced");
+		
 		function draw(){
 			console.log("drawing board");
 			
 			drawContext = gameboard.getContext("2d");
-			
-			background = new Image();
-			console.log("background created");
-			background.src = 'images/fullbackground.png';
-			console.log("background sourced");
+	
 			pat = drawContext.createPattern(background,"repeat-x");
 			console.log("pattern created");
-			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			drawContext.fillStyle=pat;
+			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			
 			drawContext.save();
 			console.log("canvas context saved");
 			
-			turtle = new Image();
-			console.log("turtle created");	
-			turtle.src = 'images/turtle.png';
-			console.log("turtle sourced");
 			drawContext.drawImage(turtle,0,91);
 			console.log("turtle drawn");
 		}
