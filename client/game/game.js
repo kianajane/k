@@ -2,6 +2,7 @@ if(Meteor.isClient){
 
 	// Chooses an initial sound
 	Template.game.rendered=function(){
+		if (recognizing) recognition.stop();
 		draw();
 		i=0;
 		x=0.2;

@@ -1,3 +1,7 @@
+Template.profile.rendered=function(){
+    if (recognizing) recognition.stop();
+}
+
 Template.profile.helpers({
 	bio: function(){
 		console.log("profile this = "+JSON.stringify(this));
