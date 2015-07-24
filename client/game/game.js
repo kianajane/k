@@ -166,7 +166,7 @@ if(Meteor.isClient){
 				}
 	         }
 
-	         //Voice commands: skip (doesnt work), pause, site nav
+	         //Voice commands: pass, stop, site nav
 			 if (interim_transcript.includes("pass")) {
 			 	History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});
 			 	skipped=true;
