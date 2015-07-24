@@ -82,32 +82,31 @@ if(Meteor.isClient){
 	
 	function getNewWord(){ // gets a word that has not already been completed.
 	// Get all unique words: 
-	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch()));
+	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
 	
-	// If you've finished all of the sounds.
-	if (correctWords.length == wordList.length)
+	// If you haven't done anything or you've finished all of the sounds.
+	if (theWord == undefined || correctWords.length == wordList.length) {
+		theWord = wordList[0]
+	} else
 	{
-		console.log ("You've finished the sound!");
-		theWord = wordList[0]; // Really should stop, or something.
-		return theWord;
+		// Should get the first word on the list that is allowed.
+		// if we've reached the end, go back to the beginning.
+		if (wordList.indexOf(theWord) + 1 >= wordList.length) {
+			theWord = wordList[0];
+		} else {
+			// Else, pick the next word on the list.
+			theWord = wordList[wordList.indexOf(theWord) + 1];
+		}
+
+		// Keep picking new words until you find one you haven't done.
+		if (correctWords.includes(theWord)) {
+			console.log("repeated word: "+theWord+"... getting another word");
+			getWord();
+		}
 	}
 
-	// Should get the first word on the list that is allowed.
-	// if we've reached the end, go back to the beginning.
-	if (wordList.indexOf(theWord) + 1 >= wordList.length) {
-		theWord = wordList[0];
-	} else {
-		// Else, pick the next word on the list.
-		theWord = wordList[wordList.indexOf(theWord) + 1];
-	}
-
-	// Keep picking new words until you find one you haven't done.
-	if (correctWords.includes(theWord)) {
-		console.log("repeated word: "+theWord+"... getting another word");
-		getNewWord();
-	}
-		Session.set("gameWord",theWord);
-	}
+	Session.set("gameWord", theWord)
+}
 	
 	function getRandomArbitrary(min, max) {
 		return Math.random() * (max - min) + min;
