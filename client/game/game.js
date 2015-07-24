@@ -28,6 +28,10 @@ if(Meteor.isClient){
 	}
 	lastSound = Session.get("sound");
 	
+	Template.score.helpers({
+		correct: correctCounter
+	});
+
 	Template.game.helpers({
 		word: Session.get("gameWord")
 	});
