@@ -3,6 +3,8 @@ if(Meteor.isClient){
 	// Chooses an initial sound
 	Template.game.rendered=function(){
 		draw();
+		i=0;
+		x=0.2;
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 		theWord = wordList[0];
 		Session.set("gameWord",theWord);
@@ -26,6 +28,10 @@ if(Meteor.isClient){
 	}
 	lastSound = Session.get("sound");
 	
+	Template.score.helpers({
+		correct: correctCounter
+	});
+
 	Template.game.helpers({
 		word: Session.get("gameWord")
 	});
@@ -160,7 +166,7 @@ if(Meteor.isClient){
 				}
 	         }
 
-	         //Voice commands: skip (doesnt work), pause, site nav
+	         //Voice commands: pass, stop, site nav
 			 if (interim_transcript.includes("pass")) {
 			 	History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});
 			 	skipped=true;
