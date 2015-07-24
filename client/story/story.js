@@ -111,8 +111,9 @@ if ('webkitSpeechRecognition' in window) {
       } else if (interim_transcript.includes("workshop")) {
         window.location.replace("/workshop");
         return;
-      } else if (interim_transcript.includes("game mode")) {
-        window.location.replace("/game");
+      } else if (interim_transcript.includes("go to game")) {
+        // window.location.replace("/game");
+        Router.go("/game");
         return;
       } else if (interim_transcript.includes("profile")) {
         window.location.replace("/profile");
