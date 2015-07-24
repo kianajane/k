@@ -20,9 +20,10 @@ if(Meteor.isClient){
 	var recognizing = false;
 	var correctCounter = 0;
 	var alive = true;
-	var radius = 0;
 	var skipped = false;
 	var stopped = false;
+	
+	
 	if (Session.get("sound")==undefined){
 	  Session.set("sound", "L");
 	}
@@ -77,8 +78,8 @@ if(Meteor.isClient){
 	});
 	
 	var running=false;
-
-/* -------------------------------------This is the code for getting the word to test----------------------------------------------*/
+	
+	
 	
 	function getNewWord(){ // gets a word that has not already been completed.
 	// Get all unique words: 
@@ -107,10 +108,6 @@ if(Meteor.isClient){
 		getNewWord();
 	}
 		Session.set("gameWord",theWord);
-	}
-	
-	function getRandomArbitrary(min, max) {
-		return Math.random() * (max - min) + min;
 	}
 	
 	if ('webkitSpeechRecognition' in window) {
@@ -196,6 +193,7 @@ if(Meteor.isClient){
 	      }
 	    }
 
+		//if called, updates counter, plays correct sound, resets necessary booleans and increments speed, calls next(event)
 	    function correct() {
 			correctCounter++;
 			corrSfx.play()
@@ -204,14 +202,14 @@ if(Meteor.isClient){
 	             var timer = buzz.toTimer( this.getTime() );
 	          });
 			$("#game_counter").html("<b>Score:</b> "+correctCounter);
-			console.log("Congratulations! You said "+theWord+" correctly!\n");
 			alive=false;
 			running=false;
 			x+=0.025;
 			next(event);
 	    }
 	
-/* --------------------------------------------------------------------------------------------------------------------------------*/
+	
+	//starts recognition
 		function start(event) {
 			if (!running) {
 		 		final_transcript = '';
@@ -221,6 +219,7 @@ if(Meteor.isClient){
 			}
 		}
 		
+		//stops recognition, sets running to false
 		function stop(event) {
 			if (stopped) {
 				stopped=false;
@@ -228,10 +227,10 @@ if(Meteor.isClient){
 			running=false;
 			recognizing=false;
 			recognition.stop();
-			// console.log("now");
 	       	return;
 		}
 
+		//gets next word, resets turtle position, restores and redraws canvas, calls game loop
 		function next(event){
 			getNewWord();
 			i=0;
@@ -245,53 +244,51 @@ if(Meteor.isClient){
 			lastTime = (new Date()).getTime();
 			drawContext.restore();
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
-			console.log("canvas context restored and cleared");
 			draw();
 			gameLoop();
 		}
 		
+		//creates backgroung image
 		var background = new Image();
-		console.log("background created");
 		background.src = 'images/fullbackground.png';
-		console.log("background sourced");
-		
-		var turtle = new Image();
-		console.log("turtle created");	
+		//creates turtle image
+		var turtle = new Image();	
 		turtle.src = 'images/turtle.png';
-		console.log("turtle sourced");
 		
+		//creates and draws pattern from background, saves canvas, draws turtle 
 		function draw(){
-			console.log("drawing board");
-			
 			drawContext = gameboard.getContext("2d");
 	
 			pat = drawContext.createPattern(background,"repeat-x");
-			console.log("pattern created");
 			drawContext.fillStyle=pat;
 			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			
 			drawContext.save();
-			console.log("canvas context saved");
 			
 			drawContext.drawImage(turtle,0,91);
-			console.log("turtle drawn");
 		}
 	
+		//checks turtle position. if at end of screen, ends game, adds incorrectness to history. else, calls moveRight(dt)
 		function moveTurtle(dt){
 			if(i+50 >= gameboard.width){
 				running=false;
 				recognition.stop();
 				recognizing=false;
 				alive=false;
-				History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});	
-				console.log("you hit the end!");
-				//$("#gamearea").html("<img src = \"images/answer_try_again.jpg\" width = \"50%\" alt = \"game over\">");
+				History.insert({
+					userId: Meteor.userId(),
+					mode: "game",
+					sound: Session.get("sound"),
+					word: theWord, time: new Date(),
+					correct: false
+				});	
 				$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"restart\">Restart</button>");
 			} else {
 				moveRight(dt);
 			}
 		};
 		
+		//moves the turtle right by a function of time passed (to regulate animation speed)
 		function moveRight(dt){
 			i+=x*dt;
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
@@ -300,8 +297,8 @@ if(Meteor.isClient){
 			drawContext.drawImage(turtle,i,91);
 		}
 
+		//calculates dt for speed regulation, calls moveTurtle(dt), requests animation frame if running
 		function gameLoop(){
-			// console.log("game loop");
 			var theTime = (new Date()).getTime();
 			var dt = theTime - lastTime;  // in milliseconds
 			lastTime = theTime;
