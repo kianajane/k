@@ -57,7 +57,7 @@ Meteor.startup(function(){
 														"When she got to the bus station and was ready to buy a ticket, she realized...she didn't have any money.",
 														 "\"They didn't show that in the movie,\" she thought as she walked home, \"I'm sure I can solve this problem.\"")})
 		Phonetics.insert({sound: "Z", words: new Array ("zipper","zoo", "zero", "zebra", "zigzag", "zombie", "zillion", "zap", "present", "puzzle", "dessert", "busy", "lizard", "musical", "blizzard", "raisin", 
-										"easily", "amaze" "horizon", "closet", "dozen", "cheese", "knees", "cookies", "fingers", "sunrise", "sneeze", "fingers", "bees", "bananas", "raspberry"), 
+										"easily", "amaze", "horizon", "closet", "dozen", "cheese", "knees", "cookies", "fingers", "sunrise", "sneeze", "fingers", "bees", "bananas", "raspberry"), 
 													story: new Array ("Zach went over to Zoe's house on Thursday.", "She was outside with the hose.", "Her house had tons of flowers around it.",
 														 "There must have been a zillion.",
 														"It was so beautiful that Zach thought she deserved a prize for the most beautiful flower garden ever!", "His favorite flowers were the zinnias.", 
