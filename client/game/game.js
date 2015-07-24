@@ -255,6 +255,9 @@ if(Meteor.isClient){
 		//creates turtle image
 		var turtle = new Image();	
 		turtle.src = 'images/turtle.png';
+		//creates bush image
+		var bush = new Image();
+		bush.src = 'images/bush.png';
 		
 		//creates and draws pattern from background, saves canvas, draws turtle 
 		function draw(){
@@ -267,11 +270,12 @@ if(Meteor.isClient){
 			drawContext.save();
 			
 			drawContext.drawImage(turtle,0,91);
+			drawContext.drawImage(bush,968,91);
 		}
 	
 		//checks turtle position. if at end of screen, ends game, adds incorrectness to history. else, calls moveRight(dt)
 		function moveTurtle(dt){
-			if(i+50 >= gameboard.width){
+			if(i+132 >= gameboard.width){
 				running=false;
 				recognition.stop();
 				recognizing=false;
@@ -295,6 +299,7 @@ if(Meteor.isClient){
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
 			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
 			drawContext.fillStyle=pat;
+			drawContext.drawImage(bush,968,91);
 			drawContext.drawImage(turtle,i,91);
 		}
 
