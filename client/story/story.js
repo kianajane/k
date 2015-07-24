@@ -34,6 +34,7 @@ if (![].includes) {
 
 // On rendered
 Template.story.rendered = function() {
+  if (recognizing) recognition.stop();
   // Show first sentence
   story1 = Phonetics.findOne({sound: lastSound}).story;
   getSent();
@@ -112,8 +113,7 @@ if ('webkitSpeechRecognition' in window) {
         window.location.replace("/workshop");
         return;
       } else if (interim_transcript.includes("go to game")) {
-        // window.location.replace("/game");
-        Router.go("/game");
+        window.location.replace("/game");
         return;
       } else if (interim_transcript.includes("profile")) {
         window.location.replace("/profile");

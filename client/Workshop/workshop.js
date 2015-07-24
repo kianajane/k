@@ -8,6 +8,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 // Chooses an intial sound
 Template.workshop.rendered = function() {
+	if (recognizing) recognition.stop();
 	// Reset
 	wordCounter=0;
 	correctCounter=0;
@@ -118,10 +119,10 @@ function getNewWord(){
 
 function getWord(){ // gets a word that has not already been completed.
 	// Get all unique words: 
-	completedWords +=_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch()));
+	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch()));
 	
 	// If you've finished all of the sounds.
-	if (completedWords.length == wordList.length)
+	if (correctWords.length == wordList.length)
 	{
 		console.log ("You've finished the sound!");
 		theWord = wordList[0]; // Really should stop, or something.
@@ -138,7 +139,7 @@ function getWord(){ // gets a word that has not already been completed.
 	}
 
 	// Keep picking new words until you find one you haven't done.
-	if (completedWords.includes(theWord)) {
+	if (correctWords.includes(theWord)) {
 		console.log("repeated word: "+theWord+"... getting another word");
 		getWord();
 	}
