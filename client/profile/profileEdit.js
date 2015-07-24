@@ -1,3 +1,7 @@
+Template.profileEdit.rendered=function(){
+	if (recognizing) recognition.stop();
+}
+
 Template.profileEdit.helpers({
 	myEmail: function(){
 		return this.emails[0].address},

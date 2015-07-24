@@ -34,6 +34,7 @@ if (![].includes) {
 
 // On rendered
 Template.story.rendered = function() {
+  if (recognizing) recognition.stop();
   // Show first sentence
   story1 = Phonetics.findOne({sound: lastSound}).story;
   getSent();
