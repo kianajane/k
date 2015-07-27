@@ -30,7 +30,31 @@ body {
 
 /*For the About line at the bottom*/
 #about {
-	background-color: #7cd4ff;
+	margin-top: 0px !important;
+	padding-top: 0px;
+	background-color: #6fbee5; 
 	bottom: 0px;
 	position: absolute;
+	height: 9%;
+	width: 93%;
+	color: white;
+	font-size: 18px;
+/*	padding-top: 15px;
+*/	-webkit-transition: background 0.7s linear;
+}
+
+#about_button {
+	font-size: inherit;
+	cursor: pointer;
+}
+
+#about_button:hover {
+	border: none;
+	box-shadow: none;
+}
+
+#about:hover {
+	background-color: #FFEF74;
+	background-opacity: 0.7;
+	color: white;
 }

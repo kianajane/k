@@ -2,6 +2,7 @@
 
 Template.welcome.rendered = function(){
   if (recognizing) recognition.stop();
+  aboutSection();
 }
 
 Session.set("login",true); // Login mode
@@ -81,6 +82,6 @@ Template.welcome.helpers({
   },
 
   yesData: function() {
-        return !(History.findOne({userId: Meteor.userId()}) == undefined);
-    }
+    return !(History.findOne({userId: Meteor.userId()}) == undefined);
+  }
 })
