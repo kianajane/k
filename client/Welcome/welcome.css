@@ -27,6 +27,10 @@ body {
 	color: #873c40;
 	background-color: #E2646B;
 }
+#continue {
+	color:#4a7f99;
+	background-color: #7CD4FF;
+}
 
 /*For the About line at the bottom*/
 #about {
