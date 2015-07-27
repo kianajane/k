@@ -1,5 +1,9 @@
 // Code mostly from http://blog.benmcmahen.com/post/41741539120/building-a-customized-accounts-ui-for-meteor
 
+Template.welcome.rendered = function(){
+  if (recognizing) recognition.stop();
+}
+
 Session.set("login",true); // Login mode
 
 // Login form
