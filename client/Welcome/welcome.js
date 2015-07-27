@@ -1,8 +1,4 @@
-// Code mostly from http://blog.benmcmahen.com/post/41741539120/building-a-customized-accounts-ui-for-meteor
-
-Template.welcome.rendered = function(){
-  if (recognizing) recognition.stop();
-}
+// Login code mostly from http://blog.benmcmahen.com/post/41741539120/building-a-customized-accounts-ui-for-meteor
 
 Session.set("login",true); // Login mode
 
