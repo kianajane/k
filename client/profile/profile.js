@@ -8,11 +8,6 @@ Template.profile.helpers({
 		return this.profile.bio;
 		},
 
-    // I have replaced all of the photos with a stock photo, we may want to change that later.
-	photo:function(){ // returns the URL of the gravatar photo for this email
-		return  "images/face.png"
-        }, ///Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
-
 	myHistory: function() {
 		return History.find({userId: Meteor.userId()}, {sort:{time:-1}}).fetch();
         },

@@ -5,11 +5,7 @@ Template.profileEdit.rendered=function(){
 Template.profileEdit.helpers({
 	myEmail: function(){
 		return this.emails[0].address},
-
-	// I have replaced everything with a stock photo. We may want to change that later.
-	photo:function(){ 
-		return "images/face.png"},//Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
-  	profile: function(){ 
+	profile: function(){ 
     	return Meteor.users.findOne({_id: Meteor.userId()}).profile},
 })
 
@@ -28,7 +24,7 @@ Template.profileEdit.events({
 					'profile.firstName':firstName, 
 					'profile.lastName':lastName,
 					'profile.userName':userName}});
-		Router.go('/profile');//+this._id);
+		Router.go('/');
 		
 	}
 })
