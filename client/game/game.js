@@ -6,6 +6,8 @@ if(Meteor.isClient){
 		draw();
 		i=0;
 		x=0.2;
+		correctCounter=0;
+		$("#game_counter").html("<b>Score:</b> "+correctCounter);
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 		theWord = wordList[0];
 		Session.set("gameWord",theWord);
@@ -55,7 +57,9 @@ if(Meteor.isClient){
 			i=0;
 			alive=true;
 			x=0.2;
+			correctCounter=0;
 			draw();
+			$("#game_counter").html("<b>Score:</b> "+correctCounter);
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"pause\">Pause</button>");	
 		}	
