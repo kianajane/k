@@ -16,8 +16,28 @@ Template.workshop.rendered = function() {
 	// Show a word
 	wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 	console.log("current sound = '"+Session.get("sound")+"'");
-	getNewWord();
+	theWord = getFirstWord();
+	Session.set("workshopWord",theWord);
 	$("#word").html(Session.get("workshopWord"));
+}
+
+// Get the word the first time you load the page.
+function getFirstWord() {
+	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
+	if (correctWords.length == 0) {
+		theWord = wordList[0]
+		return theWord;
+	} else
+	{
+		// The first unused word.
+		for (var j = 0; j < wordList.length; j++) {
+			if (!correctWords.includes(wordList[j]))
+			{
+				return wordList[j];
+			}
+		}
+	}
+	return wordList[j];
 }
 
 //Sound effects
@@ -116,13 +136,15 @@ function getNewWord(){
 	Session.set("workshopWord",theWord);
 }
 
-function getWord(){ // gets a word that has not already been completed.
-	// Get all unique words: 
-	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch()));
+	function getWord(){ // gets a word that has not already been completed.
+	// Get all unique finished words: 
+	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
 	
 	// If you haven't done anything or you've finished all of the sounds.
-	if (theWord == undefined || correctWords.length == wordList.length) {
+	if (correctWords.length == 0 || correctWords.length == wordList.length) {
 		theWord = wordList[0]
+	} else if (theWord == undefined) {
+
 	} else
 	{
 		// Should get the first word on the list that is allowed.
@@ -140,10 +162,8 @@ function getWord(){ // gets a word that has not already been completed.
 			getWord();
 		}
 	}
-
 	return theWord;
-}
-
+}	
 //random # returned inside given range. (called in getNewWord)
 function getRandomArbitrary(min, max) {
 	return Math.random() * (max - min) + min;
