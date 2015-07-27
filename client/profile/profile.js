@@ -264,11 +264,12 @@ function buildDailyProgressChart()
 
 // Gets all of the dates between s and e.
 function getAllDays(s, e) {
+    var one_day=1000*60*60*24;
     s = new Date(s.valueOf());
     var e = new Date(e.valueOf());
     var a = [s];
 
-    while(s < e) {
+    while(Math.floor(s.valueOf()/one_day) < Math.floor(e.valueOf()/one_day)) { // The floor function ignores partial days.
         var t = new Date(s);
         t.setDate(1+ t.getDate());
         a.push(t);

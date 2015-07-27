@@ -7,10 +7,30 @@ if(Meteor.isClient){
 		i=0;
 		x=0.2;
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
-		theWord = wordList[0];
+		theWord = getFirstWord();
 		Session.set("gameWord",theWord);
 		$("#say").html(Session.get("gameWord"));
 	}
+
+// Get the word the first time you load the page.
+function getFirstWord() {
+	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
+	if (correctWords.length == 0) {
+		theWord = wordList[0]
+		return theWord;
+	} else
+	{
+		// The first unused word.
+		for (var j = 0; j < wordList.length; j++) {
+			if (!correctWords.includes(wordList[j]))
+			{
+				return wordList[j];
+			}
+		}
+	}
+	return wordList[j];
+}
+
 
 	var i = 0;
 	var x = 0.2;
@@ -81,34 +101,34 @@ if(Meteor.isClient){
 	
 	
 	function getNewWord(){ // gets a word that has not already been completed.
-	// Get all unique words: 
-	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch()));
+	// Get all unique finished words: 
+	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
 	
-	// If you've finished all of the sounds.
-	if (correctWords.length == wordList.length)
+	// If you haven't done anything or you've finished all of the sounds.
+	if (correctWords.length == 0 || correctWords.length == wordList.length) {
+		theWord = wordList[0]
+	} else if (theWord == undefined) {
+
+	} else
 	{
-		console.log ("You've finished the sound!");
-		theWord = wordList[0]; // Really should stop, or something.
-		return theWord;
+		// Should get the first word on the list that is allowed.
+		// if we've reached the end, go back to the beginning.
+		if (wordList.indexOf(theWord) + 1 >= wordList.length) {
+			theWord = wordList[0];
+		} else {
+			// Else, pick the next word on the list.
+			theWord = wordList[wordList.indexOf(theWord) + 1];
+		}
+
+		// Keep picking new words until you find one you haven't done.
+		if (correctWords.includes(theWord)) {
+			console.log("repeated word: "+theWord+"... getting another word");
+			getNewWord();
+		}
 	}
 
-	// Should get the first word on the list that is allowed.
-	// if we've reached the end, go back to the beginning.
-	if (wordList.indexOf(theWord) + 1 >= wordList.length) {
-		theWord = wordList[0];
-	} else {
-		// Else, pick the next word on the list.
-		theWord = wordList[wordList.indexOf(theWord) + 1];
-	}
-
-	// Keep picking new words until you find one you haven't done.
-	if (correctWords.includes(theWord)) {
-		console.log("repeated word: "+theWord+"... getting another word");
-		getNewWord();
-	}
-		Session.set("gameWord",theWord);
-	}
-	
+	Session.set("gameWord", theWord)
+}	
 	if ('webkitSpeechRecognition' in window) {
 		console.log("webkit is available!");
 		var recognition = new webkitSpeechRecognition();
