@@ -44,6 +44,7 @@ function getFirstWord() {
 	var correctCounter = 0;
 	var skipped = false;
 	var stopped = false;
+	var counter = 0;
 	
 	
 	if (Session.get("sound")==undefined){
@@ -272,9 +273,15 @@ function getFirstWord() {
 		//creates backgroung image
 		var background = new Image();
 		background.src = 'images/fullbackground.png';
-		//creates turtle image
+		//creates dummy turtle image
 		var turtle = new Image();	
 		turtle.src = 'images/turtle.png';
+		//creates turtle1 image
+		var turtle1 = new Image();
+		turtle1.src = 'images/turtle.png';
+		//creates turtle2 image
+		var turtle2 = new Image();
+		turtle2.src = 'images/turtle2.png';
 		//creates bush image
 		var bush = new Image();
 		bush.src = 'images/bush.png';
@@ -312,8 +319,24 @@ function getFirstWord() {
 			}
 		};
 		
-		//moves the turtle right by a function of time passed (to regulate animation speed)
+		//moves the turtle right by a function of time passed (to regulate animation speed), animates legs
 		function moveRight(dt){
+			counter++;
+			switch (counter%16){
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+					turtle=turtle2;
+					break;
+				default:
+					turtle=turtle1;
+					break;
+			}
 			i+=x*dt;
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
 			drawContext.fillRect(0,0,gameboard.width,gameboard.height);
