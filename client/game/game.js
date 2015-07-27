@@ -6,6 +6,8 @@ if(Meteor.isClient){
 		draw();
 		i=0;
 		x=0.2;
+		correctCounter=0;
+		$("#game_counter").html("<b>Score:</b> "+correctCounter);
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 		theWord = getFirstWord();
 		Session.set("gameWord",theWord);
@@ -73,7 +75,9 @@ function getFirstWord() {
 			console.log("canvas context restored and cleared");
 			i=0;
 			x=0.2;
+			correctCounter=0;
 			draw();
+			$("#game_counter").html("<b>Score:</b> "+correctCounter);
 			start(event);
 			$("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"pause\">Pause</button>");	
 		}	
