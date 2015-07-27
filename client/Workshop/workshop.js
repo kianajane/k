@@ -90,7 +90,7 @@ Template.workshop.events({
 		listen(event);
 	},
 	'click #skip_button': function(event){
-		completedWords += theWord.fontcolor("#E2646B")+" ("+attempts+")<br>";
+		completedWords = theWord.fontcolor("#E2646B")+" ("+attempts+")<br>" + completedWords;
 		$("#compWords").html(completedWords);
 		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});
 		changeWord(event);
@@ -254,14 +254,14 @@ if ('webkitSpeechRecognition' in window) {
 		// ******** Results ********
 	 	//VOICE COMMANDS:
 	 	if (final_transcript.includes("pass")) {	//skip
-	 		completedWords += theWord.fontcolor("#E2646B")+" ("+attempts+")<br>";
+	 		completedWords = theWord.fontcolor("#E2646B")+" ("+attempts+")<br>" + completedWords;
 			$("#compWords").html(completedWords);
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
-		} else if (final_transcript.includes("story")) {	//change to story
+		} else if (final_transcript.includes("story mode")) {	//change to story
 			window.location.replace("/story");
-		} else if (final_transcript.includes("game")) {		//change to game
+		} else if (final_transcript.includes("game mode")) {		//change to game
 			window.location.replace("/game");
 		} else if  (final_transcript.includes("profile")) {
         	window.location.replace("/profile");
@@ -317,7 +317,7 @@ function counter(correct){
 
 
 		
-		completedWords += theWord.fontcolor("#65D6A3")+" ("+attempts+")<br>";
+		completedWords = theWord.fontcolor("#65D6A3")+" ("+attempts+")<br>" + completedWords;
 
 		// Change word after 2 seconds
 		setTimeout(function(){changeWord(event)},3000);	
