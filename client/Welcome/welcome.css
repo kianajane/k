@@ -1,4 +1,3 @@
-
 h1 {
 	text-align:center;
 }
@@ -27,4 +26,11 @@ body {
 #profile {
 	color: #873c40;
 	background-color: #E2646B;
+}
+
+/*For the About line at the bottom*/
+#about {
+	background-color: #7cd4ff;
+	bottom: 0px;
+	position: absolute;
 }
