@@ -6,7 +6,7 @@ body {
 	background-color:white;
 }
 
-#a1, #a2 {
+#a1, #a2, #continue {
 	color: #fff;
 	background-color: #7cd4ff;
 }
@@ -26,10 +26,6 @@ body {
 #profile {
 	color: #873c40;
 	background-color: #E2646B;
-}
-#continue {
-	color:#4a7f99;
-	background-color: #7CD4FF;
 }
 
 /*For the About line at the bottom*/
