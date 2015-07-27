@@ -7,10 +7,30 @@ if(Meteor.isClient){
 		i=0;
 		x=0.2;
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
-		theWord = wordList[0];
+		theWord = getFirstWord();
 		Session.set("gameWord",theWord);
 		$("#say").html(Session.get("gameWord"));
 	}
+
+// Get the word the first time you load the page.
+function getFirstWord() {
+	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
+	if (correctWords.length == 0) {
+		theWord = wordList[0]
+		return theWord;
+	} else
+	{
+		// The first unused word.
+		for (var j = 0; j < wordList.length; j++) {
+			if (!correctWords.includes(wordList[j]))
+			{
+				return wordList[j];
+			}
+		}
+	}
+	return wordList[j];
+}
+
 
 	var i = 0;
 	var x = 0.2;
@@ -20,7 +40,6 @@ if(Meteor.isClient){
 	var confidence = null;
 	var recognizing = false;
 	var correctCounter = 0;
-	var alive = true;
 	var skipped = false;
 	var stopped = false;
 	
@@ -53,7 +72,6 @@ if(Meteor.isClient){
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
 			console.log("canvas context restored and cleared");
 			i=0;
-			alive=true;
 			x=0.2;
 			draw();
 			start(event);
@@ -83,34 +101,34 @@ if(Meteor.isClient){
 	
 	
 	function getNewWord(){ // gets a word that has not already been completed.
-	// Get all unique words: 
-	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch()));
+	// Get all unique finished words: 
+	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
 	
-	// If you've finished all of the sounds.
-	if (correctWords.length == wordList.length)
+	// If you haven't done anything or you've finished all of the sounds.
+	if (correctWords.length == 0 || correctWords.length == wordList.length) {
+		theWord = wordList[0]
+	} else if (theWord == undefined) {
+
+	} else
 	{
-		console.log ("You've finished the sound!");
-		theWord = wordList[0]; // Really should stop, or something.
-		return theWord;
+		// Should get the first word on the list that is allowed.
+		// if we've reached the end, go back to the beginning.
+		if (wordList.indexOf(theWord) + 1 >= wordList.length) {
+			theWord = wordList[0];
+		} else {
+			// Else, pick the next word on the list.
+			theWord = wordList[wordList.indexOf(theWord) + 1];
+		}
+
+		// Keep picking new words until you find one you haven't done.
+		if (correctWords.includes(theWord)) {
+			console.log("repeated word: "+theWord+"... getting another word");
+			getNewWord();
+		}
 	}
 
-	// Should get the first word on the list that is allowed.
-	// if we've reached the end, go back to the beginning.
-	if (wordList.indexOf(theWord) + 1 >= wordList.length) {
-		theWord = wordList[0];
-	} else {
-		// Else, pick the next word on the list.
-		theWord = wordList[wordList.indexOf(theWord) + 1];
-	}
-
-	// Keep picking new words until you find one you haven't done.
-	if (correctWords.includes(theWord)) {
-		console.log("repeated word: "+theWord+"... getting another word");
-		getNewWord();
-	}
-		Session.set("gameWord",theWord);
-	}
-	
+	Session.set("gameWord", theWord)
+}	
 	if ('webkitSpeechRecognition' in window) {
 		console.log("webkit is available!");
 		var recognition = new webkitSpeechRecognition();
@@ -147,7 +165,7 @@ if(Meteor.isClient){
 	        	final_transcript = eachWord(final_transcript);
 				console.log('final events.results['+i+'][0].transcript = '+ JSON.stringify(final_transcript)
 						+ " --- " +JSON.stringify(confidence));
-				if(final_transcript==Session.get("gameWord") && confidence>60 && alive){
+				if(final_transcript==Session.get("gameWord") && confidence>60){
 					console.log("test for word: "+Session.get("gameWord"));
 	         		correct();
 			    }
@@ -156,7 +174,7 @@ if(Meteor.isClient){
 	        	interim_transcript = eachWord(interim_transcript);
 				console.log('interim events.results['+i+'][0].transcript = '+ JSON.stringify(interim_transcript)
 						+ " --- " +JSON.stringify(confidence));
-	         	if(interim_transcript==Session.get("gameWord") && confidence>30 && alive){
+	         	if(interim_transcript==Session.get("gameWord") && confidence>30){
 	         		// add to history
 					console.log("test for word: "+Session.get("gameWord"));
 					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: true});
@@ -203,7 +221,6 @@ if(Meteor.isClient){
 	             var timer = buzz.toTimer( this.getTime() );
 	          });
 			$("#game_counter").html("<b>Score:</b> "+correctCounter);
-			alive=false;
 			running=false;
 			x+=0.025;
 			next(event);
@@ -235,7 +252,6 @@ if(Meteor.isClient){
 		function next(event){
 			getNewWord();
 			i=0;
-			alive=true;
 			$("#say").html(Session.get("gameWord"));
 			if (!recognizing){
 				start(event);
@@ -279,7 +295,6 @@ if(Meteor.isClient){
 				running=false;
 				recognition.stop();
 				recognizing=false;
-				alive=false;
 				History.insert({
 					userId: Meteor.userId(),
 					mode: "game",
