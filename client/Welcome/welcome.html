@@ -4,16 +4,15 @@
 <div class = container>
 	<center>
 
-	<br/>
-	 <h3>Welcome back, <b>{{profile.firstName}}</b>!</h3>
+	<h3>Welcome back, <b>{{profile.firstName}}</b>!</h3>
 
 	{{#if yesData}}
 
 	<h4> You were previously working in <b> {{last.mode}} </b> mode, on the <b> {{last.sound}} </b> sound. </h4>
+	<p><button class="btn btn-raised btn-xs" id="continue"><b>Continue</b></button></p>
 	{{else}}
 	{{/if}}
 
-	<br/>
 	 <div class = "col-md-5 col-md-offset-1">
 		<div class = "row">
 		    <a class="btn btn-raised btn-lg" href="/workshop" id="WS"> Workshop Mode </a>
