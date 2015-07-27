@@ -13,14 +13,18 @@ body {
 }
 
 #WS {
+	color: #998f45;
 	background-color: #FFEF74;
 }
 #story {
+	color: #5b3c8a;
 	background-color: #9964E7;
 }
 #game {
+	color: #3c8061;
 	background-color: #65D6A3;
 }
 #profile {
+	color: #873c40;
 	background-color: #E2646B;
 }
