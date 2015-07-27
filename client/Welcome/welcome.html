@@ -1,7 +1,6 @@
 <template name="welcome">
 
 {{#if currentUser}}
-<div class = container>
 	<center>
 
 	<h3>Welcome back, <b>{{profile.firstName}}</b>!</h3>
@@ -34,10 +33,9 @@
 		</div>
 	</div>
 	</center>	
-</div>
 
 {{else}}
-<div class = container>
+<div class = "container">
 	<div class = "col-md-4 col-md-offset-4"> 
 		{{#if existingUser}}
 		    {{> login}}
@@ -47,8 +45,12 @@
 	</div>
 </div>
 {{/if}}
-
-<p class = "text-center" id = "about">About Speak!</p>
+<!-- ABOUT -->
+<div class = "row" id = "about">
+	<center>
+	<a class = "btn btn-default" href='/is' id="about_button">Learn what Speak! can do for you. </a>
+	</center>
+</div>
 </template>
 
 <template name="login">
@@ -85,4 +87,8 @@
     <div>
     	<h4>I have an account   <button class="btn btn-material btn-raised" id="signin">Sign in</button></h4>
 	</div>
+</template>
+
+<template name = "about">
+
 </template>
