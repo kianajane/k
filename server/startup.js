@@ -1,7 +1,7 @@
 Meteor.startup(function(){
 
 	if (Phonetics.find({}).count()==0) {
-		Phonetics.insert({sound: "L", words: new Array ("leaf", "lamp", "laugh", "leg", "lunch", "lips", "late", "lucky", "lion", "lock", "dollar", "olive", "belly", "<ADD WORD>", "jelly", "elbow", "shoelace", 
+		Phonetics.insert({sound: "L", words: new Array ("leaf", "lamp", "laugh", "leg", "lunch", "lips", "late", "lucky", "lion", "lock", "dollar", "olive", "belly", "float", "jelly", "elbow", "shoelace", 
 										"violin", "envelope", "toilet", "bell", "whale", "owl", "wall", "glass", "sleep", "slide", "please", "flower", "cloud"), 
 												story: new Array ("April the elephant lives in Brazil.",
 														"Her friends Lucy the Lizard and Lexie the Owl like to be lazy.",
@@ -48,7 +48,8 @@ Meteor.startup(function(){
 														"It was almost the size of a doghouse.", "His favorite toy was his hamster wheel.",
 														"It was behind his water dish.", "Homer always wore his hamster helmet when he ran on his hamster wheel.", 
 														"After running he would eat a hot dog and honey.", "He was happy with his life and hoped it would never change.")}),
-		Phonetics.insert({sound: "M", words: new Array ("man", "map", "march", "mall", "meet", "miss", "milk", "mine", "moose", "timer", "image", "human", "dream", "palm", "pulm", "tomato", "maybe", "machine", "mammal", "marshmallow", "magnificent", "macaroni", "memorization"), 
+		Phonetics.insert({sound: "M", words: new Array ("man", "map", "march", "mall", "meet", "miss", "milk", "mine", "moose", "mom", "timer", "human", "numbers", "family", 
+										"famous", "palm", "gum", "blossom", "time", "daydream", "extreme", "wisdom", "tomato", "maybe", "machine", "marshmallow", "magnificent", "macaroni", "memorization", "chameleon"), 
 												story: new Array ("Mindy wanted to travel more.", "She watched a movie about someone who traveled the world and that is what she was going to do.",
 														"She told her family and left home with her camera, comb, a map, and some other belongings.", 
 														"There were so many things she wanted to do and see.",
@@ -57,7 +58,7 @@ Meteor.startup(function(){
 														"When she got to the bus station and was ready to buy a ticket, she realized...she didn't have any money.",
 														 "\"They didn't show that in the movie,\" she thought as she walked home, \"I'm sure I can solve this problem.\"")})
 		Phonetics.insert({sound: "Z", words: new Array ("zipper","zoo", "zero", "zebra", "zigzag", "zombie", "zillion", "zap", "present", "puzzle", "dessert", "busy", "lizard", "musical", "blizzard", "raisin", 
-										"easily", "amaze" "horizon", "closet", "dozen", "cheese", "knees", "cookies", "fingers", "sunrise", "sneeze", "fingers", "bees", "bananas", "raspberry"), 
+										"easily", "amaze", "horizon", "closet", "dozen", "cheese", "knees", "cookies", "fingers", "sunrise", "sneeze", "fingers", "bees", "bananas", "raspberry"), 
 													story: new Array ("Zach went over to Zoe's house on Thursday.", "She was outside with the hose.", "Her house had tons of flowers around it.",
 														 "There must have been a zillion.",
 														"It was so beautiful that Zach thought she deserved a prize for the most beautiful flower garden ever!", "His favorite flowers were the zinnias.", 

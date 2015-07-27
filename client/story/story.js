@@ -181,7 +181,7 @@ function endCheck() {
     var storyEnd = cheer.play();
     $("#storyarea").html('<img src = "images/storycomplete-01.png" width = "100%" alt = "completed">');
     setTimeout(function() {
-      $("#storyarea").html('You just finished the "'+newSound+'" sound story! Choose another sound and read some more!');
+      $("#storyarea").html('<h2> You just finished the "'+newSound+'" sound story! Choose another sound and read some more! </h2>');
     }, 2000);
     recognition.stop();
   } else if (end) {
@@ -219,7 +219,8 @@ function feedback() {
           .bind( "timeupdate", function() {
              var timer = buzz.toTimer( this.getTime() );
           });
-    $("#storyarea").html("<img src = \"images/goodjob.jpg\" width = \"60%\" alt = \"completed\">");
+    $("#storyarea").html("<img src = \"images/goodjob.jpg\" width = \"60%\" alt = \"completed\">"); 
+    //make the image longer
   } else {
     $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
   }
