@@ -40,7 +40,6 @@ function getFirstWord() {
 	var confidence = null;
 	var recognizing = false;
 	var correctCounter = 0;
-	var alive = true;
 	var skipped = false;
 	var stopped = false;
 	
@@ -73,7 +72,6 @@ function getFirstWord() {
 			drawContext.clearRect(0,0,gameboard.width,gameboard.height);
 			console.log("canvas context restored and cleared");
 			i=0;
-			alive=true;
 			x=0.2;
 			draw();
 			start(event);
@@ -167,7 +165,7 @@ function getFirstWord() {
 	        	final_transcript = eachWord(final_transcript);
 				console.log('final events.results['+i+'][0].transcript = '+ JSON.stringify(final_transcript)
 						+ " --- " +JSON.stringify(confidence));
-				if(final_transcript==Session.get("gameWord") && confidence>60 && alive){
+				if(final_transcript==Session.get("gameWord") && confidence>60){
 					console.log("test for word: "+Session.get("gameWord"));
 	         		correct();
 			    }
@@ -176,7 +174,7 @@ function getFirstWord() {
 	        	interim_transcript = eachWord(interim_transcript);
 				console.log('interim events.results['+i+'][0].transcript = '+ JSON.stringify(interim_transcript)
 						+ " --- " +JSON.stringify(confidence));
-	         	if(interim_transcript==Session.get("gameWord") && confidence>30 && alive){
+	         	if(interim_transcript==Session.get("gameWord") && confidence>30){
 	         		// add to history
 					console.log("test for word: "+Session.get("gameWord"));
 					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: true});
@@ -223,7 +221,6 @@ function getFirstWord() {
 	             var timer = buzz.toTimer( this.getTime() );
 	          });
 			$("#game_counter").html("<b>Score:</b> "+correctCounter);
-			alive=false;
 			running=false;
 			x+=0.025;
 			next(event);
@@ -255,7 +252,6 @@ function getFirstWord() {
 		function next(event){
 			getNewWord();
 			i=0;
-			alive=true;
 			$("#say").html(Session.get("gameWord"));
 			if (!recognizing){
 				start(event);
@@ -299,7 +295,6 @@ function getFirstWord() {
 				running=false;
 				recognition.stop();
 				recognizing=false;
-				alive=false;
 				History.insert({
 					userId: Meteor.userId(),
 					mode: "game",
