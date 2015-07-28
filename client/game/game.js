@@ -88,8 +88,6 @@ function getFirstWord() {
 		"submit #sound-select": function(event){
 		    event.preventDefault();
 		
-		    var soundSelected = event.target.sound.value;
-		    Session.set("sound",soundSelected);
 		    var newSound = Session.get("sound");
 		    if (lastSound!=newSound){
 		      console.log("CHANGING GAME SOUND... new sound = "+newSound);

@@ -1,106 +1,16 @@
 Meteor.startup(function(){
-	s = new Date();
-	if (History.find({userId:"LMaK5xY7zSo7XMskE"}).count() == 0) {
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "L" , word: "ball", correct: true , time: new Date(s.getFullYear(), s.getMonth(), s.getDate() - 15)})
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "L" , word: "envelope", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "L" , word: "glove", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "L" , word: "belly", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "L" , word: "lamp", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "L" , word: "leaf", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "L" , word: "leaf", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "R" , word: "run", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "R" , word: "bird", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "R" , word: "rice", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "R" , word: "rice", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "march", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "mall", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "miss", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "milk", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "moose", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "timer", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "image", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "dream", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "mall", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "made", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "mouth", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "milk", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "M" , word: "milk", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "K" , word: "car", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "K" , word: "can", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "K" , word: "cold", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "K" , word: "cookies", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "K" , word: "cookies", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "K" , word: "coin", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "elephant", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "giraffe", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "cough", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "elf", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "feet", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "laughing", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "favorite", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "family", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "giraffe", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "lunch", correct: true , time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "leg", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "violin", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "belly", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "lamp", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 18) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "leaf", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "leaf", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "R" , word: "rat", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "R" , word: "rose", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "R" , word: "rain", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "R" , word: "rain", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "mammal", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "memorization", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "magnificent", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "pulm", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "moose", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "man", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "march", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "mall", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "meet", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "milk", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "mine", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "timer", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 9) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "image", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 9) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "human", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 9) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "dream", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 9) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "palm", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "tomato", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "maybe", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "machine", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "marshmallow", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "macaroni", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "made", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "mouth", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "mammal", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "M" , word: "mammal", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "K" , word: "cool", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 18) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "K" , word: "kid", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 18) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "K" , word: "color", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "K" , word: "cookies", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "K" , word: "cookies", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "K" , word: "coin", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "face", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "giraffe", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "cough", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "elf", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "feet", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "laughing", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "favorite", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "feet", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "F" , word: "giraffe", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
-	}
-
+	/*
+	Sound levels:
+	1: p, m, h, w, b, n
+	2: k, g, d, t, ng, f, y
+	3: v, j, th (voiced), ch, sh
+	4: r, l, s, z, th (unvoiced), zh, vocalic r.
+	*/
 
 	if (Phonetics.find({}).count()==0) {
 		Phonetics.insert({
 			sound: "L",
+			level: "4",
 			words: new Array ("leaf", "lamp", "laugh", "leg", "lunch", "lips", "late", "lucky", "lion", "lock", "dollar", "olive",
 							  "belly", "float", "jelly", "elbow", "shoelace","violin", "envelope", "toilet", "bell", "whale", "owl",
 							  "wall", "glass", "sleep", "slide", "please", "flower", "cloud"), 
@@ -114,6 +24,7 @@ Meteor.startup(function(){
 							  "After Albert finished talking, the three friends yelled, \"Thank you,\" to him as he swam away.")}),
 		Phonetics.insert({
 			sound: "R",
+			level: "4",
 			words: new Array("run", "rat", "red", "rose", "raccoon", "rose", "rain", "race", "fruit", "bird", "carrot", "bear",
 							 "cherry", "ready", "store", "first", "every", "start", "crayon", "drawer", "friend", "dinosaur",
 							 "morning", "journey", "discover", "return", "orange", "realize", "forest", "borrow"), 
@@ -128,6 +39,7 @@ Meteor.startup(function(){
 							  "She drew the bird before returning home.")}),
 		Phonetics.insert({
 			sound: "F",
+			level: "2",
 			words: new Array("face", "phone", "food", "fish", "feet", "fingers", "elephant", "muffin", "laughing", "unfold", "traffic", "alphabet",
 							  "waffle", "off", "cough", "elf", "favorite", "family", "breakfast", "giraffe"), 
 			story: new Array ("Phillip lived on a farm.",
@@ -140,6 +52,7 @@ Meteor.startup(function(){
 							  "He began to laugh and said, \"Will you meet me here every Friday?\"")}),
 		Phonetics.insert({
 			sound: "K",
+			level: "2",
 			words: new Array("can", "coin", "cold", "key", "cold", "cool", "car", "cat", "kid", "color", "because", "soccer", "bike",
 							 "bacon", "baker", "looking", "pumpkin", "weekend", "chocolate", "jacket", "music", "awake", "cupcake",
 							 "duck", "cheek", "hawk", "lick", "kindergarten", "computer", "stomach"), 
@@ -153,6 +66,7 @@ Meteor.startup(function(){
 							  "She hopes she won't get sick like that again.")}),
 		Phonetics.insert({
 			sound: "B",
+			level: "1",
 			words: new Array ("baby", "bakery", "banana", "becoming", "bedtime", "bedroom", "buddy", "bug", "bee", "bunny", "about",
 							  "alphabet", "blueberry", "cowboy", "ladybug", "neighbor", "October", "rabbit", "marbles", "basketball",
 							  "crab", "web", "rub", "club", "bathtub", "cube", "prescribe", "subscribe", "doorknob", "wardrobe"), 
@@ -168,6 +82,7 @@ Meteor.startup(function(){
 			sound: "H",
 			words: new Array ("hall", "hand", "hero", "happy", "hoop", "helmet", "hair", "horse", "house", "beehive", "behind", "unhappy",
 							  "playhouse", "lighthouse", "groundhog", "downhill", "helicopter", "history", "honeybee", "hippopotamus"), 
+			level: "1",
 			story: new Array ("Homer was a happy hamster who lived in a heart shaped house.",
 							  "His owner, Hazel, was a redhead. Homer had the best cage.", 
 							  "It was almost the size of a doghouse.",
@@ -178,6 +93,7 @@ Meteor.startup(function(){
 							  "He was happy with his life and hoped it would never change.")}),
 		Phonetics.insert({
 			sound: "M",
+			level: "1",
 			words: new Array ("man", "map", "march", "mall", "meet", "miss", "milk", "mine", "moose", "mom", "timer", "human", "numbers",
 							  "family", "famous", "palm", "gum", "blossom", "time", "daydream", "extreme", "wisdom", "tomato", "maybe",
 							  "machine", "marshmallow", "magnificent", "macaroni", "memorization", "chameleon"), 
@@ -191,12 +107,14 @@ Meteor.startup(function(){
 							  "\"They didn't show that in the movie,\" she thought as she walked home, \"I'm sure I can solve this problem.\"")}),
 		Phonetics.insert({
 			sound: "Z",
+			level: "4",
 			words: new Array ("zipper","zoo", "zero", "zebra", "zigzag", "zombie", "zillion", "zap", "present", "puzzle", "dessert",
 							  "busy", "lizard", "musical", "blizzard", "raisin","easily", "amaze", "horizon", "closet", "dozen",
 							  "cheese", "knees","cookies", "fingers", "sunrise", "sneeze", "visit", "bees", "bananas", "raspberry"), 
 			story: new Array ("<INSERT Z STORY FROM FORM>")}),
 		Phonetics.insert({
 			sound: "S",
+			level: "4",
 			words: new Array ("sit","soup","salt","seal","sick","sing","sun","save","seed","seat","baseball","dancer","gasoline",
 							  "grasshopper","motorcycle","fossil","pencil","muscle","beside","racing","bus","face","ice","grass",
 							  "horse","yes","address","office","purse","glass"),
@@ -214,8 +132,108 @@ Meteor.startup(function(){
 
 		removeUserHistory: function() {
 			return History.remove({userId: Meteor.userId()});
-			}
+			},
 
+		addFakeData: function() {
+			s = new Date();
+		if (History.find({userId: Meteor.userId()}).count() == 0) {
+			return [ History.insert({userId: Meteor.userId(), mode: "game" , sound: "L" , word: "ball", correct: true , time: new Date(s.getFullYear(), s.getMonth(), s.getDate() - 15)}),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "L" , word: "envelope", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "L" , word: "glove", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "L" , word: "belly", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "L" , word: "lamp", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "L" , word: "leaf", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "L" , word: "leaf", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "R" , word: "run", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "R" , word: "bird", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "R" , word: "rice", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "R" , word: "rice", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "march", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "mall", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "miss", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "milk", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "moose", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "timer", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "image", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "dream", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "mall", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "made", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "mouth", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "milk", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "M" , word: "milk", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "K" , word: "car", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "K" , word: "can", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "K" , word: "cold", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "K" , word: "cookies", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "K" , word: "cookies", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "K" , word: "coin", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "elephant", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "giraffe", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "cough", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "elf", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "feet", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "laughing", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "favorite", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "family", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "giraffe", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "lunch", correct: true , time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "leg", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "violin", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "belly", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "lamp", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 18) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "leaf", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "leaf", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "R" , word: "rat", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "R" , word: "rose", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "R" , word: "rain", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "R" , word: "rain", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "mammal", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "memorization", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "magnificent", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "pulm", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "moose", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "man", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "march", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "mall", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "meet", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "milk", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "mine", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "timer", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 9) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "image", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 9) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "human", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 9) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "dream", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 9) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "palm", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "tomato", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "maybe", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "machine", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "marshmallow", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "macaroni", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "made", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "mouth", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "mammal", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "M" , word: "mammal", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "K" , word: "cool", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 18) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "K" , word: "kid", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 18) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "K" , word: "color", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "K" , word: "cookies", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "K" , word: "cookies", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "K" , word: "coin", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "face", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "giraffe", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 16) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "cough", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "elf", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "feet", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 14) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "laughing", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "favorite", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "feet", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "giraffe", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
+		]}
+		}
 	});
 
 });

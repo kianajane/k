@@ -280,8 +280,6 @@ Template.story.events({
 Template.soundselectstory.events({
   "submit #sound-select": function(event){
     event.preventDefault();
-    var soundSelected = event.target.sound.value;
-    Session.set("sound",soundSelected);
     var newSound = Session.get("sound");
     if (lastSound!=newSound){
       console.log("CHANGING STORY SOUND... new sound = "+newSound);
