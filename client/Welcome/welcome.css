@@ -43,17 +43,14 @@ body {
 	background-color: #65D6A3; /*#FFEF74 #E2646B #9964E7*/
 }
 
-/* For the IS template */
+/* For the is.html template */
 #isDiv {
-/*	background-color: #FFEF74; */
 	padding: 10px;
-	padding-left: 30px;
-	padding-right: 30px;
+	padding-left: 50px;
+	padding-right: 50px;
 	background-opacity: 0.5;
+	
 }
 #to_welcome:hover {
 	box-shadow: none;
 }
-/* #spk {
-	color: #7cd4ff;
-} */
