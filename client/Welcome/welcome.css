@@ -31,15 +31,16 @@ body {
 /*For the About line at the bottom*/
 #about {
 	margin-top: 0px !important;
+	margin-left: 25%;
 	padding-top: 0px;
-	background-color: #6fbee5; 
+	background-color: #7cd4ff; 
 	bottom: 0px;
 	position: absolute;
 	height: 9%;
-	width: 93%;
+	width: 40%;
 	color: white;
 	font-size: 18px;
-	-webkit-transition: background 0.7s linear;
+	-webkit-transition: background 0.4s ease;
 }
 
 #about_button {
