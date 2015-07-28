@@ -1,7 +1,8 @@
-// Code mostly from http://blog.benmcmahen.com/post/41741539120/building-a-customized-accounts-ui-for-meteor
+// Login code mostly from http://blog.benmcmahen.com/post/41741539120/building-a-customized-accounts-ui-for-meteor
 
 Template.welcome.rendered = function(){
   if (recognizing) recognition.stop();
+  aboutSection();
 }
 
 Session.set("login",true); // Login mode
@@ -77,10 +78,19 @@ Template.welcome.helpers({
   },
 
   last: function() {
-    return History.findOne({userId: Meteor.userId()},{sort:{time:-1}});
+    return History.findOne({userId: Meteor.userId()},{sort:{time:-1}});;
   },
 
   yesData: function() {
-        return !(History.findOne({userId: Meteor.userId()}) == undefined);
-    }
+    return !(History.findOne({userId: Meteor.userId()}) == undefined);
+  }
+});
+
+Template.welcome.events({
+  'click #continue': function(event){
+    console.log("continue");
+    var lastEntry = History.findOne({userId: Meteor.userId()},{sort:{time:-1}});
+    Session.set("sound",lastEntry.sound);
+    Router.go("/"+lastEntry.mode);
+  }
 })
