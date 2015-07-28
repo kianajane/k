@@ -1,31 +1,58 @@
-<!-- All of the Sound Select templates, to make the sound select box appear on every mode. -->
 
+<!-- All of the Sound Select templates, to make the sound select box appear on every mode.
+ -->
 <template name = "soundselectstory">
-	{{> soundform}}
+	{{> dropdowns}}
 </template>
 
 <template name = "soundselectworkshop">
-	{{> soundform}}
+	<!-- {{> soundform}} -->
+	{{> dropdowns}}
 </template>
 
 <template name = "soundselectgame">
-	{{> soundform}}
+	{{> dropdowns}}
 </template>
 
-<!-- All of the current sounds we have. Will have to add more here when we add more sound data. -->
-<template name="soundform">
-	<h4>Select sound:</h4>
+<!-- Code from: http://stackoverflow.com/questions/27387222/meteor-dynamically-filter-dropdown-when-another-dropdown-is-selected and http://dynamic-dropdowns.meteor.com/ -->
+<!-- Begin Templates  --> 
+<template name="dropdowns">
 	<form id="sound-select">
-		<select id="sound">
-			<option value="L">L</option>
-			<option value="R">R</option>
-			<option value="F">F</option>
-			<option value="K">K</option>
-			<option value="B">B</option>
-			<option value="H">H</option>
-			<option value="M">M</option>
-			<option value="Z">Z</option>
-		</select>
+		<field class="dept-name">Level:
+			{{> levels}}
+		</field>
+		<field class="mfg-number">Sound:
+			{{> sounds}}
+		</field>
 		<input type="submit" value="Go">
 	</form>
 </template>
+
+<!-- Department dropdown -->
+<template name="levels">
+  <select autocomplete="off" name="departmentNums" class="form-control department-selection">
+  	<option selected="selected" disabled="disabled">Select level</option>
+    {{# each departmentNums}}
+    {{> departmentNum}}
+    {{/each}}
+  </select>
+</template>
+
+<template name="departmentNum">
+  <option>{{this}}</option>
+</template>
+
+<!-- Manufacturer dropdown -->
+<template name="sounds">
+  <select autocomplete="off" name="manufacturerNums" class="form-control manufacturer-selection">
+  	<option selected="selected" disabled="disabled">Select sound</option>
+    {{# each manufacturers}}
+    {{> manufacturerNum}}
+    {{/each}}
+  </select>
+</template>
+
+<template name="manufacturerNum">
+  <option>{{this}}</option>
+</template>
+

@@ -8,11 +8,6 @@ Template.profile.helpers({
 		return this.profile.bio;
 		},
 
-    // I have replaced all of the photos with a stock photo, we may want to change that later.
-	photo:function(){ // returns the URL of the gravatar photo for this email
-		return  "images/face.png"
-        }, ///Gravatar.imageUrl(Gravatar.hash(this.emails[0].address,{secure:true}))}
-
 	myHistory: function() {
 		return History.find({userId: Meteor.userId()}, {sort:{time:-1}}).fetch();
         },
@@ -25,9 +20,14 @@ Template.profile.helpers({
 Template.profile.events({
 
     'click #clearHistory': function(event){
-        console.log ('hello');
-        Meteor.call('removeUserHistory')
+        Meteor.call('removeUserHistory');
     },
+
+    'click #addFakeData': function(event){
+        Meteor.call('addFakeData');
+        Router.go('/profile');
+    },
+
     'click #actLink': function(event) {
         tabLayout(event);
     },
@@ -233,7 +233,7 @@ function buildDailyProgressChart()
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.0f} Correct</b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.0f} Action</b></td></tr>',
             footerFormat: '</table>',
             shared: true,
             useHTML: true

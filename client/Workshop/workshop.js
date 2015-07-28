@@ -344,9 +344,6 @@ Template.soundselectworkshop.events({
 	"submit #sound-select": function(event){
 		event.preventDefault();
 
-		// Get the results from the input box
-		var soundSelected = event.target.sound.value;
-		Session.set("sound",soundSelected);
 		var newSound = Session.get("sound");
 		
 		// If the sound has actually been changed

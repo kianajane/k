@@ -2,9 +2,6 @@
 	{{#if currentUser}}
 	<div class="jumbotron">
 		<div class="row">
-			<!-- <div class="col-md-offset-2 col-md-2">
-				<img src="{{photo}}?s=400" alt="photo of {{profile.firstName}} {{profile.lastName}}" class="align-left" id = "profPhoto">
-			</div> -->
 			<div class="col-md-4">
 				<center>
 				<h2 id = "usersName">{{profile.firstName}} {{profile.lastName}}
@@ -54,6 +51,7 @@
 				<button class="btn btn-material btn-raised" id="clearHistory"> Yes </button>
 			</div>
 		</center>
+
 		</div>
 	{{else}}
 		<h4> You have no data. Please practice to display analytics. </h4>
@@ -61,7 +59,7 @@
 		</div>
 	</div>
 
-
+	<button class="btn btn-material btn-raised" id="addFakeData"> Add Fake Data (then refresh) </button>
 	{{else}}
 	<br>
 	<center><h3>You must be <a href="{{pathFor 'welcome'}}">logged in</a> to view your profile</h3></center>
