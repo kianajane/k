@@ -141,10 +141,10 @@ function getNewWord(){
 	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
 	
 	// If you haven't done anything or you've finished all of the sounds.
-	if (correctWords.length == 0 || correctWords.length == wordList.length) {
+	if (/*correctWords.length == 0 ||*/ correctWords.length == wordList.length) {
 		theWord = wordList[0]
 	} else if (theWord == undefined) {
-
+		theWord = wordList[0]
 	} else
 	{
 		// Should get the first word on the list that is allowed.
@@ -366,9 +366,6 @@ Template.soundselectworkshop.events({
 	"submit #sound-select": function(event){
 		event.preventDefault();
 
-		// Get the results from the input box
-		var soundSelected = event.target.sound.value;
-		Session.set("sound",soundSelected);
 		var newSound = Session.get("sound");
 		
 		// If the sound has actually been changed
