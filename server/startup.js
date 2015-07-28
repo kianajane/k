@@ -42,7 +42,6 @@ Meteor.startup(function(){
 		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
 		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) })
 		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "game" , sound: "F" , word: "giraffe", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) })
-
 		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "lunch", correct: true , time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) })
 		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "leg", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) })
 		History.insert({userId:"LMaK5xY7zSo7XMskE", mode: "workshop" , sound: "L" , word: "violin", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) })
@@ -115,22 +114,22 @@ Meteor.startup(function(){
 							  "After Albert finished talking, the three friends yelled, \"Thank you,\" to him as he swam away.")}),
 		Phonetics.insert({
 			sound: "R",
-			words: new Array("run", "rice", "rat", "red", "rose", "raccoon", "rose", "rain", "reach", "race", "bird", "carrot",
-							 "heart", "cherry", "first", "alarm", "start", "crayon","drawer", "marathon", "car", "bear", "dinosaur",
-							 "bread", "dragon", "prince", "orange", "tornado", "forest", "friend"), 
-			story: new Array ("Whenever I have free time, I race to my garage.",
-							  "I have all kinds of crazy experiments going on in there.",
-							  "I don't mean testing rats or anything.",
-							  "I mean really cool experiments.",
-							  "For example, right now I am experimenting to see if carrots can recharge batteries.",
-							  "I have had other experiments that have gone longer.",
-							  "My experiment to see if raisins will make the speakers in my radio louder has been going on for over a year now.", 
-							  "There are so many more ideas that I want to experiment with - making a fireproof door, testing to see what rainbows are made of, trying to see if I can teach rats to read.", 
-							  "If my brain was made of trees, it would be a forest of ideas.",
-							  "Science is radical!")}),
+			words: new Array("run", "rat", "red", "rose", "raccoon", "rose", "rain", "race", "fruit", "bird", "carrot", "bear",
+							 "cherry", "ready", "store", "first", "every", "start", "crayon", "drawer", "friend", "dinosaur",
+							 "morning", "journey", "discover", "return", "orange", "realize", "forest", "borrow"), 
+			story: new Array ("Rosa likes to draw every day.",
+							  "After her alarm goes off in the morning, she grabs her crayons and draws a picture.",
+							  "She has a collection of fourteen crayons.",
+							  "They are all stored in her drawer.",
+							  "One day, she went on a journey to the forest with her friend Rachel.",
+							  "She wanted to draw every animal she could see: raccoons, birds, bears, and rats.",
+							  "As she was getting ready to leave, she discovered a pretty red bird and wanted to draw it.",
+							  "She realized that she forgot her red crayon, so she borrowed one from Rachel.",
+							  "She drew the bird before returning home.")}),
 		Phonetics.insert({
 			sound: "F",
-			words: new Array("face", "feet", "elephant", "laughing", "cough", "elf", "favorite", "family", "breakfast", "giraffe"), 
+			words: new Array("face", "phone", "food", "fish", "feet", "fingers", "elephant", "muffin", "laughing", "unfold", "traffic", "alphabet",
+							  "waffle", "off", "cough", "elf", "favorite", "family", "breakfast", "giraffe"), 
 			story: new Array ("Phillip lived on a farm.",
 							  "He loved to fish on Friday.",
 							  "That Friday after breakfast, Philip was walking through the forest to his favorite fishing hole when he heard a saxophone.",
@@ -167,8 +166,8 @@ Meteor.startup(function(){
 							  "I was so busy thinking that I fell asleep.")}),
 		Phonetics.insert({
 			sound: "H",
-			words: new Array ("hall","hand", "happy", "beehive", "playhouse", "horse", "house", "hair", "helicopter", "history",
-							  "hero", "honeybee", "helmet", "hippopotamus"), 
+			words: new Array ("hall", "hand", "hero", "happy", "hoop", "helmet", "hair", "horse", "house", "beehive", "behind", "unhappy",
+							  "playhouse", "lighthouse", "groundhog", "downhill", "helicopter", "history", "honeybee", "hippopotamus"), 
 			story: new Array ("Homer was a happy hamster who lived in a heart shaped house.",
 							  "His owner, Hazel, was a redhead. Homer had the best cage.", 
 							  "It was almost the size of a doghouse.",
@@ -194,15 +193,18 @@ Meteor.startup(function(){
 			sound: "Z",
 			words: new Array ("zipper","zoo", "zero", "zebra", "zigzag", "zombie", "zillion", "zap", "present", "puzzle", "dessert",
 							  "busy", "lizard", "musical", "blizzard", "raisin","easily", "amaze", "horizon", "closet", "dozen",
-							  "cheese", "knees","cookies", "fingers", "sunrise", "sneeze", "fingers", "bees", "bananas", "raspberry"), 
-			story: new Array ("Zach went over to Zoe's house on Thursday.",
-							  "She was outside with the hose.", 
-							  "Her house had tons of flowers around it.",
-							  "There must have been a zillion.",
-							  "It was so beautiful that Zach thought she deserved a prize for the most beautiful flower garden ever!",
-							  "His favorite flowers were the zinnias.",
-							  "Zoe asked him if we wanted to help water the flowers.", 
-							  "He took the hose and began watering.",
+							  "cheese", "knees","cookies", "fingers", "sunrise", "sneeze", "visit", "bees", "bananas", "raspberry"), 
+			story: new Array ("Zoey the zebra lives in the zoo.",
+							  "She loves presents.",
+							  "Her friend Zachary the lizard visited her at sunrise one day.", 
+							  "Zachary does not live in the zoo, so he can easily visit Zoey.",
+							  "He brought two dozen cookies for her.",
+							  "Some of the cookies had raisins.",
+							  "The others had raspberries in them.",
+							  "Even though she didn't like raisins, Zoey ate the raisin cookies and was amazed.",
+							  "She thought the baker deserved a prize for the cookies.",
+							  "She wanted to leave the rest in her closet and asked Zachary, \"\"",
+							  "Zachary asked her, \"W\" ",
 							  "When he got over to the zinnias they were surrounded by bees.",
 							  "Zach had zero love for bees, so he dropped the hose and ran as fast as he could.",
 							  "He zigged and zagged, but there was still one bee zooming after him.",
@@ -229,6 +231,10 @@ Meteor.startup(function(){
 							  "I have put a list of different topics together that we will discuss which includes: grasshoppers, motorcycle's, seat belts, soccer, tennis, soup, car racing, and insects, to name a few.",
 							  "Before I will let them come in the office, everyone will have to sign a contract saying they won't talk about kissing.",
 							  "We have our first meeting tomorrow. I hope some people come.")})
+		Phonetics.insert({
+			sound: "D",
+			words: new Array (""),
+			story: new Array ("")})
 	}
 
 
