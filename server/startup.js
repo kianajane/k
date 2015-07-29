@@ -361,8 +361,8 @@ Meteor.startup(function(){
 					"prestige", "voyage", "mirage", "enclosure"),
 			story1: new Array (),
 			story2: new Array (),
-			story3: new Array ()}),
-	}
+			story3: new Array ()})
+	}),
 
 
 	return Meteor.methods({
