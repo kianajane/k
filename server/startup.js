@@ -133,13 +133,28 @@ Meteor.startup(function(){
 							  "We will talk about anything that is not related to kissing.",
 							  "I have put a list of different topics together that we will discuss which includes: grasshoppers, motorcycle's, seat belts, soccer, tennis, soup, car racing, and insects, to name a few.",
 							  "Before I will let them come in the office, everyone will have to sign a contract saying they won't talk about kissing.",
-							  "We have our first meeting tomorrow. I hope some people come.")})
+							  "We have our first meeting tomorrow. I hope some people come.")}),
 		Phonetics.insert({
 			sound: "D",
 			level: "2",
 			words: new Array ("day", "dad", "dive", "end", "duck", "dentist", "dinner", "birthday", "good", "hide", "head", "medicine",
 							  "spider", "calendar",  "played", "wood", "ahead","salad", "outside", "daisy", "somebody", "video",
-							   "lemonade", "doughnut","attitude", "medicine", "afraid", "expected", "decide", "decade"),
+							  "lemonade", "doughnut","attitude", "medicine", "afraid", "expected", "decide", "decade"),
+			story: new Array ("")}),
+		Phonetics.insert({
+			sound: "P",
+			level: "1",
+			words: new Array ("pencil", "party", "pig", "penny", "pie", "past", "open", "lamp", "mop", "soup", "ship", "stop", "hoop",
+							  "cup", "pop", "paper", "teapot", "apple", "point", "penguin", "parrot", "apart", "napkin", "popcorn", "backup", 
+							  "octopus", "copy", "rope", "toothpaste", "coupon"),
+			story: new Array ("")}),
+		Phonetics.insert({
+			sound: "ZH",
+			level: "4",
+			words: new Array ("beige", "rouge", "Asia", "vision", "treasure", "visual", "garage", "television", "unusual", "confusion",
+							  "measurement", "usually", "visualize", "collision", "conclusion", "erosion", "inclusion", "conversion",
+							  "decision", "seizure", "leisure", "measureable", "supervision", "casual", "camouflage", "massage", 
+							  "prestige", "voyage", "mirage", "enclosure"),
 			story: new Array ("")})
 	}
 
