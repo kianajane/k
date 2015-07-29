@@ -1,4 +1,4 @@
-#senth1 {
+ #senth1 {
 	font-size: 55px;
 }
 
@@ -24,4 +24,9 @@
 #sidebar_story hr {
 	margin-top: 1em;
 	margin-bottom: 0em;
+}
+
+#resume_story{
+	color:white;
+	background-color:#9964E7;
 }

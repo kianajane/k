@@ -74,7 +74,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
-      $("#startButton").html('<button type="button" class="btn btn-raised" id="pause_story">Stop Story</button>');
+      $("#startButton").html('<button type="button" class="btn btn-raised" id="pause_story">Pause Story</button>');
       $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#65D6A3")+'</h2>');
     };
 
@@ -244,6 +244,14 @@ function skip(event) {
   }
 }
 
+// When you click 'Resume', find the last sentence you've done for that story.
+function resume (event) {
+
+
+
+
+}
+
 // Show directions
 Session.set("story_directions",true);
 
@@ -274,6 +282,9 @@ Template.story.events({
   },
   'click #skip': function(event) {
     skip(event);
+  },
+  'click #resume_story': function(event) {
+    resume(event);
   }
 })
 
