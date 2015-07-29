@@ -318,8 +318,7 @@ function counter(correct){
 
 		// Feedback
 	  	$("#res").html("Congratulations! You said <b>"+theWord+"</b> correctly on your "+attempts+n+" attempt!");
-	  	corrSfx.play();
-		    .fadeIn();
+	  	corrSfx.play().fadeIn()
 		    .bind( "timeupdate", function() {
 		       var timer = buzz.toTimer(this.getTime());
 		    });
@@ -335,10 +334,9 @@ function counter(correct){
 		// Change word after 2 seconds
 		setTimeout(function(){changeWord(event)},3000);	
 	} else { // incorrect or low confidence
-		var incorrectAudio = incorrSfx.play();
-	    .fadeIn();
-	    .bind( "timeupdate", function() {
-	       var timer = buzz.toTimer(this.getTime());
+		var incorrectAudio = incorrSfx.play().fadeIn()
+	    	.bind( "timeupdate", function() {
+	       	var timer = buzz.toTimer(this.getTime());
 	    });	
 	}
 
