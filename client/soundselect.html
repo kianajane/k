@@ -18,41 +18,45 @@
 <!-- Begin Templates  --> 
 <template name="dropdowns">
 	<form id="sound-select">
-		<field class="dept-name">Level:
+    <div>
+		<field>
 			{{> levels}}
 		</field>
-		<field class="mfg-number">Sound:
+		<field>
 			{{> sounds}}
 		</field>
+    </div>
+    <div id="goButton">
 		<input type="submit" value="Go">
+    </div>
 	</form>
 </template>
 
-<!-- Department dropdown -->
+<!-- Level dropdown -->
 <template name="levels">
-  <select autocomplete="off" name="departmentNums" class="form-control department-selection">
-  	<option selected="selected" disabled="disabled">Select level</option>
-    {{# each departmentNums}}
-    {{> departmentNum}}
+  <select autocomplete="off" name="levelNums" class="form-control level-selection">
+  	<option selected="selected" disabled="disabled">Level</option>
+    {{#each levelNums}}
+    {{> levelNum}}
     {{/each}}
   </select>
 </template>
 
-<template name="departmentNum">
+<template name="levelNum">
   <option>{{this}}</option>
 </template>
 
-<!-- Manufacturer dropdown -->
+<!-- Sound dropdown -->
 <template name="sounds">
-  <select autocomplete="off" name="manufacturerNums" class="form-control manufacturer-selection">
-  	<option selected="selected" disabled="disabled">Select sound</option>
-    {{# each manufacturers}}
-    {{> manufacturerNum}}
+  <select autocomplete="off" name="soundNums" class="form-control sound-selection">
+  	<option selected="selected" disabled="disabled">Sound</option>
+    {{#each sounds}}
+    {{> soundNum}}
     {{/each}}
   </select>
 </template>
 
-<template name="manufacturerNum">
+<template name="soundNum">
   <option>{{this}}</option>
 </template>
 
