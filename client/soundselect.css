@@ -1,8 +1,10 @@
 #sound-select {
 	margin-top: 10px;
+	margin-bottom: 0px;
 	padding-left: 15px;
+	padding-top: 5px;
 	padding-right: 15px;
-	padding-bottom: 10px;
+	padding-bottom: 0px;
 	margin-right: 10px;
 	background-color: rgba(255, 255, 255, 0.3);
 }
@@ -12,4 +14,8 @@
 }
 #goButton {
 	padding-left: 10px;
+}
+
+field p {
+	display: inline-block;
 }

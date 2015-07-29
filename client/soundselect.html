@@ -18,12 +18,12 @@
 <!-- Begin Templates  --> 
 <template name="dropdowns">
 	<form id="sound-select">
-    <div>
-		<field>
-			{{> levels}}
+		<field><p>Levels:</p>
+			<p>{{> levels}}</p>
 		</field>
-		<field>
-			{{> sounds}}
+    <div>
+		<field><p>Sound:</p>
+			<p>{{> sounds}}</p>
 		</field>
     </div>
     <div id="goButton">
@@ -35,28 +35,28 @@
 <!-- Level dropdown -->
 <template name="levels">
   <select autocomplete="off" name="levelSelect" class="form-control level-selection">
-  	<option selected="selected" disabled="disabled">Level</option>
-    {{#each levelNums}}
-    {{> levelNum}}
+  	<option selected="selected" disabled="disabled">{{currentLevel}}</option>
+    {{#each levelChoice}}
+    {{> levelChoices}}
     {{/each}}
   </select>
 </template>
 
-<template name="levelNum">
+<template name="levelChoices">
   <option>{{this}}</option>
 </template>
 
 <!-- Sound dropdown -->
 <template name="sounds">
   <select autocomplete="off" name="sound" class="form-control">
-  	<option selected="selected" disabled="disabled">Sound</option>
+  	<option selected="selected" disabled="disabled">{{currentSound}}</option>
     {{#each sounds}}
-    {{> soundNum}}
+    {{> soundChoices}}
     {{/each}}
   </select>
 </template>
 
-<template name="soundNum">
+<template name="soundChoices">
   <option>{{this}}</option>
 </template>
 
