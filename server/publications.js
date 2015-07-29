@@ -1,9 +1,11 @@
 Meteor.publish("thePhonetics",function(){return Phonetics.find();}); // All of the phonetics data, including words and the story.
-Meteor.publish("theHistory",function(){return History.find();}); // All of the history, used in profiles. Really should only publish that user's history
-Meteor.publish("theProfiles",function(){return Profiles.find();});
-//Meteor.publish("theWords",function(){return Words.find();}); // I think this was the old words collection. Delete after July 20th if still unused.
+Meteor.publish("theHistory",function(){
+    return History.find({userId: this.userId});
+	this.ready();
+}); // Only that user's history. // Adding only that user's history didn't work....??
 
-// What is this collection?
+Meteor.publish("theProfiles",function(){return Profiles.find();}); // Stores the data for each login.
+
 Meteor.publish("userData", function () {
   if (this.userId) {
 	  return Meteor.users.find({}); //, //{_id: this.userId},

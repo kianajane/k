@@ -36,7 +36,7 @@ if (![].includes) {
 Template.story.rendered = function() {
   if (recognizing) recognition.stop();
   // Show first sentence
-  story1 = Phonetics.findOne({sound: Session.get("sound")}).story;
+  story1 = Phonetics.findOne({sound: Session.get("sound")}).story1;
   getSent();
 }
 
@@ -74,7 +74,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
-      $("#startButton").html('<button type="button" class="btn btn-raised" id="pause_story">Stop Story</button>');
+      $("#startButton").html('<button type="button" class="btn btn-raised" id="pause_story">Pause Story</button>');
       $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#65D6A3")+'</h2>');
     };
 
@@ -179,11 +179,9 @@ function endCheck() {
   //If at the end of the story
   if (index == story1.length) {
     var storyEnd = cheer.play();
-    $("#storyarea").html('<img src = "images/storycomplete-01.png" width = "100%" alt = "completed">');
-    setTimeout(function() {
-      $("#storyarea").html('<h2> You just finished the "'+newSound+'" sound story! Choose another sound and read some more! </h2>');
-    }, 2000);
+    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
     recognition.stop();
+    return;
   } else if (end) {
   //If sentence completed with 80% right, add to history as correct:
     if (correct.length >= words.length * (8.0 / 10))
@@ -219,10 +217,10 @@ function feedback() {
           .bind( "timeupdate", function() {
              var timer = buzz.toTimer( this.getTime() );
           });
-    $("#storyarea").html("<img src = \"images/goodjob.jpg\" width = \"60%\" alt = \"completed\">"); 
+    $("#storyarea").html("<img src = \"images/story-correct.png\" width = \"100%\" alt = \"allgreen\">"); 
     //make the image longer
   } else {
-    $("#storyarea").html("<img src = \"images/completedsent-01.png\" width = \"70%\" alt = \"completed\">");
+    $("#storyarea").html("<img src = \"images/story-compsent.png\" width = \"100%\" alt = \"sentcomplete\">");
   }
   correct = []; wordNum=0; index++; //reset array, vars
   setTimeout(function() {
@@ -242,6 +240,46 @@ function skip(event) {
     wordNum++;  
     getSent();
   }
+}
+
+// When you click 'Resume', find the last sentence you've done for that story.
+function resume (event) {
+
+  correctSentences =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
+ 
+  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story1;
+  lastSent1 = findSentence(allSentences);
+  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story2;
+  lastSent2 = findSentence(allSentences);
+  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story3;
+  lastSent3 = findSentence(allSentences);
+  
+  // Find the most recent one??
+  last1 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent1}, {sort: {time: -1}}).time;
+  last2 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent2}, {sort: {time: -1}}).time;
+  last3 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent3}, {sort: {time: -1}}).time;
+
+  if (last1 > last2 && last1 > last3) {
+    resumeSent = lastSent1;
+  } else if (last2 > last1 && last2 > last3){
+    resumeSent = lastSent2;
+  } else {
+    resumeSent = lastSent3;
+  }
+
+    sent = resumeSent;
+    original = sent.split(" "); 
+    $("#senth1").html(coloring(original, wordNum));
+
+  function findSentence (all) {
+      // Find the first sentence in story1 that you haven't done.
+  for (var i = 0; i < all.length; i++) {
+    if(!correctSentences.includes(all[i])){
+      return all[i];
+    }
+  }
+  }
+
 }
 
 // Show directions
@@ -265,7 +303,7 @@ Template.storyDirections.events({
 
 Template.story.events({
   'click #start_story': function(event){
-    story1 = Phonetics.findOne({sound: lastSound}).story;
+    story1 = Phonetics.findOne({sound: lastSound}).story1; // Replace with a session variable!!
     startDictation(event);
     getSent();
   },
@@ -274,6 +312,9 @@ Template.story.events({
   },
   'click #skip': function(event) {
     skip(event);
+  },
+  'click #resume_story': function(event) {
+    resume(event);
   }
 })
 
@@ -286,7 +327,7 @@ Template.soundselectstory.events({
     
     if (lastSound!=newSound){
       console.log("CHANGING STORY SOUND... new sound = "+newSound);
-      story1 = Phonetics.findOne({sound: newSound}).story;
+      story1 = Phonetics.findOne({sound: newSound}).story1;
       index = 0; wordNum = 0;
       getSent();
       lastSound=newSound;
