@@ -8,35 +8,19 @@ if(Meteor.isClient){
 		x=0.2;
 		correctCounter=0;
 		$("#game_counter").html("<b>Score:</b> "+correctCounter);
+		if (lastSound!=Session.get("sound")) resetIndex = true;
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
-		theWord = getFirstWord();
+		theWord = getWord();
 		Session.set("gameWord",theWord);
 		$("#say").html(Session.get("gameWord"));
 	}
 
-// Get the word the first time you load the page.
-function getFirstWord() {
-	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
-	if (correctWords.length == 0) {
-		theWord = wordList[0]
-		return theWord;
-	} else
-	{
-		// The first unused word.
-		for (var j = 0; j < wordList.length; j++) {
-			if (!correctWords.includes(wordList[j]))
-			{
-				return wordList[j];
-			}
-		}
-	}
-	return wordList[j];
-}
-
-
 	var i = 0;
 	var x = 0.2;
 	var wordList=[];
+	var theWord;
+	var resetIndex = false;
+	var attemptedWords = [];
 	var final_transcript = '';
 	var interim_transcript = '';
 	var confidence = null;
@@ -46,11 +30,10 @@ function getFirstWord() {
 	var stopped = false;
 	var counter = 0;
 	
-	
 	if (Session.get("sound")==undefined){
 	  Session.set("sound", "L");
 	}
-	lastSound = Session.get("sound");
+	var lastSound = Session.get("sound");
 	
 	Template.score.helpers({
 		correct: correctCounter
@@ -93,45 +76,52 @@ function getFirstWord() {
 		      console.log("CHANGING GAME SOUND... new sound = "+newSound);
 		      wordList = Phonetics.findOne({sound: newSound}).words;
 		      $("#game_controls").html("<button class=\"btn btn-raised\" type=\"submit\" id=\"pause\">Pause</button>");
+		      resetIndex = true;
+			  attemptedWords = [];
 		      next(event);
 		      lastSound=newSound;
 		    }
 	  	} 
 	});
 	
-	var running=false;
-	
-	
+	var running=false;	
 	
 	function getNewWord(){ // gets a word that has not already been completed.
-	// Get all unique finished words: 
-	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
-	
-	// If you haven't done anything or you've finished all of the sounds.
-	if (correctWords.length == 0 || correctWords.length == wordList.length) {
-		theWord = wordList[0]
-	} else if (theWord == undefined) {
-
-	} else
-	{
-		// Should get the first word on the list that is allowed.
-		// if we've reached the end, go back to the beginning.
-		if (wordList.indexOf(theWord) + 1 >= wordList.length) {
-			theWord = wordList[0];
-		} else {
-			// Else, pick the next word on the list.
-			theWord = wordList[wordList.indexOf(theWord) + 1];
-		}
-
-		// Keep picking new words until you find one you haven't done.
-		if (correctWords.includes(theWord)) {
-			console.log("repeated word: "+theWord+"... getting another word");
-			getNewWord();
-		}
+		theWord = getWord();
+		console.log("next game word: "+theWord);
+		Session.set("gameWord", theWord);
 	}
 
-	Session.set("gameWord", theWord)
-}	
+	function getWord(){
+	// Get all unique finished words: 
+		correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
+		console.log("attempted words: "+attemptedWords);
+
+		// start searching the list at the correct index
+		if (resetIndex){ // starting a new sound
+			index=0;
+			resetIndex=false;
+		} else if (theWord==undefined){ // first word
+			index=0;
+		} else if(attemptedWords.indexOf(theWord)<0){ // never attempted this word
+			index = wordList.indexOf(theWord);
+		} else {
+			index = wordList.indexOf(theWord)+1;
+			if (index >= wordList.length-1){
+				index=0;
+			}
+		}
+		console.log(index);
+
+		for (var i = index; i < wordList.length; i++) {
+			if(!correctWords.includes(wordList[i])){
+				return wordList[i];
+			}
+		}
+		console.log("finished all words on this sound");
+		return wordList[0];
+	}
+
 	if ('webkitSpeechRecognition' in window) {
 		console.log("webkit is available!");
 		var recognition = new webkitSpeechRecognition();
@@ -189,6 +179,7 @@ function getFirstWord() {
 			 if (interim_transcript.includes("pass")) {
 			 	History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});
 			 	skipped=true;
+			 	attemptedWords.push(theWord); // adds this word to the list of attempted words
 				next(event);
 			 } else if (interim_transcript.includes("stop")) {
 				stopped=true;
