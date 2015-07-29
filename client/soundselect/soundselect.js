@@ -5,7 +5,7 @@ Template.levels.helpers({
       var everything = Phonetics.find({}, {sort: {level:1}}).fetch();
       // De-dupe list of levels
       var justLevels = _.uniq(_.pluck(everything,"level"));
-      return _.without(justLevels, Session.get("level"));
+      return justLevels;
     },
     currentLevel: function() {
       return Session.get("level");
@@ -18,13 +18,34 @@ Template.levels.helpers({
     }
   });
 
+Template.levelChoices.helpers({
+    isCurrent: function () {
+      if (this == Session.get("level")) {
+         return 'selected';
+      } else {
+        return "";
+    }
+  }  
+});
+
+Template.soundChoices.helpers({
+    isCurrent: function () {
+      if (this == Session.get("sound")) {
+         return 'selected';
+      } else {
+        return "";
+    }
+  }  
+});
+
+
   Template.sounds.helpers({
     sounds: function() {
       // Find only sounds that have the same dept as the session and sort them ascending
       var everything = Phonetics.find({level: Session.get("level")}, {sort: {sound:1}}).fetch();
       // De-dupe list of manufactuerers
       var justSounds = _.uniq(_.pluck(everything, "sound"));
-      return _.without(justSounds, Session.get("sound"));
+      return justSounds;
     },
     currentSound: function() {
       return Session.get("sound");
