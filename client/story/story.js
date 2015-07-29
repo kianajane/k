@@ -74,7 +74,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = function() {
       recognizing = true;
-      $("#startButton").html('<button type="button" class="btn btn-raised" id="pause_story">Stop Story</button>');
+      $("#startButton").html('<button type="button" class="btn btn-raised" id="pause_story">Pause Story</button>');
       $("#reco").html('<h2 class = "text-right" id = "mic">'+"Mic ON".fontcolor("#65D6A3")+'</h2>');
     };
 
@@ -244,6 +244,46 @@ function skip(event) {
   }
 }
 
+// When you click 'Resume', find the last sentence you've done for that story.
+function resume (event) {
+
+  correctSentences =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
+ 
+  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story1;
+  lastSent1 = findSentence(allSentences);
+  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story2;
+  lastSent2 = findSentence(allSentences);
+  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story3;
+  lastSent3 = findSentence(allSentences);
+  
+  // Find the most recent one??
+  last1 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent1}, {sort: {time: -1}}).time;
+  last2 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent2}, {sort: {time: -1}}).time;
+  last3 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent3}, {sort: {time: -1}}).time;
+
+  if (last1 > last2 && last1 > last3) {
+    resumeSent = lastSent1;
+  } else if (last2 > last1 && last2 > last3){
+    resumeSent = lastSent2;
+  } else {
+    resumeSent = lastSent3;
+  }
+
+    sent = resumeSent;
+    original = sent.split(" "); 
+    $("#senth1").html(coloring(original, wordNum));
+
+  function findSentence (all) {
+      // Find the first sentence in story1 that you haven't done.
+  for (var i = 0; i < all.length; i++) {
+    if(!correctSentences.includes(all[i])){
+      return all[i];
+    }
+  }
+  }
+
+}
+
 // Show directions
 Session.set("story_directions",true);
 
@@ -274,13 +314,19 @@ Template.story.events({
   },
   'click #skip': function(event) {
     skip(event);
+  },
+  'click #resume_story': function(event) {
+    resume(event);
   }
 })
 
 Template.soundselectstory.events({
   "submit #sound-select": function(event){
     event.preventDefault();
+
+    Session.set("sound", event.target.sound.value);
     var newSound = Session.get("sound");
+    
     if (lastSound!=newSound){
       console.log("CHANGING STORY SOUND... new sound = "+newSound);
       story1 = Phonetics.findOne({sound: newSound}).story;

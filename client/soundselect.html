@@ -34,7 +34,7 @@
 
 <!-- Level dropdown -->
 <template name="levels">
-  <select autocomplete="off" name="levelNums" class="form-control level-selection">
+  <select autocomplete="off" name="levelSelect" class="form-control level-selection">
   	<option selected="selected" disabled="disabled">Level</option>
     {{#each levelNums}}
     {{> levelNum}}
@@ -48,7 +48,7 @@
 
 <!-- Sound dropdown -->
 <template name="sounds">
-  <select autocomplete="off" name="soundNums" class="form-control sound-selection">
+  <select autocomplete="off" name="sound" class="form-control">
   	<option selected="selected" disabled="disabled">Sound</option>
     {{#each sounds}}
     {{> soundNum}}
