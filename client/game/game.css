@@ -7,11 +7,6 @@ h1 {
 	padding-left: 25px;
 }
 
-#sidebar_game hr {
-	margin-top: 1em;
-	margin-bottom: 0em;
-}
-
 #game_counter {
 	font-size: 20px;
 }
@@ -24,5 +19,15 @@ h1 {
 	padding-top: 0px;
 	margin-top: 0px;
 	text-align: center;
+}
+
+#gamedirs {
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+#gamearea {
+	padding-bottom: 0px;
+	margin-bottom: 0px;
 }
 
