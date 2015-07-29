@@ -179,11 +179,9 @@ function endCheck() {
   //If at the end of the story
   if (index == story1.length) {
     var storyEnd = cheer.play();
-    $("#storyarea").html('<img src = "images/storycomplete-01.png" width = "100%" alt = "completed">');
-    setTimeout(function() {
-      $("#storyarea").html('<h2> You just finished the "'+newSound+'" sound story! Choose another sound and read some more! </h2>');
-    }, 2000);
+    $("#senth1").html('You just finished one of the "'+newSound+'" sound stories! Read another "'+newSound+'" sound story or choose a different sound! <br> <img src = "images/storycomplete-01.png" width = "100%" alt = "completed">');
     recognition.stop();
+    return;
   } else if (end) {
   //If sentence completed with 80% right, add to history as correct:
     if (correct.length >= words.length * (8.0 / 10))
