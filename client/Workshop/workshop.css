@@ -66,3 +66,8 @@
 .bg-info {
 	background-color:#7CD4FF;
 }
+#endSound {
+	background-color:#65D6A3 !important;
+	font-size: 15px !important;
+	color: black !important;
+}

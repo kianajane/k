@@ -347,12 +347,22 @@ Meteor.startup(function(){
 			sound: "D",
 			level: "2",
 			words: new Array ("day", "dad", "dive", "end", "duck", "dentist", "dinner", "birthday", "good", "hide", "head", "medicine",
-				"spider", "calendar",  "played", "wood", "ahead","salad", "outside", "daisy", "somebody", "video","lemonade",
-				"doughnut","attitude", "medicine", "afraid", "expected", "decide", "decade"),
+					"spider", "calendar",  "played", "wood", "ahead","salad", "outside", "daisy", "somebody", "video","lemonade",
+					"doughnut","attitude", "medicine", "afraid", "expected", "decide", "decade"),
 			story1: new Array (),
 			story2: new Array (),
-			story3: new Array ()});
-	}
+			story3: new Array ()}),
+		Phonetics.insert({
+			sound: "ZH",
+			level: "4",
+			words: new Array ("beige", "rouge", "Asia", "vision", "treasure", "visual", "garage", "television", "unusual", "confusion",
+					"measurement", "usually", "visualize", "collision", "conclusion", "erosion", "inclusion", "conversion",
+					"decision", "seizure", "leisure", "measureable", "supervision", "casual", "camouflage", "massage", 
+					"prestige", "voyage", "mirage", "enclosure"),
+			story1: new Array (),
+			story2: new Array (),
+			story3: new Array ()})
+	}),
 
 
 	return Meteor.methods({

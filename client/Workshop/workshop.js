@@ -147,7 +147,8 @@ function getWord(){ // gets a word that has not already been completed.
 		}
 	}
 	console.log("finished all words on this sound");
-	return wordList[0];
+	$("#wordArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/story">Story</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
+	return; 
 }
 
 // Changes the word and updates the counters. Called in Begin, Skip, and when user is correct.
