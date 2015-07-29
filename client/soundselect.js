@@ -10,8 +10,8 @@ Template.levels.helpers({
   });
 
   Template.levels.events({
-    "change .level-selection": function(e, t){
-      return Session.set("level", $("[name=levelNums]").val()); // use this for level select.
+    "change .level-selection": function(event){
+      return Session.set("level", $("[name=levelSelect]").val()); // use this for level select.
     }
   });
 
