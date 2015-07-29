@@ -14,7 +14,7 @@ Meteor.startup(function(){
 			words: new Array ("leaf", "lamp", "laugh", "leg", "lunch", "lips", "late", "lucky", "lion", "lock", "dollar", "olive",
 							  "belly", "float", "jelly", "elbow", "shoelace","violin", "envelope", "toilet", "bell", "whale", "owl",
 							  "wall", "glass", "sleep", "slide", "please", "flower", "cloud"), 
-			story: new Array ("April the elephant lives in Brazil.",
+			storyz: new Array ("April the elephant lives in Brazil.",
 							  "Her friends Lucy the Lizard and Lexie the Owl like to be lazy.",
 							  "They play on the log in the lake, take extra long lunches, and dig holes.",
 							  "One day, they met Albert the Whale near a pool of water by the ocean.",
