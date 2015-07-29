@@ -8,6 +8,7 @@ if(Meteor.isClient){
 		x=0.2;
 		correctCounter=0;
 		$("#game_counter").html("<b>Score:</b> "+correctCounter);
+		if (lastSound!=Session.get("sound")) resetIndex = true;
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 		theWord = getWord();
 		Session.set("gameWord",theWord);
@@ -29,11 +30,10 @@ if(Meteor.isClient){
 	var stopped = false;
 	var counter = 0;
 	
-	
 	if (Session.get("sound")==undefined){
 	  Session.set("sound", "L");
 	}
-	lastSound = Session.get("sound");
+	var lastSound = Session.get("sound");
 	
 	Template.score.helpers({
 		correct: correctCounter

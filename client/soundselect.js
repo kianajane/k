@@ -38,6 +38,23 @@ Template.soundselectworkshop.rendered = function() {
     console.log(level);
     Session.set("level", level);
 }
+
+Template.soundselectgame.rendered = function() {
+    currentSound = Session.get("sound");
+    console.log(currentSound);
+    level = Phonetics.findOne({sound: currentSound}).level;
+    console.log(level);
+    Session.set("level", level);
+}
+
+Template.soundselectstory.rendered = function() {
+    currentSound = Session.get("sound");
+    console.log(currentSound);
+    level = Phonetics.findOne({sound: currentSound}).level;
+    console.log(level);
+    Session.set("level", level);
+}
+
 /*
 http://stackoverflow.com/questions/12124234/set-the-selected-item-in-a-select-list-based-on-template-value
   UI.registerHelper('selected', function(key, value){
