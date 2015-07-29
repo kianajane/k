@@ -1,5 +1,4 @@
 Meteor.startup(function(){
-
 	/*
 	Sound levels:
 	1: p, m, h, w, b, n
@@ -26,23 +25,24 @@ Meteor.startup(function(){
 		Phonetics.insert({
 			sound: "R",
 			level: "4",
-			words: new Array("run", "rice", "rat", "red", "rose", "raccoon", "rose", "rain", "reach", "race", "bird", "carrot",
-							 "heart", "cherry", "first", "alarm", "start", "crayon","drawer", "marathon", "car", "bear", "dinosaur",
-							 "bread", "dragon", "prince", "orange", "tornado", "forest", "friend"), 
-			story: new Array ("Whenever I have free time, I race to my garage.",
-							  "I have all kinds of crazy experiments going on in there.",
-							  "I don't mean testing rats or anything.",
-							  "I mean really cool experiments.",
-							  "For example, right now I am experimenting to see if carrots can recharge batteries.",
-							  "I have had other experiments that have gone longer.",
-							  "My experiment to see if raisins will make the speakers in my radio louder has been going on for over a year now.", 
-							  "There are so many more ideas that I want to experiment with - making a fireproof door, testing to see what rainbows are made of, trying to see if I can teach rats to read.", 
-							  "If my brain was made of trees, it would be a forest of ideas.",
-							  "Science is radical!")}),
+			words: new Array("run", "rat", "red", "rose", "raccoon", "rose", "rain", "race", "fruit", "bird", "carrot", "bear",
+							 "cherry", "ready", "store", "first", "every", "start", "crayon", "drawer", "friend", "dinosaur",
+							 "morning", "journey", "discover", "return", "orange", "realize", "forest", "borrow"), 
+			story: new Array ("Rosa likes to draw every day.",
+							  "After her alarm goes off in the morning, she grabs her crayons and draws a picture.",
+							  "She has a collection of fourteen crayons.",
+							  "They are all stored in her drawer.",
+							  "One day, she went on a journey to the forest with her friend Rachel.",
+							  "She wanted to draw every animal she could see: raccoons, birds, bears, and rats.",
+							  "As she was getting ready to leave, she discovered a pretty red bird and wanted to draw it.",
+							  "She realized that she forgot her red crayon, so she borrowed one from Rachel.",
+							  "She drew the bird before returning home.")}),
 		Phonetics.insert({
 			sound: "F",
 			level: "2",
-			words: new Array("face", "feet", "elephant", "laughing", "cough", "elf", "favorite", "family", "breakfast", "giraffe"), 
+			words: new Array("face", "phone", "food", "fish", "fan", "fox", "feet", "off", "elf", "muffin", "fingers", "wife", "fire",
+							  "unfold", "traffic", "alphabet","cough", "elephant", "laughing", "barefoot", "playful", "feather", "funny",
+							  "waffle","favorite", "family", "trophy", "photo", "breakfast", "giraffe"), 
 			story: new Array ("Phillip lived on a farm.",
 							  "He loved to fish on Friday.",
 							  "That Friday after breakfast, Philip was walking through the forest to his favorite fishing hole when he heard a saxophone.",
@@ -82,8 +82,9 @@ Meteor.startup(function(){
 		Phonetics.insert({
 			sound: "H",
 			level: "1",
-			words: new Array ("hall","hand", "happy", "beehive", "playhouse", "horse", "house", "hair", "helicopter", "history",
-							  "hero", "honeybee", "helmet", "hippopotamus"), 
+			words: new Array ("ham", "hall", "hand", "hero", "happy", "hair", "hoop", "helmet", "hair", "horse", "house", "beehive", "behind", 
+							  "unhappy", "uphill", "playhouse", "hamburger", "hearing", "forehead", "lighthouse", "groundhog", "downhill",
+							  "helicopter", "holiday", "half", "hundred", "history", "honeybee", "hippopotamus", "handkerchief", "Hawaii", "hallelujah"), 
 			story: new Array ("Homer was a happy hamster who lived in a heart shaped house.",
 							  "His owner, Hazel, was a redhead. Homer had the best cage.", 
 							  "It was almost the size of a doghouse.",
@@ -111,22 +112,8 @@ Meteor.startup(function(){
 			level: "4",
 			words: new Array ("zipper","zoo", "zero", "zebra", "zigzag", "zombie", "zillion", "zap", "present", "puzzle", "dessert",
 							  "busy", "lizard", "musical", "blizzard", "raisin","easily", "amaze", "horizon", "closet", "dozen",
-							  "cheese", "knees","cookies", "fingers", "sunrise", "sneeze", "fingers", "bees", "bananas", "raspberry"), 
-			story: new Array ("Zach went over to Zoe's house on Thursday.",
-							  "She was outside with the hose.", 
-							  "Her house had tons of flowers around it.",
-							  "There must have been a zillion.",
-							  "It was so beautiful that Zach thought she deserved a prize for the most beautiful flower garden ever!",
-							  "His favorite flowers were the zinnias.",
-							  "Zoe asked him if we wanted to help water the flowers.", 
-							  "He took the hose and began watering.",
-							  "When he got over to the zinnias they were surrounded by bees.",
-							  "Zach had zero love for bees, so he dropped the hose and ran as fast as he could.",
-							  "He zigged and zagged, but there was still one bee zooming after him.",
-							  "Zach yelled, \"Please, please, please don't sting me!\"",
-							  "Just in time, Zoe zoomed in with her fly swatter and zapped that bee to the ground.",
-							  "Zoe shrugged her shoulders and said, \"You want to go in and have some cookies?\"", 
-							  "Zach nodded and said, \"Yes please!\"")}),
+							  "cheese", "knees","cookies", "fingers", "sunrise", "sneeze", "visit", "bees", "bananas", "raspberry"), 
+			story: new Array ("<INSERT Z STORY FROM FORM>")}),
 		Phonetics.insert({
 			sound: "S",
 			level: "4",
@@ -147,6 +134,13 @@ Meteor.startup(function(){
 							  "I have put a list of different topics together that we will discuss which includes: grasshoppers, motorcycle's, seat belts, soccer, tennis, soup, car racing, and insects, to name a few.",
 							  "Before I will let them come in the office, everyone will have to sign a contract saying they won't talk about kissing.",
 							  "We have our first meeting tomorrow. I hope some people come.")})
+		Phonetics.insert({
+			sound: "D",
+			level: "2",
+			words: new Array ("day", "dad", "dive", "end", "duck", "dentist", "dinner", "birthday", "good", "hide", "head", "medicine",
+							  "spider", "calendar",  "played", "wood", "ahead","salad", "outside", "daisy", "somebody", "video",
+							   "lemonade", "doughnut","attitude", "medicine", "afraid", "expected", "decide", "decade"),
+			story: new Array ("")})
 	}
 
 

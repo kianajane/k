@@ -16,28 +16,9 @@ Template.workshop.rendered = function() {
 	// Show a word
 	wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 	console.log("current sound = '"+Session.get("sound")+"'");
-	theWord = getFirstWord();
+	theWord = getWord();
 	Session.set("workshopWord",theWord);
 	$("#word").html(Session.get("workshopWord"));
-}
-
-// Get the word the first time you load the page.
-function getFirstWord() {
-	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
-	if (correctWords.length == 0) {
-		theWord = wordList[0]
-		return theWord;
-	} else
-	{
-		// The first unused word.
-		for (var j = 0; j < wordList.length; j++) {
-			if (!correctWords.includes(wordList[j]))
-			{
-				return wordList[j];
-			}
-		}
-	}
-	return wordList[j];
 }
 
 //Sound effects
@@ -56,6 +37,9 @@ var recognizing = false;
 // Word list
 var wordList = [];
 var wordChanged=false;
+var theWord;
+var resetIndex = false;
+var attemptedWords = [];
 
 // Counters
 var correct=false;
@@ -64,7 +48,6 @@ var wordCounter = 0;
 var attempts = 0;
 var n = '';
 var completedWords = ''; 	//for progress
-
 var messageprinted = false; // For feedback
 var result = false;
 
@@ -112,6 +95,7 @@ Template.workshop.events({
 		completedWords = theWord.fontcolor("#E2646B")+" ("+attempts+")<br>" + completedWords;
 		$("#compWords").html(completedWords);
 		History.insert({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), word: theWord, time: new Date(), correct: false});
+		attemptedWords.push(theWord); // adds this word to the list of attempted words
 		changeWord(event);
 	}
 });
@@ -136,37 +120,33 @@ function getNewWord(){
 	Session.set("workshopWord",theWord);
 }
 
-	function getWord(){ // gets a word that has not already been completed.
+function getWord(){ // gets a word that has not already been completed.
 	// Get all unique finished words: 
 	correctWords =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "workshop", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
-	
-	// If you haven't done anything or you've finished all of the sounds.
-	if (/*correctWords.length == 0 ||*/ correctWords.length == wordList.length) {
-		theWord = wordList[0]
-	} else if (theWord == undefined) {
-		theWord = wordList[0]
-	} else
-	{
-		// Should get the first word on the list that is allowed.
-		// if we've reached the end, go back to the beginning.
-		if (wordList.indexOf(theWord) + 1 >= wordList.length) {
-			theWord = wordList[0];
-		} else {
-			// Else, pick the next word on the list.
-			theWord = wordList[wordList.indexOf(theWord) + 1];
-		}
+	console.log("attempted words: "+attemptedWords);
 
-		// Keep picking new words until you find one you haven't done.
-		if (correctWords.includes(theWord)) {
-			console.log("repeated word: "+theWord+"... getting another word");
-			getWord();
+	if (resetIndex){ // starting a new sound
+		index=0;
+		resetIndex=false;
+	} else if (theWord==undefined){ // first word
+		index=0;
+	} else if(attemptedWords.indexOf(theWord)<0){ // never attempted this word
+		index = wordList.indexOf(theWord);
+	} else {
+		index = wordList.indexOf(theWord)+1;
+		if (index >= wordList.length-1){
+			index=0;
 		}
 	}
-	return theWord;
-}	
-//random # returned inside given range. (called in getNewWord)
-function getRandomArbitrary(min, max) {
-	return Math.random() * (max - min) + min;
+	console.log(index);
+
+	for (var i = index; i < wordList.length; i++) {
+		if(!correctWords.includes(wordList[i])){
+			return wordList[i];
+		}
+	}
+	console.log("finished all words on this sound");
+	return wordList[0];
 }
 
 // Changes the word and updates the counters. Called in Begin, Skip, and when user is correct.
@@ -178,7 +158,6 @@ function changeWord(event){
 	attempts=0;
 	correct=false;
 	result=false;
-	$("#results_heading").html("");
 	$("#res").html("");
 }
 
@@ -203,7 +182,6 @@ function startDictation(event) {
 
 // Stop recognition. Called by the Stop button.
 function stopDictation(event) {
-	$("#results_heading").html("Results:");
 	if (recognizing) {
 		recognition.stop();
 		recognizing=false;
@@ -234,7 +212,6 @@ if ('webkitSpeechRecognition' in window) {
 
 	// Called by Stop Recognition. 
 	recognition.onend = function() {
-		$("#results_heading").html("Results:");
 		console.log("end");
 
 		// FEEDBACK FOR NO AUDIO
@@ -273,6 +250,7 @@ if ('webkitSpeechRecognition' in window) {
 	 	if (final_transcript.includes("pass")) {	//skip
 	 		completedWords = theWord.fontcolor("#E2646B")+" ("+attempts+")<br>" + completedWords;
 			$("#compWords").html(completedWords);
+			attemptedWords.push(theWord); // adds this word to the list of attempted words
 			changeWord(event);
 		} else if (final_transcript.includes("stop")) { 	//pause
 			recognition.stop();
@@ -374,6 +352,8 @@ Template.soundselectworkshop.events({
 			console.log("CHANGING WORKSHOP SOUND... new sound = "+newSound);
 			// Reset the wordList and pick a new word
 			wordList = Phonetics.findOne({sound: newSound}).words;
+			resetIndex = true;
+			attemptedWords = [];
 			changeWord(event);
 			lastSound=newSound;
 		}
