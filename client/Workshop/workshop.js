@@ -14,6 +14,7 @@ Template.workshop.rendered = function() {
 	correctCounter=0;
 	completedWords='';
 	// Show a word
+	if (lastSound!=Session.get("sound")) resetIndex = true;
 	wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 	console.log("current sound = '"+Session.get("sound")+"'");
 	theWord = getWord();
