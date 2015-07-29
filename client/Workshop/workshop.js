@@ -272,10 +272,10 @@ if ('webkitSpeechRecognition' in window) {
 			correct=true; 
 	  	} else if (final_transcript.includes(theWord.toLowerCase())) { // Correct but low confidence.
 	  		result=true;
-	  		$("#res").html("That didn't sound quite right, try again.");
+	  		$("#res").html("That was really close, try it one more time!");
 	  	} else { // Wrong, or other error.
 	  		result=true;
-	  		$("#res").html("Try again");
+	  		pickIncorrectMessage(attempts);
 	  	}
 	  	// Get feedback / update
 	  	if (result){
@@ -284,6 +284,22 @@ if ('webkitSpeechRecognition' in window) {
 	  	}
 	};
 }
+
+// picks different 'Incorrect' messages depending on how many times you've tried.
+function pickIncorrectMessage(num) {
+
+	switch(num) {
+		case 0:	
+			 $("#res").html("Incorrect, please try again.");
+			break;
+		case 1:
+			$("#res").html("Still not there yet, try again.");
+			break;
+		default:
+			$("#res").html("It sounds like you are having trouble with this word. Here are some suggestions that might help:" + '<br/>' + " 1. Speak loudly and clearly. Use a microphone if there is background noise." + '<br/>' + " 2. Put the word into a sentence to help the recognizer." + '<br/>' + " 3. Click the 'skip' button to move on to a different word.");
+	}
+}
+
 
 // Updates the counters and feedback
 function counter(correct){
