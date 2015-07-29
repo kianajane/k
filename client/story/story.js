@@ -36,7 +36,7 @@ if (![].includes) {
 Template.story.rendered = function() {
   if (recognizing) recognition.stop();
   // Show first sentence
-  story1 = Phonetics.findOne({sound: Session.get("sound")}).story;
+  story1 = Phonetics.findOne({sound: Session.get("sound")}).story1;
   getSent();
 }
 
@@ -305,7 +305,7 @@ Template.storyDirections.events({
 
 Template.story.events({
   'click #start_story': function(event){
-    story1 = Phonetics.findOne({sound: lastSound}).story;
+    story1 = Phonetics.findOne({sound: lastSound}).story1; // Replace with a session variable!!
     startDictation(event);
     getSent();
   },
@@ -329,7 +329,7 @@ Template.soundselectstory.events({
     
     if (lastSound!=newSound){
       console.log("CHANGING STORY SOUND... new sound = "+newSound);
-      story1 = Phonetics.findOne({sound: newSound}).story;
+      story1 = Phonetics.findOne({sound: newSound}).story1;
       index = 0; wordNum = 0;
       getSent();
       lastSound=newSound;
