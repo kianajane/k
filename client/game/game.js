@@ -70,8 +70,10 @@ if(Meteor.isClient){
 	Template.soundselectgame.events({
 		"submit #sound-select": function(event){
 		    event.preventDefault();
-		
+
+		    Session.set("sound", event.target.sound.value);
 		    var newSound = Session.get("sound");
+		    
 		    if (lastSound!=newSound){
 		      console.log("CHANGING GAME SOUND... new sound = "+newSound);
 		      wordList = Phonetics.findOne({sound: newSound}).words;
