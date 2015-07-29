@@ -280,7 +280,10 @@ Template.story.events({
 Template.soundselectstory.events({
   "submit #sound-select": function(event){
     event.preventDefault();
+
+    Session.set("sound", event.target.sound.value);
     var newSound = Session.get("sound");
+    
     if (lastSound!=newSound){
       console.log("CHANGING STORY SOUND... new sound = "+newSound);
       story1 = Phonetics.findOne({sound: newSound}).story;

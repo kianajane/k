@@ -344,7 +344,8 @@ function getN(attempts){
 Template.soundselectworkshop.events({
 	"submit #sound-select": function(event){
 		event.preventDefault();
-
+		
+      	Session.set("sound", event.target.sound.value);
 		var newSound = Session.get("sound");
 		
 		// If the sound has actually been changed

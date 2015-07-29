@@ -25,12 +25,6 @@ Template.levels.helpers({
     }
   });
 
-  Template.sounds.events({
-    "change .sound-selection": function(e, t){
-      return Session.set("sound", $("[name=soundNums]").val()); // use this for sound select.
-    }
-  })
-
 Template.soundselectworkshop.rendered = function() {
     currentSound = Session.get("sound");
     console.log(currentSound);
