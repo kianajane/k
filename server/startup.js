@@ -537,8 +537,6 @@ Meteor.startup(function(){
 			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
 			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 13) }),
 			History.insert({userId: Meteor.userId(), mode: "game" , sound: "F" , word: "giraffe", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
-
-			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "lunch", correct: true , time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "leg", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "violin", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "belly", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
@@ -590,7 +588,19 @@ Meteor.startup(function(){
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "feet", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "elephant", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
-			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "giraffe", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) })
+			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "F" , word: "giraffe", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "The little owl floated across the lake on a big leaf.", correct: true , time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "The leaf was green and yellow and slid across the lake with ease.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "The owl was late for lunch with her friend, a sparrow named Flower.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "As she approached the shore, the owl could hear Flower ringing a little golden bell, signaling the start of the meal.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "\"Oh no, I'm so very late!\" the owl exclaimed, flapping her wings and leaping from the leaf.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "She flew to the shore and landed in front of Flower who stood holding her bell and laughing.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "\"What are you laughing at?\" the owl asked Flower.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "\"You looked so worried,\" Flower said, \"It's just lunch.\"", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "\"I know it's just lunch,\" said the owl, \"But my belly is rumbling, and I was afraid all the food would be gone.\"", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "Flower shook her head and led the owl into her home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "\"I made sure to save you some,\" Flower said, putting her bell away, \"Now, let's eat!\"", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+
 		]}
 		}
 	});
