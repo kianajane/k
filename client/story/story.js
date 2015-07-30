@@ -62,6 +62,7 @@ var original = [];    //accessed in .onresult, coloring, colorGR
 var correct = [];     //accessed in events
 var coloredSent = ""; //global to make coloredSent accumulate
 var end = false;      //marks end of sentence, used in getSent() for timeout
+var storyEnd = false;
 
 if (Session.get("sound")==undefined){
   Session.set("sound", "L");
@@ -69,11 +70,7 @@ if (Session.get("sound")==undefined){
 var lastSound = Session.get("sound");
 
 if (Session.get("storyChosen")==undefined){
-  console.log ("no storyChosen");
-  console.log ("current sound: " + Session.get("sound"));
-  //console.log ("L sound: " + Phonetics.findOne({sound: Session.get("sound")}).story1);
   Session.set("storyChosen", new Array ("The little owl floated across the lake on a big leaf.", "The leaf was green and yellow and slid across the lake with ease.", "The owl was late for lunch with her friend, a sparrow named Flower.", "As she approached the shore, the owl could hear Flower ringing a little golden bell, signaling the start of the meal.", "\"Oh no, I\'m so very late!\" the owl exclaimed, flapping her wings and leaping from the leaf.", "She flew to the shore and landed in front of Flower who stood holding her bell and laughing.", "\"What are you laughing at?\" the owl asked Flower.", "\"You looked so worried,\" Flower said, \"It\'s just lunch.\"", "\"I know it\'s just lunch,\" said the owl, \"But my belly is rumbling, and I was afraid all the food would be gone.\"", "Flower shook her head and led the owl into her home.", "\"I made sure to save you some,\" Flower said, putting her bell away, \"Now, let\'s eat!\""));
-  console.log (Session.get("storyChosen"));
 }
 
 var story1 = Session.get("storyChosen");
@@ -133,10 +130,11 @@ if ('webkitSpeechRecognition' in window) {
         return;
       }
 
+      endCheck();
       getSent();
             
       //Change all char to lowercase
-      trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
+      trimStory = sent.replace(/[\.,-\/#!$%\^&\*;\":{}=\-_`~()]/g,"").toLowerCase();
       current = " "+interim_transcript.toLowerCase() + " ";
       words = trimStory.split(" ");
       console.log ("say: " + words[wordNum]);
@@ -168,11 +166,13 @@ function startDictation(event) {
 }
 //Sentence changing and printing happens here
 function getSent() {
+  if (storyEnd == false) {
     story1 = Session.get("storyChosen");
     console.log(index);
     sent = story1[index];
     original = sent.split(" "); 
     $("#senth1").html(coloring(original, wordNum));
+  }
 }
 //"Highlights" the word that you are on blue
 function coloring(original, wordNum) {
@@ -189,16 +189,10 @@ function coloring(original, wordNum) {
 }
 //If at the end of the story or sent, does stuff
 function endCheck() {
-  //If at the end of the story (ALERT)
-  console.log ("story1: " + story1);
-  if (index == story1.length) {
-    var storyEnd = cheer.play();
-    console.log("reached the end!");
-    $("#storyarea").html('<div class="alert alert-success" role="alert" id="endSoundS"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop" id = "WS">Workshop</a> <a class = "btn btn-default btn-raised" href="/game" id="game">Game</a> </center> </div>');
-    recognition.stop();
-    return;
-  } else if (end) {
+  
+  if (end) {
   //If sentence completed with 80% right, add to history as correct:
+  console.log ("you finished a sentence: " + index);
     if (correct.length >= words.length * (8.0 / 10))
     {
       History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, correct: true, time: new Date()});
@@ -210,6 +204,18 @@ function endCheck() {
     feedback();
     $("#prevSent").html(coloredSent);//shows completed sentences on the side
     end=false; 
+  }
+
+  //If at the end of the story (ALERT)
+  //console.log ("story1: " + story1);
+  if (index == story1.length) {
+    storyEnd = true;
+    recognition.stop();
+    var storyEndSound = cheer.play();
+    console.log("reached the end!");
+
+    $("#storyarea").html('<div class="alert alert-success" role="alert" id="endSoundS"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop" id = "WS">Workshop</a> <a class = "btn btn-default btn-raised" href="/game" id="game">Game</a> </center> </div>');
+    setTimeout(function() {return}, 100000);
   }
 }
 //Final coloring: colors the correct words green(G), incorrect words red (R)
@@ -242,7 +248,8 @@ function feedback() {
   setTimeout(function() {
     $("#storyarea").html('<h1 class = "text-left" id="senth1"></h1>') 
     getSent();
-  }, 1700);   
+  }, 1700);  
+  
 }
 
 
@@ -260,41 +267,35 @@ function skip(event) {
 
 // When you click 'Resume', find the last sentence you've done for that story.
 function resume(event) {
-
-  correctSentences =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
  
-  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story1;
-  lastSent1 = findSentence(allSentences);
-  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story2;
-  lastSent2 = findSentence(allSentences);
-  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story3;
-  lastSent3 = findSentence(allSentences);
-  
-  // Find the most recent one??
-  last1 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent1}, {sort: {time: -1}}).time;
-  last2 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent2}, {sort: {time: -1}}).time;
-  last3 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent3}, {sort: {time: -1}}).time;
+  // Only resume to your farthest point in that story. if you've finished the story, send the alert.
+  correctSentences =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
+   story1 = Session.get("storyChosen");
 
-  if (last1 > last2 && last1 > last3) {
-    resumeSent = lastSent1;
-  } else if (last2 > last1 && last2 > last3){
-    resumeSent = lastSent2;
-  } else {
-    resumeSent = lastSent3;
-  }
-
-    sent = resumeSent;
-    original = sent.split(" "); 
-    $("#senth1").html(coloring(original, wordNum));
-
-  function findSentence (all) {
-      // Find the first sentence in story1 that you haven't done.
-  for (var i = 0; i < all.length; i++) {
-    if(!correctSentences.includes(all[i])){
-      return all[i];
+  lastSent = "";
+  // Find the first sentence in the story that you haven't done.
+  for (var i = 0; i < story1.length; i++) {
+    if(!correctSentences.includes(story1[i])){
+      index = i;
+      lastSent = story1[index];
+      i = story1.length
     }
   }
+
+  console.log ("i: "+ i);
+  console.log ("sent: " + lastSent);
+
+  // replace with endCheck(); ??
+  if (lastSent == "") { // There is no sentence in the story that you haven't done.
+    console.log ("You are done! but for some reason the alert doesn't show up");
+    recognition.stop();
+    var storyEndSound = cheer.play();
+    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
   }
+
+    sent = lastSent;
+    original = sent.split(" "); 
+    $("#senth1").html(coloring(original, wordNum));
 
 }
 
@@ -329,6 +330,7 @@ Template.story.events({
     skip(event);
   },
   'click #resume_story': function(event) {
+    startDictation(event);
     resume(event);
   }
 })
@@ -341,6 +343,7 @@ Template.soundselectstory.events({
     var newSound = Session.get("sound");
 
     var storyNum = event.target.story.value;
+    storyEnd = false;
 
     switch(storyNum){
       case "1":

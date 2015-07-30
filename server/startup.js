@@ -614,6 +614,7 @@ Meteor.startup(function(){
 			History.insert({userId: Meteor.userId(), mode: "game" , sound: "W" , word: "spider web", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 35) }),
 			History.insert({userId: Meteor.userId(), mode: "game" , sound: "W" , word: "one-way street", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 34) }),
 			History.insert({userId: Meteor.userId(), mode: "game" , sound: "W" , word: "pocket watch", correct: false, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 34) }),
+
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "leg", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "violin", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 15) }),
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "L" , word: "belly", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 12) }),
@@ -728,6 +729,7 @@ Meteor.startup(function(){
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "S" , word: "address", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 23) }),
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "S" , word: "office", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 23) }),
 			History.insert({userId: Meteor.userId(), mode: "workshop" , sound: "S" , word: "purse", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 23) }),
+
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "The little owl floated across the lake on a big leaf.", correct: true , time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "The leaf was green and yellow and slid across the lake with ease.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "The owl was late for lunch with her friend, a sparrow named Flower.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
@@ -736,9 +738,16 @@ Meteor.startup(function(){
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "She flew to the shore and landed in front of Flower who stood holding her bell and laughing.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "\"What are you laughing at?\" the owl asked Flower.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "\"You looked so worried,\" Flower said, \"It's just lunch.\"", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "\"I know it's just lunch,\" said the owl, \"But my belly is rumbling, and I was afraid all the food would be gone.\"", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "Flower shook her head and led the owl into her home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "L" , word: "\"I made sure to save you some,\" Flower said, putting her bell away, \"Now, let's eat!\"", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 17) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "Red the rat ran around racing Riley for rice.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 6) }),			
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "Riley said \"Look Red, a bed! Wouldn't it be nice,", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 6) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "To have our rice like rich old mice, relaxed on pillows and sheets?", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 6) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "We'd feast like kings, with all but the rings! A grand old place to eat!\"", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 6) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "So Red and Riley scrambled up to eat their rice like royals,", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 6) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "But on a sheet, Red lost his feet, and their plans were nearly foiled.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 6) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "Then Riley flailed around his tail, to help Red get a grip.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 6) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "\"Run away, Robert Rat,\" cried Rose Raccoon, \"run!\"", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 4) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "Robert Rat put down the cherry he was eating.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 4) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "R" , word: "\"Why?\" he growled. \"Is it a tornado? Or a bear? Wait -- don't tell me -- a dinosaur is coming.\"", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 4) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "V" , word: "Victor and his family were all excited to go to the carnival.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "V" , word: "On the drive to the carnival they traveled over hills and rivers and through valleys.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 10) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "V" , word: "When they arrived they paid seven dollars for tickets to ride the rides.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
@@ -789,16 +798,15 @@ Meteor.startup(function(){
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "And now the jaguar eats wagonloads of kiwi in New Zealand.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "Shawn and his friends had a long day of fishing on the ocean.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "Everyone had caught a fish except Shawn.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "They offered to share their catches with him  but Shawn wanted to earn his success.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "They offered to share their catches with him, but Shawn wanted to earn his success.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "He tried to catch one for a while longer but still had nothing to show for his work.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "He would have kept trying if he hadn't been playfully pushed into the ocean water.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "After returning to shore  Shawn thought they should all return home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "The group walked through the lush  shadowy forest.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "After returning to shore, Shawn thought they should all return home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "The group walked through the lush, shadowy forest.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "It had gotten so dark that Shawn needed a flashlight to see the path home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "When they made it safely home, Shawn was ashamed that he had nothing to share with his mother.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "His mother cheered him up by sharing some advice.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "\”It is more important to try than to succeed.\” she said.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) })
-			
+				
 		]}
 		
 	});
