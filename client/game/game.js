@@ -162,7 +162,7 @@ if(Meteor.isClient){
 	        	final_transcript = eachWord(final_transcript);
 				console.log('final events.results['+i+'][0].transcript = '+ JSON.stringify(final_transcript)
 						+ " --- " +JSON.stringify(confidence));
-				if(final_transcript==Session.get("gameWord") && confidence>60){
+				if(final_transcript==Session.get("gameWord").toLowerCase() && confidence>50){
 					console.log("test for word: "+Session.get("gameWord"));
 	         		correct();
 			    }
@@ -171,7 +171,7 @@ if(Meteor.isClient){
 	        	interim_transcript = eachWord(interim_transcript);
 				console.log('interim events.results['+i+'][0].transcript = '+ JSON.stringify(interim_transcript)
 						+ " --- " +JSON.stringify(confidence));
-	         	if(interim_transcript==Session.get("gameWord") && confidence>30){
+	         	if(interim_transcript==Session.get("gameWord").toLowerCase() && confidence>30){
 	         		// add to history
 					console.log("test for word: "+Session.get("gameWord"));
 					History.insert({userId: Meteor.userId(), mode: "game", sound: Session.get("sound"), word: theWord, time: new Date(), correct: true});

@@ -268,8 +268,8 @@ if ('webkitSpeechRecognition' in window) {
       	//PRONUNCIATION FEEDBACK:
       	} else if (final_transcript=='') { // Nothing in transcript.
 	  		$('#res').html("Sorry, I didn't hear anything...");
-	  	//CORRECT PARAMETERS, threshold: 60% confidence
-		} else if (final_transcript.includes(theWord.toLowerCase()) && confidence>=60) {
+	  	//CORRECT PARAMETERS, threshold: 55% confidence
+		} else if (final_transcript.includes(theWord.toLowerCase()) && confidence>=55) {
 			console.log ("you are correct!");
 			result=true;
 			correct=true; 
@@ -319,10 +319,9 @@ function counter(correct){
 
 		// Feedback
 	  	$("#res").html("Congratulations! You said <b>"+theWord+"</b> correctly on your "+attempts+n+" attempt!");
-	  	corrSfx.play()
-		    .fadeIn()
+	  	corrSfx.play().fadeIn()
 		    .bind( "timeupdate", function() {
-		       var timer = buzz.toTimer( this.getTime() );
+		       var timer = buzz.toTimer(this.getTime());
 		    });
 
 		// Add to history
@@ -336,10 +335,9 @@ function counter(correct){
 		// Change word after 2 seconds
 		setTimeout(function(){changeWord(event)},3000);	
 	} else { // incorrect or low confidence
-		var incorrectAudio = incorrSfx.play()
-	    .fadeIn()
-	    .bind( "timeupdate", function() {
-	       var timer = buzz.toTimer( this.getTime() );
+		var incorrectAudio = incorrSfx.play().fadeIn()
+	    	.bind( "timeupdate", function() {
+	       	var timer = buzz.toTimer(this.getTime());
 	    });	
 	}
 

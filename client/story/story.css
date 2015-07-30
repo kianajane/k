@@ -25,3 +25,7 @@
 	color:white;
 	background-color:#9964E7;
 }
+
+#story_buttons div {
+	display: inline-block;
+}

@@ -1,12 +1,11 @@
-Template.profileEdit.rendered=function(){
-	if (recognizing) recognition.stop();
-}
 
 Template.profileEdit.helpers({
 	myEmail: function(){
-		return this.emails[0].address},
+		return this.emails[0].address;
+	},
 	profile: function(){ 
-    	return Meteor.users.findOne({_id: Meteor.userId()}).profile},
+    	return Meteor.users.findOne({_id: Meteor.userId()}).profile;
+    }
 })
 
 // Profile Edit submit form.
@@ -27,4 +26,4 @@ Template.profileEdit.events({
 		Router.go('/');
 		
 	}
-})
+});
