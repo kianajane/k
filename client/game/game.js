@@ -3,17 +3,20 @@ if(Meteor.isClient){
 	// Chooses an initial sound
 	Template.game.rendered=function(){
 		if (recognizing) recognition.stop();
+		Session.set("story",false);
+
 		draw();
 		i=0;
 		x=0.2;
+
 		correctCounter=0;
 		$("#game_counter").html("<b>Score:</b> "+correctCounter);
+		
 		if (lastSound!=Session.get("sound")) resetIndex = true;
 		wordList = Phonetics.findOne({sound: Session.get("sound")}).words;
 		theWord = getWord();
 		Session.set("gameWord",theWord);
 		$("#say").html(Session.get("gameWord"));
-		Session.set("story",false);
 	}
 
 	var i = 0;
