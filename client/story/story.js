@@ -164,6 +164,7 @@ function startDictation(event) {
 //Sentence changing and printing happens here
 function getSent() {
     story1 = Session.get("storyChosen");
+    endCheck();
     sent = story1[index];
     original = sent.split(" "); 
     $("#senth1").html(coloring(original, wordNum));
@@ -183,10 +184,10 @@ function coloring(original, wordNum) {
 }
 //If at the end of the story or sent, does stuff
 function endCheck() {
-  //If at the end of the story
+  //If at the end of the story (ALERT)
   if (index == story1.length) {
     var storyEnd = cheer.play();
-    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
+    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
     recognition.stop();
     return;
   } else if (end) {
