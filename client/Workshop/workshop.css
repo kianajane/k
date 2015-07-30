@@ -66,8 +66,11 @@
 .bg-info {
 	background-color:#7CD4FF;
 }
-#endSound {
-	background-color:#65D6A3 !important;
+#endSoundWS {
+	border-style: double;
+	border-width: 20px;
+	border-color:#FFEF74;
+	background-color: white !important;
 	font-size: 15px !important;
 	color: black !important;
 	padding: 30px;
