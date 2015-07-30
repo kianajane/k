@@ -18,7 +18,7 @@
 <!-- Begin Templates  --> 
 <template name="dropdowns">
 	<form id="sound-select">
-		<field><p>Levels:</p>
+		<field><p>Level:</p>
 			<p>{{> levels}}</p>
 		</field>
     <div>
@@ -42,16 +42,10 @@
 <!-- Story dropdown -->
 <template name="stories">
   <select autocomplete="off" name="story" class="form-control story-selection">
-    <option>Story 1</option>
-    <option>Story 2</option>
-    <option>Story 3</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
   </select>
-</template>
-
-<template name="storyChoices">
-  <option>Story 1</option>
-  <option>Story 2</option>
-  <option>Story 3</option>
 </template>
 
 <!-- Level dropdown -->

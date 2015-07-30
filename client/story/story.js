@@ -35,11 +35,10 @@ if (![].includes) {
 
 // On rendered
 Template.story.rendered = function() {
-  if (recognizing) recognition.stop();
-  // Show first sentence
-  story1 = Phonetics.findOne({sound: Session.get("sound")}).story1;
-  getSent();
   Session.set("story",true);
+  if (recognizing) recognition.stop();
+  // Show first sentence 
+  getSent();
 }
 
 //Sound effect
@@ -67,6 +66,12 @@ if (Session.get("sound")==undefined){
   Session.set("sound", "L");
 }
 var lastSound = Session.get("sound");
+
+if (Session.get("storyChosen")==undefined){
+  Session.set("storyChosen", Phonetics.findOne({sound: lastSound}).story1);
+}
+var story1 = Session.get("storyChosen");
+var oldSentence1=story1[0];
 
 if ('webkitSpeechRecognition' in window) {
   console.log("webkit is available!");
@@ -122,6 +127,7 @@ if ('webkitSpeechRecognition' in window) {
         return;
       }
 
+      endCheck();
       getSent();
             
       //Change all char to lowercase
@@ -157,6 +163,7 @@ function startDictation(event) {
 }
 //Sentence changing and printing happens here
 function getSent() {
+    story1 = Session.get("storyChosen");
     endCheck();
     sent = story1[index];
     original = sent.split(" "); 
@@ -243,8 +250,9 @@ function skip(event) {
   }
 }
 
-// When you click 'Resume', go to the last sentence you've done for that story.
-function resume (event) {
+// When you click 'Resume', find the last sentence you've done for that story.
+function resume(event) {
+
 
   // Only resume to your farthest point in that story. if you've finished the story, send the alert.
 
@@ -292,7 +300,6 @@ Template.storyDirections.events({
 
 Template.story.events({
   'click #start_story': function(event){
-    story1 = Phonetics.findOne({sound: lastSound}).story1; // Replace with a session variable!!
     startDictation(event);
     getSent();
   },
@@ -313,13 +320,33 @@ Template.soundselectstory.events({
 
     Session.set("sound", event.target.sound.value);
     var newSound = Session.get("sound");
+
+    var storyNum = event.target.story.value;
+
+    switch(storyNum){
+      case "1":
+        Session.set("storyChosen",Phonetics.findOne({sound: newSound}).story1);
+        break;
+      case "2":
+        Session.set("storyChosen",Phonetics.findOne({sound: newSound}).story2);
+        break;
+      default: // story 3
+        Session.set("storyChosen",Phonetics.findOne({sound: newSound}).story3);
+        break;
+    }
+    var newSentence1 = Session.get("storyChosen")[0];
     
-    if (lastSound!=newSound){
-      console.log("CHANGING STORY SOUND... new sound = "+newSound);
-      story1 = Phonetics.findOne({sound: newSound}).story1;
+    if (lastSound!=newSound || oldSentence1!=newSentence1){
+      if (lastSound!=newSound){ // sound has changed
+        console.log("CHANGING STORY SOUND... new sound = "+newSound);
+      }
+      if (oldSentence1!=newSentence1){ // story has changed
+        console.log("CHANGING TO STORY #"+storyNum+", starting with '"+newSentence1+"'");
+      }
       index = 0; wordNum = 0;
       getSent();
-      lastSound=newSound;
+      lastSound = newSound;
+      oldSentence1=newSentence1;
     }
   }
 })

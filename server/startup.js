@@ -778,8 +778,36 @@ Meteor.startup(function(){
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "T" , word: "She explained that fixing Terri's teeth would not hurt at all and that it was very safe.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 20) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "T" , word: "The dentist was right, Terri hadn't felt any pain and was glad that her tooth was fixed.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 20) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "T" , word: "After that she was never too terrified to go to the dentist again.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 20) }),
-
-
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "J" , word: "Jamie was just starting to learn magic.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 7) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "J" , word: "She could turn any object into a pigeon.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 7) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "J" , word: "Why she could only make pigeons, she didn't know.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 7) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "J" , word: "But she would learn how to conjure other objects someday.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 7) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "J" , word: "Every time she mastered a new spell the high wizard would judge her worthy to learn a new one.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 7) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "J" , word: "Jamie hoped one day to learn the spell that would make vegetables taste like fudge.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 7) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "J" , word: "Or a spell that conjures a giant hamster for her to ride.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 7) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "J" , word: "Jamie knew that someday she would learn these spells or even invent them.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "J" , word: "She would just have to patient until then.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "Once there was a jaguar who was unaware that he liked kiwi.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "He'd stay wide awake, walking along the driveway walls that line one-way streets and watching the Milky Way, just trying to imagine the reward he wanted.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "But he didn't know what it was.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "Then a wacky walrus washed up in a tidal wave and waxed poetic on the wonders of kiwi.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "In one second, the jaguar knew what he wanted.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "But no highway led to New Zealand.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "So he did his homework and offered to wash the walrus.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "And as a reward, the walrus gave him a ride below the waves.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "And now the jaguar eats wagonloads of kiwi in New Zealand.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "Shawn and his friends had a long day of fishing on the ocean.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "Everyone had caught a fish except Shawn.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "They offered to share their catches with him  but Shawn wanted to earn his success.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "He tried to catch one for a while longer but still had nothing to show for his work.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "He would have kept trying if he hadn't been playfully pushed into the ocean water.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "After returning to shore  Shawn thought they should all return home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "The group walked through the lush  shadowy forest.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "It had gotten so dark that Shawn needed a flashlight to see the path home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "When they made it safely home, Shawn was ashamed that he had nothing to share with his mother.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "His mother cheered him up by sharing some advice.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "\”It is more important to try than to succeed.\” she said.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) })
+			
 		]}
 		
 	});
