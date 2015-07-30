@@ -165,6 +165,7 @@ function startDictation(event) {
 function getSent() {
     story1 = Session.get("storyChosen");
     endCheck();
+    console.log(index);
     sent = story1[index];
     original = sent.split(" "); 
     $("#senth1").html(coloring(original, wordNum));
@@ -187,8 +188,9 @@ function endCheck() {
   //If at the end of the story (ALERT)
   if (index == story1.length) {
     var storyEnd = cheer.play();
-    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
+    console.log("reached the end!");
     recognition.stop();
+    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
     return;
   } else if (end) {
   //If sentence completed with 80% right, add to history as correct:
@@ -230,7 +232,8 @@ function feedback() {
   } else {
     $("#storyarea").html("<img src = \"images/story-compsent.png\" width = \"100%\" alt = \"sentcomplete\">");
   }
-  correct = []; wordNum=0; index++; //reset array, vars
+  correct = []; wordNum=0; index++; //reset array, vars 
+  console.log("wordNum reset. wordNum = "+wordNum);
   setTimeout(function() {
     $("#storyarea").html('<h1 class = "text-left" id="senth1"></h1>') 
     getSent();
