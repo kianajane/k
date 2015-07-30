@@ -243,43 +243,31 @@ function skip(event) {
   }
 }
 
-// When you click 'Resume', find the last sentence you've done for that story.
+// When you click 'Resume', go to the last sentence you've done for that story.
 function resume (event) {
 
+  // Only resume to your farthest point in that story. if you've finished the story, send the alert.
+
   correctSentences =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
- 
-  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story1;
-  lastSent1 = findSentence(allSentences);
-  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story2;
-  lastSent2 = findSentence(allSentences);
-  var allSentences = Phonetics.findOne({sound: Session.get("sound")}).story3;
-  lastSent3 = findSentence(allSentences);
-  
-  // Find the most recent one??
-  last1 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent1}, {sort: {time: -1}}).time;
-  last2 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent2}, {sort: {time: -1}}).time;
-  last3 = History.findOne({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true, word: lastSent3}, {sort: {time: -1}}).time;
+  currentStory = Session.get("storyChosen");
 
-  if (last1 > last2 && last1 > last3) {
-    resumeSent = lastSent1;
-  } else if (last2 > last1 && last2 > last3){
-    resumeSent = lastSent2;
-  } else {
-    resumeSent = lastSent3;
-  }
-
-    sent = resumeSent;
-    original = sent.split(" "); 
-    $("#senth1").html(coloring(original, wordNum));
-
-  function findSentence (all) {
-      // Find the first sentence in story1 that you haven't done.
-  for (var i = 0; i < all.length; i++) {
-    if(!correctSentences.includes(all[i])){
-      return all[i];
+  lastSent = "";
+  // Find the first sentence in the story that you haven't done.
+  for (var i = 0; i < currentStory.length(); i++) {
+    if(!correctSentences.includes(currentStory[i])){
+      lastSent = currentStory[i];
     }
   }
+
+  if (lastSent == "") { // There is no sentence in the story that you haven't done.
+    var storyEnd = cheer.play();
+    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished this story! <br> You can now: <br> 1. Select another story or sound on the left <br> 2. Work on this sound in another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
+    //recognition.stop(); // I don't think I need this.
   }
+
+    sent = lastSent;
+    original = sent.split(" "); 
+    $("#senth1").html(coloring(original, wordNum));
 
 }
 
