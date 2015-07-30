@@ -137,7 +137,7 @@ if ('webkitSpeechRecognition' in window) {
       getSent();
             
       //Change all char to lowercase
-      trimStory = sent.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
+      trimStory = sent.replace(/[\.,-\/#!$%\^&\*;\":{}=\-_`~()]/g,"").toLowerCase();
       current = " "+interim_transcript.toLowerCase() + " ";
       words = trimStory.split(" ");
       console.log ("say: " + words[wordNum]);
@@ -195,9 +195,9 @@ function endCheck() {
   if (index == story1.length) {
     var storyEnd = cheer.play();
     console.log("reached the end!");
-    $("#storyarea").html('<div class="alert alert-success" role="alert" id="endSoundS"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop" id = "WS">Workshop</a> <a class = "btn btn-default btn-raised" href="/game" id="game">Game</a> </center> </div>');
     recognition.stop();
-    return;
+    $("#storyarea").html('<div class="alert alert-success" role="alert" id="endSoundS"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop" id = "WS">Workshop</a> <a class = "btn btn-default btn-raised" href="/game" id="game">Game</a> </center> </div>');
+    setTimeout(function() {return}, 10000);
   } else if (end) {
   //If sentence completed with 80% right, add to history as correct:
     if (correct.length >= words.length * (8.0 / 10))
