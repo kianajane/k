@@ -9,6 +9,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 // Chooses an intial sound
 Template.workshop.rendered = function() {
 	if (recognizing) recognition.stop();
+	Session.set("story",false);
 	// Reset
 	wordCounter=0;
 	correctCounter=0;
