@@ -32,3 +32,12 @@ h1 {
 	margin-bottom: 0px;
 }
 
+#endSoundG {
+	border-style: double;
+	border-width: 20px;
+	border-color:#65D6A3;
+	background-color: white !important;
+	font-size: 15px !important;
+	color: black !important;
+	padding: 30px;
+}

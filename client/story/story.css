@@ -29,3 +29,14 @@
 #story_buttons div {
 	display: inline-block;
 }
+
+
+#endSoundS {
+	border-style: double;
+	border-width: 20px;
+	border-color:#9964E7;
+	background-color: white !important;
+	font-size: 15px !important;
+	color: black !important;
+	padding: 30px;
+}

@@ -148,7 +148,7 @@ function getWord(){ // gets a word that has not already been completed.
 		}
 	}
 	console.log("finished all words on this sound");
-	$("#wordArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all the words on this sound! <br> Your other options are: <br> 1. Select another sound on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/story">Story</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
+	$("#wordArea").html('<div class="alert alert-success" role="alert" id="endSoundWS"> <strong>Congratulations!</strong> You finished all the words on this sound! <br> Your other options are: <br> 1. Select another sound on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/story" id="story">Story</a> <a class = "btn btn-default btn-raised" href="/game" id = "game">Game</a> </center> </div>');
 	return; 
 }
 
@@ -280,7 +280,7 @@ if ('webkitSpeechRecognition' in window) {
 	  		result=true;
 	  		pickIncorrectMessage(attempts);
 	  	}
-	  	// Get feedback / update
+	  	// Get feedback / updat
 	  	if (result){
 	  		counter(correct);
 	  		result=false; // Reset
