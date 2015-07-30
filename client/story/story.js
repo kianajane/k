@@ -133,6 +133,7 @@ if ('webkitSpeechRecognition' in window) {
         return;
       }
 
+      endCheck();
       getSent();
             
       //Change all char to lowercase
