@@ -6,9 +6,6 @@ Template.levels.helpers({
       // De-dupe list of levels
       var justLevels = _.uniq(_.pluck(everything,"level"));
       return justLevels;
-    },
-    currentLevel: function() {
-      return Session.get("level");
     }
   });
 
@@ -46,9 +43,6 @@ Template.sounds.helpers({
     // De-dupe list of manufactuerers
     var justSounds = _.uniq(_.pluck(everything, "sound"));
     return justSounds;
-  },
-  currentSound: function() {
-    return Session.get("sound");
   }
 });
   
@@ -81,6 +75,10 @@ Template.soundselectstory.rendered = function() {
     level = Phonetics.findOne({sound: currentSound}).level;
     console.log(level);
     Session.set("level", level);
+    
+    story1 = Session.get("storyChosen");
+    console.log ("I set story1!" + story1);
+    console.log(story1);
 }
 
 
