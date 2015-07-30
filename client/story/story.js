@@ -336,7 +336,7 @@ Template.story.events({
 Template.soundselectstory.events({
   "submit #sound-select": function(event){
     event.preventDefault();
-    $("#storyarea").html('<h1 class = "text-left" id="senth1"></h1>');
+ 
     Session.set("sound", event.target.sound.value);
     var newSound = Session.get("sound");
 
