@@ -77,8 +77,8 @@ Template.soundselectstory.rendered = function() {
     Session.set("level", level);
     
     story1 = Session.get("storyChosen");
-    console.log ("I set story1!" + story1);
-    console.log(story1);
+    //console.log ("I set story1!" + story1);
+    //console.log(story1);
 }
 
 
