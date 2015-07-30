@@ -798,16 +798,15 @@ Meteor.startup(function(){
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "W" , word: "And now the jaguar eats wagonloads of kiwi in New Zealand.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 11) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "Shawn and his friends had a long day of fishing on the ocean.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "Everyone had caught a fish except Shawn.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "They offered to share their catches with him  but Shawn wanted to earn his success.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "They offered to share their catches with him, but Shawn wanted to earn his success.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "He tried to catch one for a while longer but still had nothing to show for his work.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "He would have kept trying if he hadn't been playfully pushed into the ocean water.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "After returning to shore  Shawn thought they should all return home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "The group walked through the lush  shadowy forest.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "After returning to shore, Shawn thought they should all return home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
+			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "The group walked through the lush, shadowy forest.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "It had gotten so dark that Shawn needed a flashlight to see the path home.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "When they made it safely home, Shawn was ashamed that he had nothing to share with his mother.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
 			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "His mother cheered him up by sharing some advice.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) }),
-			History.insert({userId: Meteor.userId(), mode: "story" , sound: "SH" , word: "\”It is more important to try than to succeed.\” she said.", correct: true, time: new Date(s.getFullYear(), s.getMonth(),s.getDate() - 8) })
-			
+				
 		]}
 		
 	});
