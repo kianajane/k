@@ -26,10 +26,32 @@
 			<p>{{> sounds}}</p>
 		</field>
     </div>
+    {{#if isStory}}
+    <div>
+    <field><p>Story:</p>
+      <p>{{> stories}}</p>
+    </field>
+    </div>
+    {{/if}}
     <div id="goButton">
 		<input type="submit" value="Go">
     </div>
 	</form>
+</template>
+
+<!-- Story dropdown -->
+<template name="stories">
+  <select autocomplete="off" name="story" class="form-control story-selection">
+    <option>Story 1</option>
+    <option>Story 2</option>
+    <option>Story 3</option>
+  </select>
+</template>
+
+<template name="storyChoices">
+  <option>Story 1</option>
+  <option>Story 2</option>
+  <option>Story 3</option>
 </template>
 
 <!-- Level dropdown -->

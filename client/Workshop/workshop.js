@@ -20,6 +20,7 @@ Template.workshop.rendered = function() {
 	theWord = getWord();
 	Session.set("workshopWord",theWord);
 	$("#word").html(Session.get("workshopWord"));
+	Session.set("story",false);
 }
 
 //Sound effects

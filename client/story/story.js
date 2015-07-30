@@ -3,6 +3,7 @@
   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
   Allows arrays to have .includes() 
 */
+
 if (![].includes) {
   Array.prototype.includes = function(searchElement /*, fromIndex*/ ) {
     'use strict';
@@ -38,6 +39,7 @@ Template.story.rendered = function() {
   // Show first sentence
   story1 = Phonetics.findOne({sound: Session.get("sound")}).story1;
   getSent();
+  Session.set("story",true);
 }
 
 //Sound effect

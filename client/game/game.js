@@ -1,5 +1,5 @@
 if(Meteor.isClient){
-
+	
 	// Chooses an initial sound
 	Template.game.rendered=function(){
 		if (recognizing) recognition.stop();
@@ -13,6 +13,7 @@ if(Meteor.isClient){
 		theWord = getWord();
 		Session.set("gameWord",theWord);
 		$("#say").html(Session.get("gameWord"));
+		Session.set("story",false);
 	}
 
 	var i = 0;

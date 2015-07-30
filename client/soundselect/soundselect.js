@@ -39,18 +39,25 @@ Template.soundChoices.helpers({
 });
 
 
-  Template.sounds.helpers({
-    sounds: function() {
-      // Find only sounds that have the same dept as the session and sort them ascending
-      var everything = Phonetics.find({level: Session.get("level")}, {sort: {sound:1}}).fetch();
-      // De-dupe list of manufactuerers
-      var justSounds = _.uniq(_.pluck(everything, "sound"));
-      return justSounds;
-    },
-    currentSound: function() {
-      return Session.get("sound");
-    }
-  });
+Template.sounds.helpers({
+  sounds: function() {
+    // Find only sounds that have the same dept as the session and sort them ascending
+    var everything = Phonetics.find({level: Session.get("level")}, {sort: {sound:1}}).fetch();
+    // De-dupe list of manufactuerers
+    var justSounds = _.uniq(_.pluck(everything, "sound"));
+    return justSounds;
+  },
+  currentSound: function() {
+    return Session.get("sound");
+  }
+});
+  
+
+Template.dropdowns.helpers({
+  isStory: function() {
+    return Session.get("story");
+  }
+});
 
 Template.soundselectworkshop.rendered = function() {
     currentSound = Session.get("sound");
@@ -75,6 +82,7 @@ Template.soundselectstory.rendered = function() {
     console.log(level);
     Session.set("level", level);
 }
+
 
 /*
 http://stackoverflow.com/questions/12124234/set-the-selected-item-in-a-select-list-based-on-template-value
