@@ -279,7 +279,7 @@ if ('webkitSpeechRecognition' in window) {
 	  		result=true;
 	  		pickIncorrectMessage(attempts);
 	  	}
-	  	// Get feedback / update
+	  	// Get feedback / updat
 	  	if (result){
 	  		counter(correct);
 	  		result=false; // Reset

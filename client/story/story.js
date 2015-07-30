@@ -35,6 +35,8 @@ if (![].includes) {
 
 // On rendered
 Template.story.rendered = function() {
+  story1 = Session.get("storyChosen");
+  oldSentence1=story1[0];
   Session.set("story",true);
   if (recognizing) recognition.stop();
   // Show first sentence 
@@ -70,8 +72,6 @@ var lastSound = Session.get("sound");
 if (Session.get("storyChosen")==undefined){
   Session.set("storyChosen", Phonetics.findOne({sound: lastSound}).story1);
 }
-var story1 = Session.get("storyChosen");
-var oldSentence1=story1[0];
 
 if ('webkitSpeechRecognition' in window) {
   console.log("webkit is available!");
@@ -189,8 +189,8 @@ function endCheck() {
   if (index == story1.length) {
     var storyEnd = cheer.play();
     console.log("reached the end!");
+    $("#storyarea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
     recognition.stop();
-    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
     return;
   } else if (end) {
   //If sentence completed with 80% right, add to history as correct:
@@ -331,7 +331,7 @@ Template.story.events({
 Template.soundselectstory.events({
   "submit #sound-select": function(event){
     event.preventDefault();
-
+    $("#storyarea").html('<h1 class = "text-left" id="senth1"></h1>');
     Session.set("sound", event.target.sound.value);
     var newSound = Session.get("sound");
 

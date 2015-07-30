@@ -71,7 +71,7 @@ if(Meteor.isClient){
 	Template.soundselectgame.events({
 		"submit #sound-select": function(event){
 		    event.preventDefault();
-
+		    $("#gameWArea").html('<h1 id="say">{{word}}</h1> <div id="game_controls"> <button class="btn btn-raised" type="submit" id="start">Start game</button> </div>');
 		    Session.set("sound", event.target.sound.value);
 		    var newSound = Session.get("sound");
 		    
@@ -122,7 +122,7 @@ if(Meteor.isClient){
 			}
 		}
 		console.log("finished all words on this sound");
-		$("#say").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/story">Story</a> </center> </div>');
+		$("#gameWArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all the words on this sound! <br> Your other options are: <br> 1. Select another sound on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/story">Story</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
 		return wordList[0];
 	}
 
