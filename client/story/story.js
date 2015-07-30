@@ -262,25 +262,30 @@ function skip(event) {
 
 // When you click 'Resume', find the last sentence you've done for that story.
 function resume(event) {
-
-
+ 
   // Only resume to your farthest point in that story. if you've finished the story, send the alert.
-
   correctSentences =_.uniq(_.pluck( History.find({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), correct: true}).fetch(), 'word'));
-  currentStory = Session.get("storyChosen");
+   story1 = Session.get("storyChosen");
 
   lastSent = "";
   // Find the first sentence in the story that you haven't done.
-  for (var i = 0; i < currentStory.length; i++) {
-    if(!correctSentences.includes(currentStory[i])){
-      lastSent = currentStory[i];
+  for (var i = 0; i < story1.length; i++) {
+    if(!correctSentences.includes(story1[i])){
+      index = i;
+      lastSent = story1[index];
+      i = story1.length
     }
   }
 
+  console.log ("i: "+ i);
+  console.log ("sent: " + lastSent);
+
+  // replace with endCheck(); ??
   if (lastSent == "") { // There is no sentence in the story that you haven't done.
+    console.log ("You are done! but for some reason the alert doesn't show up");
+    recognition.stop();
     var storyEnd = cheer.play();
-    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished this story! <br> You can now: <br> 1. Select another story or sound on the left <br> 2. Work on this sound in another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
-    //recognition.stop(); // I don't think I need this.
+    $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
   }
 
     sent = lastSent;
@@ -320,6 +325,7 @@ Template.story.events({
     skip(event);
   },
   'click #resume_story': function(event) {
+    startDictation(event);
     resume(event);
   }
 })
