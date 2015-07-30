@@ -62,6 +62,7 @@ var original = [];    //accessed in .onresult, coloring, colorGR
 var correct = [];     //accessed in events
 var coloredSent = ""; //global to make coloredSent accumulate
 var end = false;      //marks end of sentence, used in getSent() for timeout
+var storyEnd = false;
 
 if (Session.get("sound")==undefined){
   Session.set("sound", "L");
@@ -69,11 +70,7 @@ if (Session.get("sound")==undefined){
 var lastSound = Session.get("sound");
 
 if (Session.get("storyChosen")==undefined){
-  //console.log ("no storyChosen");
-  //console.log ("current sound: " + Session.get("sound"));
-  //console.log ("L sound: " + Phonetics.findOne({sound: Session.get("sound")}).story1);
   Session.set("storyChosen", new Array ("The little owl floated across the lake on a big leaf.", "The leaf was green and yellow and slid across the lake with ease.", "The owl was late for lunch with her friend, a sparrow named Flower.", "As she approached the shore, the owl could hear Flower ringing a little golden bell, signaling the start of the meal.", "\"Oh no, I\'m so very late!\" the owl exclaimed, flapping her wings and leaping from the leaf.", "She flew to the shore and landed in front of Flower who stood holding her bell and laughing.", "\"What are you laughing at?\" the owl asked Flower.", "\"You looked so worried,\" Flower said, \"It\'s just lunch.\"", "\"I know it\'s just lunch,\" said the owl, \"But my belly is rumbling, and I was afraid all the food would be gone.\"", "Flower shook her head and led the owl into her home.", "\"I made sure to save you some,\" Flower said, putting her bell away, \"Now, let\'s eat!\""));
-  //console.log (Session.get("storyChosen"));
 }
 
 var story1 = Session.get("storyChosen");
@@ -169,11 +166,13 @@ function startDictation(event) {
 }
 //Sentence changing and printing happens here
 function getSent() {
+  if (storyEnd == false) {
     story1 = Session.get("storyChosen");
     console.log(index);
     sent = story1[index];
     original = sent.split(" "); 
     $("#senth1").html(coloring(original, wordNum));
+  }
 }
 //"Highlights" the word that you are on blue
 function coloring(original, wordNum) {
@@ -190,16 +189,10 @@ function coloring(original, wordNum) {
 }
 //If at the end of the story or sent, does stuff
 function endCheck() {
-  //If at the end of the story (ALERT)
-  //console.log ("story1: " + story1);
-  if (index == story1.length) {
-    var storyEnd = cheer.play();
-    console.log("reached the end!");
-    recognition.stop();
-    $("#storyarea").html('<div class="alert alert-success" role="alert" id="endSoundS"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop" id = "WS">Workshop</a> <a class = "btn btn-default btn-raised" href="/game" id="game">Game</a> </center> </div>');
-    setTimeout(function() {return}, 10000);
-  } else if (end) {
+  
+  if (end) {
   //If sentence completed with 80% right, add to history as correct:
+  console.log ("you finished a sentence: " + index);
     if (correct.length >= words.length * (8.0 / 10))
     {
       History.insert({userId: Meteor.userId(), mode: "story", sound: Session.get("sound"), word: sent, correct: true, time: new Date()});
@@ -211,6 +204,18 @@ function endCheck() {
     feedback();
     $("#prevSent").html(coloredSent);//shows completed sentences on the side
     end=false; 
+  }
+
+  //If at the end of the story (ALERT)
+  //console.log ("story1: " + story1);
+  if (index == story1.length) {
+    storyEnd = true;
+    recognition.stop();
+    var storyEndSound = cheer.play();
+    console.log("reached the end!");
+
+    $("#storyarea").html('<div class="alert alert-success" role="alert" id="endSoundS"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop" id = "WS">Workshop</a> <a class = "btn btn-default btn-raised" href="/game" id="game">Game</a> </center> </div>');
+    setTimeout(function() {return}, 100000);
   }
 }
 //Final coloring: colors the correct words green(G), incorrect words red (R)
@@ -243,7 +248,8 @@ function feedback() {
   setTimeout(function() {
     $("#storyarea").html('<h1 class = "text-left" id="senth1"></h1>') 
     getSent();
-  }, 1700);   
+  }, 1700);  
+  
 }
 
 
@@ -283,7 +289,7 @@ function resume(event) {
   if (lastSent == "") { // There is no sentence in the story that you haven't done.
     console.log ("You are done! but for some reason the alert doesn't show up");
     recognition.stop();
-    var storyEnd = cheer.play();
+    var storyEndSound = cheer.play();
     $("#storyArea").html('<div class="alert alert-success" role="alert" id="endSound"> <strong>Congratulations!</strong> You finished all words on this sound! <br> Your other options are: <br> 1. Select another sound or story on the left <br> 2. Go to another mode. <br> <center> <a class = "btn btn-default btn-raised" href="/workshop">Workshop</a> <a class = "btn btn-default btn-raised" href="/game">Game</a> </center> </div>');
   }
 
@@ -337,6 +343,7 @@ Template.soundselectstory.events({
     var newSound = Session.get("sound");
 
     var storyNum = event.target.story.value;
+    storyEnd = false;
 
     switch(storyNum){
       case "1":
