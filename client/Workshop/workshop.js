@@ -362,7 +362,7 @@ function getN(attempts){
 Template.soundselectworkshop.events({
 	"submit #sound-select": function(event){
 		event.preventDefault();
-		$("#wordArea").html('<h1 class = "text-center" id="word">{{> getWord}}</h1>');
+		$("#wordArea").html('<h1 class = "text-center" id="word">'+Session.get("workshopWord")+'</h1>');
       	Session.set("sound", event.target.sound.value);
 		var newSound = Session.get("sound");
 		

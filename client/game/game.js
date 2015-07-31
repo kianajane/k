@@ -74,7 +74,13 @@ if(Meteor.isClient){
 	Template.soundselectgame.events({
 		"submit #sound-select": function(event){
 		    event.preventDefault();
-		    $("#gameWArea").html('<h1 id="say">{{word}}</h1> <div id="game_controls"> <button class="btn btn-raised" type="submit" id="start">Start game</button> </div>');
+
+		    if (recognizing){
+		    	$("#gameWArea").html('<h1 id="say">'+Session.get("gameWord")+'</h1> <div id="game_controls"> <button class="btn btn-raised" type="submit" id="pause">Pause</button> </div>');
+		    } else {
+		    	$("#gameWArea").html('<h1 id="say">'+Session.get("gameWord")+'</h1> <div id="game_controls"> <button class="btn btn-raised" type="submit" id="start">Start game</button> </div>');
+		    }
+		    
 		    Session.set("sound", event.target.sound.value);
 		    var newSound = Session.get("sound");
 		    
